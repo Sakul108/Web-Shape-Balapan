@@ -1,0 +1,12 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    font-family: 'ABeeZee', sans-serif;
+  }
+}
+
+html, body {
+  overflow-x: hidden;
+  max-width: 100%;
+}
