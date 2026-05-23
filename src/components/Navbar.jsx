@@ -79,6 +79,7 @@ const Navbar = () => {
             <img
               src={logo}
               alt="Shape Balapan"
+              className="nav-logo-img"
               style={{ height: 44, width: "auto", objectFit: "contain" }}
             />
           </Link>
@@ -181,12 +182,10 @@ const Navbar = () => {
             onMouseLeave={e => (e.currentTarget.style.background = "transparent")}
           >
             {isOpen ? (
-             
               <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
                 <path d="M3 3l12 12M15 3L3 15" stroke="#183B4E" strokeWidth="2" strokeLinecap="round" />
               </svg>
             ) : (
-              /* Hamburger */
               <svg width="18" height="14" viewBox="0 0 18 14" fill="none">
                 <path d="M0 1h18M0 7h12M0 13h18" stroke="#183B4E" strokeWidth="2" strokeLinecap="round" />
               </svg>
@@ -338,12 +337,15 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/*Responsive CSS*/}
+      {/* Responsive CSS */}
       <style>{`
         @media (min-width: 768px) {
           .nav-desktop-links  { display: flex !important; }
           .nav-cta-desktop    { display: flex !important; }
           .nav-mobile-toggle  { display: none  !important; }
+        }
+        @media (max-width: 767px) {
+          .nav-logo-img { height: 32px !important; }
         }
       `}</style>
     </>
