@@ -6,8 +6,9 @@ import { BrowserRouter } from 'react-router-dom'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <BrowserRouter>
+    {/* Add the basename here */}
+    <BrowserRouter basename="/Web-Shape-Balapan">
       <App />
     </BrowserRouter>
-  </StrictMode>
+  </StrictMode>,
 )

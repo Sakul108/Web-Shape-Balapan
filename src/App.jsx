@@ -9,12 +9,12 @@ import Projects from './components/Projects'
 import Contact from './components/Contact'
 
 
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { Routes, Route } from 'react-router-dom'
 
 function App() {
   return (
    
-    <BrowserRouter basename="/Web-Shape-Balapan">
+    <>
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
@@ -25,7 +25,7 @@ function App() {
         <Route path="/contact" element={<Contact />} />
       </Routes>
       <Footer />
-    </BrowserRouter>
+    </>
   )
 }
 
