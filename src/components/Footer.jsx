@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import {  Mail,  } from "lucide-react"
+import { Mail } from "lucide-react"
 
 const NAV_LINKS = [
   { label: "Home",     to: "/"         },
@@ -7,7 +7,6 @@ const NAV_LINKS = [
   { label: "Stories",  to: "/stories"  },
   { label: "Projects", to: "/projects" },
   { label: "Team",     to: "/team"     },
- 
 ]
 
 const InstagramIcon = () => (
@@ -21,9 +20,7 @@ const InstagramIcon = () => (
 
 const Footer = () => {
   return (
-    <footer style={{ background: "#183B4E", color: "#F5EEDC" }}>
-
-     
+    <footer style={{ background: "#183B4E", color: "#F5EEDC", position: "sticky", bottom: 0 }}>
 
       {/* ── MAIN BODY ── */}
       <div style={{
@@ -147,7 +144,6 @@ const Footer = () => {
         <p style={{ margin: 0, fontSize: 12, color: "rgba(245,238,220,0.38)", letterSpacing: "0.04em" }}>
           © {new Date().getFullYear()} Shape Balapan · Kathmandu, Nepal
         </p>
-       
       </div>
 
     </footer>

@@ -6,6 +6,7 @@ import story from "../assets/images/English.webp"
 import Molecules from "../assets/images/Science.webp"
 import Gyan from "../assets/images/Saraswati.webp"
 import maths from "../assets/images/Maths.webp"
+import { useNavigate } from "react-router-dom"
 import { ArrowRight, BookOpen, Snowflake, Search, FileText } from "lucide-react"
 
 const Eyebrow = ({ label, light = false }) => (
@@ -27,6 +28,21 @@ const Tag = ({ name, light = false }) => (
     {name}
   </span>
 )
+
+const TopLink = ({ to, children, className = "", style = {}, onMouseEnter, onMouseLeave }) => {
+  const navigate = useNavigate()
+  const handleClick = (e) => {
+    e.preventDefault()
+    window.scrollTo({ top: 0, behavior: "instant" })
+    navigate(to)
+  }
+  return (
+    <a href={to} onClick={handleClick} className={className} style={style}
+      onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+      {children}
+    </a>
+  )
+}
 
 const summerTeams = [
   {
@@ -326,13 +342,14 @@ const Projects = () => {
         <p className="font-black mb-6" style={{ color: "#183B4E", fontSize: "clamp(22px, 3vw, 34px)" }}>
           Check out the team, behind the projects
         </p>
-        <a href="/team"
-          className="inline-flex items-center gap-2 px-8 py-4 rounded-full font-bold text-base transition-all duration-200 hover:-translate-y-0.5 active:scale-95"
-          style={{ background: "#DDA853", color: "#183B4E" }}
-          onMouseEnter={e => (e.currentTarget.style.background = "#e8c070")}
-          onMouseLeave={e => (e.currentTarget.style.background = "#DDA853")}>
+        <TopLink
+          to="/team"
+          className="inline-flex items-center gap-2 px-8 py-4 rounded-full font-bold text-base"
+          style={{ background: "#DDA853", color: "#183B4E", textDecoration: "none", boxShadow: "0 4px 20px rgba(221,168,83,0.30)", transition: "all 0.2s" }}
+          onMouseEnter={e => { e.currentTarget.style.background = "#e8c070"; e.currentTarget.style.transform = "translateY(-2px)" }}
+          onMouseLeave={e => { e.currentTarget.style.background = "#DDA853"; e.currentTarget.style.transform = "" }}>
           Meet The Team <ArrowRight size={16} />
-        </a>
+        </TopLink>
       </section>
 
     </main>
