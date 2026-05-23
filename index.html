@@ -4,6 +4,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    <!-- GH Pages SPA redirect fix -->
+    <script>
+      (function() {
+        var p = new URLSearchParams(window.location.search).get('p');
+        if (p) window.history.replaceState(null, null, p);
+      })();
+    </script>
+
     <!-- Primary SEO -->
     <title>Shape Balapan | Play-Based Learning for Nepal's Children</title>
     <meta name="description" content="Shape Balapan is a Nepali educational initiative bringing play-based and game-based learning into primary classrooms. We research, design, and deliver joyful, curiosity-driven education for children across Nepal." />
