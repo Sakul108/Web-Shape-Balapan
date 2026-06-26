@@ -1,4 +1,4 @@
-import img from "../assets/images/Heroimages.webp"
+import img from "../assets/images/HeroImages.webp"
 import play from "../assets/images/seek.webp"
 import texture from "../assets/images/texture.webp"
 import Shapes from "../assets/images/Shapes.webp"
