@@ -6,8 +6,9 @@ import story from "../assets/images/English.webp"
 import Molecules from "../assets/images/Science.webp"
 import Gyan from "../assets/images/Saraswati.webp"
 import maths from "../assets/images/Maths.webp"
+import ebookCover from "../assets/images/EbookCover.webp"
 import { useNavigate } from "react-router-dom"
-import { ArrowRight, BookOpen, Snowflake, Search, FileText } from "lucide-react"
+import { ArrowRight, BookOpen, Snowflake, Search, FileText, Download } from "lucide-react"
 
 const Eyebrow = ({ label, light = false }) => (
   <div className="flex items-center gap-3 mb-3">
@@ -59,6 +60,16 @@ const summerTeams = [
   },
 ]
 
+
+const ebook = {
+  title: "Rethinking Assessment",
+  subtitle: "Essays on Assessment for Learning and Assessment of Learning",
+  authors: ["Mhigshang Omo Lama Yolmo", "Upsana Thapa", "Elvina Baral", "Dibyansh Shah"],
+  description: "Four essays written for Team 2's research track, each engaging with Terry Crooks' work on assessment in the accountability era to ask how Nepal might balance formative feedback with national standards.",
+
+  pdfHref: `${import.meta.env.BASE_URL}ebook/rethinking-assessment.pdf`,
+}
+
 const winterTracks = [
   {
     id: "winter-english", number: "03", subject: "English", title: "Words Come Alive",
@@ -68,7 +79,7 @@ const winterTracks = [
   {
     id: "winter-maths", number: "04", subject: "Mathematics", title: "Numbers in the Room",
     description: "Mathematics came off the page and into the room — students went through challenges designed to show that maths is already embedded in the world around them. From fractions, to measurements, with a twist of storytelling. Handbook-guided sessions kept learning structured and joyful.",
-    image: maths, alt: "Maths Track — Winter Camp", tags: ["Mathematics", "Hands-On", "Grade 5"], lead: "Sakul", members: "Aayusha, Bipin (Advisor)", dark: true,
+    image: maths, alt: "Maths Track — Winter Camp", tags: ["Mathematics", "Hands-On", "Grade 5"], lead: "Sakul", dark: true, members: "Aayusha, Bipin (Advisor)",
   },
   {
     id: "winter-science", number: "05", subject: "Science", title: "Energy",
@@ -118,6 +129,59 @@ const SummerCard = ({ team }) => {
       </p>
       <div className="flex flex-wrap gap-2">
         {tags.map(t => <Tag key={t} name={t} light={dark} />)}
+      </div>
+    </div>
+  )
+}
+
+const EbookSection = ({ book }) => {
+  return (
+    <div className="rounded-3xl overflow-hidden"
+      style={{ background: "#183B4E", border: "1px solid rgba(221,168,83,0.18)" }}>
+      <div className="flex flex-col sm:grid sm:grid-cols-[240px_1fr]">
+        {/* Cover */}
+        <div className="relative flex items-center justify-center p-6 sm:p-8"
+          style={{ background: "linear-gradient(160deg, rgba(221,168,83,0.08), transparent)" }}>
+          <img
+            src={ebookCover}
+            alt={`${book.title} — e-book cover`}
+            className="w-40 sm:w-full rounded-xl shadow-2xl"
+            style={{ boxShadow: "0 18px 40px rgba(0,0,0,0.35)", border: "1px solid rgba(221,168,83,0.25)" }}
+          />
+        </div>
+
+        {/* Details */}
+        <div className="p-6 sm:p-10 flex flex-col justify-center">
+          <p className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: "#DDA853" }}>
+            From Team 2 · Rethinking Assessment
+          </p>
+          <h3 className="font-black leading-tight mb-2"
+            style={{ color: "#F5EEDC", fontSize: "clamp(22px, 3vw, 30px)" }}>
+            {book.title}
+          </h3>
+          <p className="text-sm sm:text-base mb-4" style={{ color: "rgba(221,168,83,0.85)" }}>
+            {book.subtitle}
+          </p>
+          <p className="text-sm leading-relaxed mb-5" style={{ color: "rgba(245,238,220,0.75)" }}>
+            {book.description}
+          </p>
+
+          <div className="flex flex-wrap gap-2 mb-6">
+            {book.authors.map(name => <Tag key={name} name={name} light />)}
+          </div>
+
+          <a
+            href={book.pdfHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-bold text-sm w-fit"
+            style={{ background: "#DDA853", color: "#183B4E", textDecoration: "none", boxShadow: "0 4px 20px rgba(221,168,83,0.30)", transition: "all 0.2s" }}
+            onMouseEnter={e => { e.currentTarget.style.background = "#e8c070"; e.currentTarget.style.transform = "translateY(-2px)" }}
+            onMouseLeave={e => { e.currentTarget.style.background = "#DDA853"; e.currentTarget.style.transform = "" }}
+          >
+            <BookOpen size={16} /> Read the E-Book <Download size={14} />
+          </a>
+        </div>
       </div>
     </div>
   )
@@ -247,6 +311,16 @@ const Projects = () => {
             ))}
           </div>
           {summerTeams.map(t => <SummerCard key={t.id} team={t} />)}
+
+          {/* E-BOOK — sits beneath the Summer 2026 teams, still inside the blue section */}
+          <div className="mt-10">
+            <Eyebrow label="Team 2 Output" light />
+            <h3 className="font-black leading-tight mb-6"
+              style={{ color: "#F5EEDC", fontSize: "clamp(22px, 3vw, 30px)" }}>
+              The E-Book
+            </h3>
+            <EbookSection book={ebook} />
+          </div>
         </div>
       </section>
 
