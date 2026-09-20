@@ -281,27 +281,27 @@ const Projects = () => {
   const { hash } = useLocation()
 
   // Scroll to the section named in the URL hash (e.g. /projects#ebook).
-  // Retries a few times because images load late and shift the layout.
+  // Retries for ~3s: images load late, and a global scroll-to-top may run after mount.
   useEffect(() => {
-    if (!hash) return
-    const id = hash.slice(1)
+    const raw = hash || window.location.hash
+    if (!raw) return
+    const id = decodeURIComponent(raw.slice(1))
 
     const scrollToTarget = () =>
       document.getElementById(id)?.scrollIntoView({ behavior: "instant", block: "start" })
 
-    const timers = [0, 150, 400, 800, 1500].map(ms => setTimeout(scrollToTarget, ms))
+    scrollToTarget()
+    const interval = setInterval(scrollToTarget, 100)
+    const stop = setTimeout(() => clearInterval(interval), 3000)
 
-    // Stop retrying as soon as the visitor scrolls on their own
-    const cancel = () => timers.forEach(clearTimeout)
-    window.addEventListener("wheel", cancel, { once: true })
-    window.addEventListener("touchstart", cancel, { once: true })
-    window.addEventListener("keydown", cancel, { once: true })
+    // Stop as soon as the visitor scrolls or interacts on their own
+    const cancel = () => { clearInterval(interval); clearTimeout(stop) }
+    const events = ["wheel", "touchstart", "keydown", "pointerdown"]
+    events.forEach(e => window.addEventListener(e, cancel, { once: true, passive: true }))
 
     return () => {
       cancel()
-      window.removeEventListener("wheel", cancel)
-      window.removeEventListener("touchstart", cancel)
-      window.removeEventListener("keydown", cancel)
+      events.forEach(e => window.removeEventListener(e, cancel))
     }
   }, [hash])
 
