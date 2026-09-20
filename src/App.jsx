@@ -11,45 +11,17 @@ import Projects from './components/Projects'
 import Contact from './components/Contact'
 
 
-
+// "Scroll to Top" behavior. Skipped when the URL points at a section
+// (/projects?section=ebook or /projects#ebook): the page scrolls there itself.
 function ScrollToTop() {
-  const { pathname, hash } = useLocation();
+  const { pathname, hash, search } = useLocation();
 
   useEffect(() => {
-  
-    if ("scrollRestoration" in window.history) {
-      window.history.scrollRestoration = "manual";
-    }
+    const hasSection = hash || new URLSearchParams(search).get("section");
+    if (hasSection) return;
 
-    
-    if (!hash) {
-      window.scrollTo(0, 0);
-      return;
-    }
-
-    
-    const id = decodeURIComponent(hash.slice(1));
-    const goToTarget = () =>
-      document.getElementById(id)?.scrollIntoView({ behavior: "instant", block: "start" });
-
-    
-    goToTarget();
-    const interval = setInterval(goToTarget, 100);
-    const stop = setTimeout(() => clearInterval(interval), 3000);
-
-   
-    const cancel = () => {
-      clearInterval(interval);
-      clearTimeout(stop);
-    };
-    const events = ["wheel", "touchstart", "keydown", "pointerdown"];
-    events.forEach((e) => window.addEventListener(e, cancel, { once: true, passive: true }));
-
-    return () => {
-      cancel();
-      events.forEach((e) => window.removeEventListener(e, cancel));
-    };
-  }, [pathname, hash]);
+    window.scrollTo(0, 0);
+  }, [pathname, hash, search]);
 
   return null;
 }

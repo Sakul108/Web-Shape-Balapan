@@ -144,7 +144,7 @@ const EbookSection = ({ book }) => {
   const copyLink = async () => {
     const isLocal = ["localhost", "127.0.0.1"].includes(window.location.hostname)
     const origin = isLocal ? SITE_URL : window.location.origin
-    const url = `${origin}${window.location.pathname}#ebook`
+    const url = `${origin}${window.location.pathname}?section=ebook`
     try {
       await navigator.clipboard.writeText(url)
       setCopied(true)
@@ -278,14 +278,17 @@ const WinterCard = ({ track }) => {
 }
 
 const Projects = () => {
-  const { hash } = useLocation()
+  const { hash, search } = useLocation()
 
-  // Scroll to the section named in the URL hash (e.g. /projects#ebook).
-  // Retries for ~3s: images load late, and a global scroll-to-top may run after mount.
+  // Scroll to a section when the URL asks for it. Both of these work:
+  //   /projects?section=ebook   (recommended: a query can't be stripped like a #hash)
+  //   /projects#ebook
+  // Retries for ~3s: images load late, and the global scroll-to-top may run after mount.
   useEffect(() => {
-    const raw = hash || window.location.hash
-    if (!raw) return
-    const id = decodeURIComponent(raw.slice(1))
+    const section = new URLSearchParams(search).get("section")
+    const fromHash = decodeURIComponent((hash || window.location.hash).slice(1))
+    const id = section || fromHash
+    if (!id) return
 
     const scrollToTarget = () =>
       document.getElementById(id)?.scrollIntoView({ behavior: "instant", block: "start" })
@@ -303,7 +306,7 @@ const Projects = () => {
       cancel()
       events.forEach(e => window.removeEventListener(e, cancel))
     }
-  }, [hash])
+  }, [hash, search])
 
   return (
     <main className="w-full" style={{ background: "#F5EEDC" }}>
