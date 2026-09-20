@@ -135,11 +135,16 @@ const SummerCard = ({ team }) => {
   )
 }
 
+// Your live domain, no trailing slash. Used when copying the link from localhost.
+const SITE_URL = "https://your-domain.com"
+
 const EbookSection = ({ book }) => {
   const [copied, setCopied] = useState(false)
 
   const copyLink = async () => {
-    const url = `${window.location.origin}${window.location.pathname}#ebook`
+    const isLocal = ["localhost", "127.0.0.1"].includes(window.location.hostname)
+    const origin = isLocal ? SITE_URL : window.location.origin
+    const url = `${origin}${window.location.pathname}#ebook`
     try {
       await navigator.clipboard.writeText(url)
       setCopied(true)
@@ -275,13 +280,29 @@ const WinterCard = ({ track }) => {
 const Projects = () => {
   const { hash } = useLocation()
 
-  // Scroll to the section named in the URL hash (e.g. /projects#ebook)
+  // Scroll to the section named in the URL hash (e.g. /projects#ebook).
+  // Retries a few times because images load late and shift the layout.
   useEffect(() => {
     if (!hash) return
-    const t = setTimeout(() => {
-      document.getElementById(hash.slice(1))?.scrollIntoView({ behavior: "smooth", block: "start" })
-    }, 150)
-    return () => clearTimeout(t)
+    const id = hash.slice(1)
+
+    const scrollToTarget = () =>
+      document.getElementById(id)?.scrollIntoView({ behavior: "instant", block: "start" })
+
+    const timers = [0, 150, 400, 800, 1500].map(ms => setTimeout(scrollToTarget, ms))
+
+    // Stop retrying as soon as the visitor scrolls on their own
+    const cancel = () => timers.forEach(clearTimeout)
+    window.addEventListener("wheel", cancel, { once: true })
+    window.addEventListener("touchstart", cancel, { once: true })
+    window.addEventListener("keydown", cancel, { once: true })
+
+    return () => {
+      cancel()
+      window.removeEventListener("wheel", cancel)
+      window.removeEventListener("touchstart", cancel)
+      window.removeEventListener("keydown", cancel)
+    }
   }, [hash])
 
   return (
