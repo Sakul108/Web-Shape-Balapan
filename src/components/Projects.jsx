@@ -136,7 +136,7 @@ const SummerCard = ({ team }) => {
 }
 
 // Your live domain, no trailing slash. Used when copying the link from localhost.
-const SITE_URL = "https://your-domain.com"
+const SITE_URL = "https://shape-balapan.ird.com.np"
 
 const EbookSection = ({ book }) => {
   const [copied, setCopied] = useState(false)
