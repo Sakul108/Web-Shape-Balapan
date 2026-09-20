@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react"
 import texture from "../assets/images/Shapes.webp"
 import heroImg from "../assets/images/Projects.webp"
 import Shapes from "../assets/images/Theme.webp"
@@ -7,8 +8,8 @@ import Molecules from "../assets/images/Science.webp"
 import Gyan from "../assets/images/Saraswati.webp"
 import maths from "../assets/images/Maths.webp"
 import ebookCover from "../assets/images/EbookCover.webp"
-import { useNavigate } from "react-router-dom"
-import { ArrowRight, BookOpen, Snowflake, Search, FileText, Download } from "lucide-react"
+import { useNavigate, useLocation } from "react-router-dom"
+import { ArrowRight, BookOpen, Snowflake, Search, FileText, Download, Link2, Check } from "lucide-react"
 
 const Eyebrow = ({ label, light = false }) => (
   <div className="flex items-center gap-3 mb-3">
@@ -135,6 +136,19 @@ const SummerCard = ({ team }) => {
 }
 
 const EbookSection = ({ book }) => {
+  const [copied, setCopied] = useState(false)
+
+  const copyLink = async () => {
+    const url = `${window.location.origin}${window.location.pathname}#ebook`
+    try {
+      await navigator.clipboard.writeText(url)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    } catch {
+      window.prompt("Copy this link:", url)
+    }
+  }
+
   return (
     <div className="rounded-3xl overflow-hidden"
       style={{ background: "#183B4E", border: "1px solid rgba(221,168,83,0.18)" }}>
@@ -170,17 +184,31 @@ const EbookSection = ({ book }) => {
             {book.authors.map(name => <Tag key={name} name={name} light />)}
           </div>
 
-          <a
-            href={book.pdfHref}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-bold text-sm w-fit"
-            style={{ background: "#DDA853", color: "#183B4E", textDecoration: "none", boxShadow: "0 4px 20px rgba(221,168,83,0.30)", transition: "all 0.2s" }}
-            onMouseEnter={e => { e.currentTarget.style.background = "#e8c070"; e.currentTarget.style.transform = "translateY(-2px)" }}
-            onMouseLeave={e => { e.currentTarget.style.background = "#DDA853"; e.currentTarget.style.transform = "" }}
-          >
-            <BookOpen size={16} /> Read the E-Book <Download size={14} />
-          </a>
+          <div className="flex flex-wrap items-center gap-3">
+            <a
+              href={book.pdfHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-bold text-sm w-fit"
+              style={{ background: "#DDA853", color: "#183B4E", textDecoration: "none", boxShadow: "0 4px 20px rgba(221,168,83,0.30)", transition: "all 0.2s" }}
+              onMouseEnter={e => { e.currentTarget.style.background = "#e8c070"; e.currentTarget.style.transform = "translateY(-2px)" }}
+              onMouseLeave={e => { e.currentTarget.style.background = "#DDA853"; e.currentTarget.style.transform = "" }}
+            >
+              <BookOpen size={16} /> Read the E-Book <Download size={14} />
+            </a>
+
+            <button
+              type="button"
+              onClick={copyLink}
+              className="inline-flex items-center gap-2 px-5 py-3 rounded-full font-bold text-sm"
+              style={{ background: "transparent", color: "#F5EEDC", border: "1.5px solid rgba(245,238,220,0.35)", cursor: "pointer", transition: "all 0.2s" }}
+              onMouseEnter={e => { e.currentTarget.style.background = "rgba(245,238,220,0.10)" }}
+              onMouseLeave={e => { e.currentTarget.style.background = "transparent" }}
+            >
+              {copied ? <Check size={14} /> : <Link2 size={14} />}
+              {copied ? "Link copied" : "Copy share link"}
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -245,6 +273,17 @@ const WinterCard = ({ track }) => {
 }
 
 const Projects = () => {
+  const { hash } = useLocation()
+
+  // Scroll to the section named in the URL hash (e.g. /projects#ebook)
+  useEffect(() => {
+    if (!hash) return
+    const t = setTimeout(() => {
+      document.getElementById(hash.slice(1))?.scrollIntoView({ behavior: "smooth", block: "start" })
+    }, 150)
+    return () => clearTimeout(t)
+  }, [hash])
+
   return (
     <main className="w-full" style={{ background: "#F5EEDC" }}>
 
@@ -313,7 +352,7 @@ const Projects = () => {
           {summerTeams.map(t => <SummerCard key={t.id} team={t} />)}
 
           {/* E-BOOK — sits beneath the Summer 2026 teams, still inside the blue section */}
-          <div className="mt-10">
+          <div id="ebook" className="mt-10 scroll-mt-24">
             <Eyebrow label="Team 2 Output" light />
             <h3 className="font-black leading-tight mb-6"
               style={{ color: "#F5EEDC", fontSize: "clamp(22px, 3vw, 30px)" }}>
