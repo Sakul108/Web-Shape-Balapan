@@ -8,11 +8,11 @@ import Vision from './components/Vision'
 import Team from './components/Team'
 import Stories from './components/Stories'
 import Projects from './components/Projects'
+import KaskiCaseStudy from './components/KaskiCaseStudy'
 import Contact from './components/Contact'
 
 
-// "Scroll to Top" behavior. Skipped when the URL points at a section
-// (/projects?section=ebook or /projects#ebook): the page scrolls there itself.
+
 function ScrollToTop() {
   const { pathname, hash, search } = useLocation();
 
@@ -38,6 +38,7 @@ function App() {
         <Route path="/team" element={<Team />} />
         <Route path="/stories" element={<Stories />} />
         <Route path="/projects" element={<Projects />} />
+        <Route path="/projects/kaski-case-study" element={<KaskiCaseStudy />} />
         <Route path="/contact" element={<Contact />} />
 
       </Routes>

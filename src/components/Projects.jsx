@@ -116,6 +116,15 @@ const ebook = {
   pdfHref: `${import.meta.env.BASE_URL}ebook/rethinking-assessment.pdf`,
 }
 
+// The blog page lives at this path (registered in App.jsx).
+const caseStudy = {
+  title: "When learning outcomes are not met",
+  subtitle: "A case study of fifth grade students in Kaski, Nepal",
+  contributors: ["Aastha Ghimire", "Rabina Poudel", "Elvina Baral", "Upsana Thapa"],
+  description: "An account of one classroom, just as Team 2 saw it: homework that looked right, tests that told a different story, and what that means for how learning outcomes are monitored.",
+  path: "/projects/kaski-case-study",
+}
+
 const winterTracks = [
   {
     id: "winter-english", number: "03", subject: "English", title: "Words Come Alive",
@@ -267,6 +276,69 @@ const EbookSection = ({ book }) => {
   )
 }
 
+const CaseStudyCard = ({ study }) => {
+  const [copied, setCopied] = useState(false)
+
+  const copyLink = async () => {
+    const isLocal = ["localhost", "127.0.0.1"].includes(window.location.hostname)
+    const origin = isLocal ? SITE_URL : window.location.origin
+    const url = `${origin}${study.path}`
+    try {
+      await navigator.clipboard.writeText(url)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    } catch {
+      window.prompt("Copy this link:", url)
+    }
+  }
+
+  return (
+    <div className="rounded-3xl overflow-hidden p-6 sm:p-10"
+      style={{ background: "rgba(245,238,220,0.55)", border: "1.5px solid rgba(39,84,138,0.15)" }}>
+      <p className="text-[13px] font-bold uppercase tracking-widest mb-2" style={{ color: "rgba(39,84,138,0.55)" }}>
+        Team 2 · Rethinking Assessment
+      </p>
+      <h3 className="font-black leading-tight mb-2"
+        style={{ color: "#183B4E", fontSize: "clamp(22px, 3vw, 30px)" }}>
+        {study.title}
+      </h3>
+      <p className="text-base mb-4" style={{ color: "rgba(24,59,78,0.85)" }}>
+        {study.subtitle}
+      </p>
+      <p className="text-[15px] sm:text-base leading-relaxed mb-5" style={{ color: "rgba(24,59,78,0.75)" }}>
+        {study.description}
+      </p>
+
+      <div className="flex flex-wrap gap-2 mb-6">
+        {study.contributors.map(name => <Tag key={name} name={name} />)}
+      </div>
+
+      <div className="flex flex-wrap items-center gap-3">
+        <TopLink
+          to={study.path}
+          className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-bold text-[15px] w-fit"
+          style={{ background: "#DDA853", color: "#183B4E", textDecoration: "none", boxShadow: "0 4px 20px rgba(221,168,83,0.30)", transition: "all 0.2s" }}
+          onMouseEnter={e => { e.currentTarget.style.background = "#e8c070"; e.currentTarget.style.transform = "translateY(-2px)" }}
+          onMouseLeave={e => { e.currentTarget.style.background = "#DDA853"; e.currentTarget.style.transform = "" }}>
+          <FileText size={16} /> Read the Case Study <ArrowRight size={14} />
+        </TopLink>
+
+        <button
+          type="button"
+          onClick={copyLink}
+          className="inline-flex items-center gap-2 px-5 py-3 rounded-full font-bold text-[15px]"
+          style={{ background: "transparent", color: "#183B4E", border: "1.5px solid rgba(24,59,78,0.35)", cursor: "pointer", transition: "all 0.2s" }}
+          onMouseEnter={e => { e.currentTarget.style.background = "rgba(24,59,78,0.08)" }}
+          onMouseLeave={e => { e.currentTarget.style.background = "transparent" }}
+        >
+          {copied ? <Check size={14} /> : <Link2 size={14} />}
+          {copied ? "Link copied" : "Copy share link"}
+        </button>
+      </div>
+    </div>
+  )
+}
+
 const WinterCard = ({ track }) => {
   const { number, subject, title, description, image, alt, tags, lead, members, dark } = track
   return (
@@ -334,7 +406,7 @@ const Projects = () => {
   const wantsEbook = (() => {
     const section = new URLSearchParams(search).get("section")
     const fromHash = decodeURIComponent((hash || "").slice(1))
-    return (section || fromHash) === "ebook"
+    return ["ebook", "case-study"].includes(section || fromHash)
   })()
 
   const [program, setProgram] = useState("summer")          // "summer" | "winter"
@@ -483,6 +555,12 @@ const Projects = () => {
                   The E-Book
                 </h3>
                 <EbookSection book={ebook} />
+
+                {/* CASE STUDY — Team 2 blog, opens as its own page */}
+                <div id="case-study" className="mt-10 scroll-mt-24">
+                  <Eyebrow label="Team 2 Case Study" light />
+                  <CaseStudyCard study={caseStudy} />
+                </div>
               </div>
             )}
           </div>
