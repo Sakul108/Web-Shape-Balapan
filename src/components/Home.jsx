@@ -7,11 +7,11 @@ import { useNavigate } from "react-router-dom"
 import { Shield, Users, Search, ArrowRight, Leaf } from "lucide-react"
 
 const Eyebrow = ({ label, dark }) => (
-  <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
-    <div style={{ width: 28, height: 2.5, borderRadius: 2, background: "#DDA853" }} />
+  <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
+    <div style={{ width: 28, height: 3, borderRadius: 2, background: "#DDA853" }} />
     <span style={{
-      fontSize: 10, fontWeight: 700, letterSpacing: "0.22em", textTransform: "uppercase",
-      color: dark ? "rgba(221,168,83,0.80)" : "#27548A"
+      fontSize: 12, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase",
+      color: dark ? "rgba(221,168,83,0.90)" : "#27548A"
     }}>
       {label}
     </span>
@@ -39,10 +39,10 @@ const GoldBtn = ({ to, children }) => (
     to={to}
     style={{
       display: "inline-flex", alignItems: "center", gap: 8,
-      padding: "14px 28px", borderRadius: 100,
+      padding: "15px 30px", borderRadius: 100,
       background: "#DDA853", color: "#183B4E",
-      fontWeight: 700, fontSize: 14, textDecoration: "none",
-      boxShadow: "0 4px 20px rgba(221,168,83,0.30)",
+      fontWeight: 700, fontSize: 15, textDecoration: "none",
+      boxShadow: "0 6px 22px rgba(221,168,83,0.32)",
       transition: "all 0.2s ease",
     }}
     onMouseEnter={e => { e.currentTarget.style.background = "#e8c070"; e.currentTarget.style.transform = "translateY(-2px)" }}
@@ -57,7 +57,7 @@ const Home = () => {
     <main style={{ width: "100%", background: "#F5EEDC" }}>
 
       {/* ── HERO ── */}
-      <section style={{ position: "relative", overflow: "hidden", minHeight: "clamp(320px, 55vh, 620px)", display: "flex", alignItems: "center" }}>
+      <section style={{ position: "relative", overflow: "hidden", minHeight: "clamp(320px, 55vh, 620px)", display: "flex", alignItems: "center", borderBottom: "4px solid #DDA853" }}>
         <div style={{ position: "absolute", inset: 0, backgroundImage: `url(${img})`, backgroundSize: "cover", backgroundPosition: "center" }} />
         <div style={{ position: "absolute", inset: 0, background: "linear-gradient(105deg, rgba(15,37,55,0.95) 0%, rgba(15,37,55,0.75) 55%, rgba(15,37,55,0.30) 100%)" }} />
         <div style={{ position: "relative", zIndex: 1, maxWidth: 1060, margin: "0 auto", width: "100%", padding: "clamp(48px, 10vw, 88px) clamp(20px, 4vw, 40px)" }}>
@@ -65,7 +65,7 @@ const Home = () => {
           <h1 style={{
             margin: "0 0 20px", fontWeight: 900,
             fontSize: "clamp(52px, 9vw, 104px)",
-            lineHeight: 0.92, letterSpacing: "-0.02em",
+            lineHeight: 0.95, letterSpacing: "-0.02em",
             color: "#F5EEDC"
           }}>
             Learning<br />Through<br /><span style={{ color: "#DDA853" }}>Play</span>
@@ -79,7 +79,7 @@ const Home = () => {
       </section>
 
       {/* STATS */}
-      <div style={{ background: "#183B4E", padding: "20px 16px" }}>
+      <div style={{ background: "#183B4E", padding: "24px 16px" }}>
         <div style={{ maxWidth: 860, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr 1fr", textAlign: "center" }}>
           {[
             { num: "2025", label: "Founded" },
@@ -87,8 +87,8 @@ const Home = () => {
             { num: "5+",    label: "Innovative Projects" },
           ].map(({ num, label }, i) => (
             <div key={label} style={{ padding: "0 clamp(8px, 3vw, 40px)", borderRight: i < 2 ? "1px solid rgba(255,255,255,0.15)" : "none" }}>
-              <div style={{ fontSize: "clamp(20px, 4vw, 32px)", fontWeight: 900, color: "#DDA853" }}>{num}</div>
-              <div style={{ fontSize: "clamp(10px, 2vw, 13px)", fontWeight: 500, marginTop: 2, color: "rgba(255,255,255,0.60)" }}>{label}</div>
+              <div style={{ fontSize: "clamp(24px, 4vw, 36px)", fontWeight: 900, color: "#DDA853" }}>{num}</div>
+              <div style={{ fontSize: "clamp(12px, 2vw, 15px)", fontWeight: 500, marginTop: 2, color: "rgba(255,255,255,0.70)" }}>{label}</div>
             </div>
           ))}
         </div>
@@ -103,7 +103,7 @@ const Home = () => {
           <Eyebrow label="Our Story" />
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "clamp(32px, 6vw, 80px)", alignItems: "center" }}>
             <div>
-              <h2 style={{ margin: "0 0 28px", fontWeight: 900, fontSize: "clamp(36px, 5vw, 62px)", color: "#183B4E", lineHeight: 0.9, textTransform: "uppercase" }}>
+              <h2 style={{ margin: "0 0 28px", fontWeight: 900, fontSize: "clamp(36px, 5vw, 62px)", color: "#183B4E", lineHeight: 1, textTransform: "uppercase" }}>
                 Our<br />Growth
               </h2>
               <div style={{ display: "flex", flexDirection: "column", gap: 20, marginBottom: 32 }}>
@@ -113,15 +113,15 @@ const Home = () => {
                   { year: "Next", text: "Expanding our research into policy alignment and scaling our reach across primary schools." },
                 ].map(({ year, text }) => (
                   <div key={year} style={{ display: "flex", gap: 14, alignItems: "flex-start" }}>
-                    <div style={{ flexShrink: 0, minWidth: 44, height: 24, borderRadius: 100, display: "flex", alignItems: "center", justifyContent: "center", background: "#DDA853", color: "#183B4E", fontSize: 11, fontWeight: 900 }}>
+                    <div style={{ flexShrink: 0, minWidth: 54, height: 28, padding: "0 6px", borderRadius: 100, display: "flex", alignItems: "center", justifyContent: "center", background: "#DDA853", color: "#183B4E", fontSize: 12, fontWeight: 900 }}>
                       {year}
                     </div>
-                    <p style={{ margin: 0, fontSize: "clamp(13px, 1.8vw, 15px)", lineHeight: 1.7, color: "rgba(24,59,78,0.80)" }}>{text}</p>
+                    <p style={{ margin: 0, fontSize: "clamp(15px, 1.8vw, 17px)", lineHeight: 1.7, color: "rgba(24,59,78,0.85)" }}>{text}</p>
                   </div>
                 ))}
               </div>
               <TopLink to="/vision"
-                style={{ display: "inline-flex", alignItems: "center", gap: 8, fontSize: 13, fontWeight: 700, color: "#27548A", borderBottom: "2px solid #DDA853", paddingBottom: 2, textDecoration: "none", transition: "gap 0.15s" }}
+                style={{ display: "inline-flex", alignItems: "center", gap: 8, fontSize: 15, fontWeight: 700, color: "#27548A", borderBottom: "2px solid #DDA853", paddingBottom: 2, textDecoration: "none", transition: "gap 0.15s" }}
                 onMouseEnter={e => e.currentTarget.style.gap = "12px"}
                 onMouseLeave={e => e.currentTarget.style.gap = "8px"}>
                 Read our full vision <ArrowRight size={14} />
@@ -130,12 +130,12 @@ const Home = () => {
 
             {/* Collage */}
             <div style={{ position: "relative", height: "clamp(280px, 40vw, 420px)" }}>
-              <div style={{ position: "absolute", right: 0, top: 0, width: "57%", height: "72%", borderRadius: 20, overflow: "hidden", boxShadow: "0 20px 50px rgba(24,59,78,0.18)", transform: "rotate(3deg)", border: "5px solid #F5EEDC", transition: "transform 0.3s" }}
+              <div style={{ position: "absolute", right: 0, top: 0, width: "57%", height: "72%", borderRadius: 24, overflow: "hidden", boxShadow: "0 18px 44px rgba(24,59,78,0.16)", transform: "rotate(3deg)", border: "5px solid #F5EEDC", transition: "transform 0.3s" }}
                 onMouseEnter={e => e.currentTarget.style.transform = "rotate(1deg)"}
                 onMouseLeave={e => e.currentTarget.style.transform = "rotate(3deg)"}>
                 <img src={play} alt="Children doing crafts" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
               </div>
-              <div style={{ position: "absolute", left: 0, bottom: 0, width: "60%", height: "74%", borderRadius: 20, overflow: "hidden", boxShadow: "0 20px 50px rgba(24,59,78,0.18)", transform: "rotate(-2deg)", border: "5px solid #F5EEDC", transition: "transform 0.3s" }}
+              <div style={{ position: "absolute", left: 0, bottom: 0, width: "60%", height: "74%", borderRadius: 24, overflow: "hidden", boxShadow: "0 18px 44px rgba(24,59,78,0.16)", transform: "rotate(-2deg)", border: "5px solid #F5EEDC", transition: "transform 0.3s" }}
                 onMouseEnter={e => e.currentTarget.style.transform = "rotate(0deg)"}
                 onMouseLeave={e => e.currentTarget.style.transform = "rotate(-2deg)"}>
                 <img src={image} alt="Kids at Shape Balapan" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top" }} />
@@ -157,20 +157,20 @@ const Home = () => {
           <Eyebrow label="Our Mission" dark />
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "clamp(32px, 6vw, 80px)", alignItems: "start" }}>
             <div>
-              <h2 style={{ margin: "0 0 20px", fontWeight: 900, fontSize: "clamp(36px, 5vw, 58px)", color: "#F5EEDC", lineHeight: 0.9, textTransform: "uppercase" }}>
+              <h2 style={{ margin: "0 0 20px", fontWeight: 900, fontSize: "clamp(36px, 5vw, 58px)", color: "#F5EEDC", lineHeight: 1, textTransform: "uppercase" }}>
                 What<br />We Do
               </h2>
-              <p style={{ margin: "0 0 28px", fontSize: "clamp(13px, 1.8vw, 15px)", lineHeight: 1.8, color: "rgba(245,238,220,0.78)" }}>
+              <p style={{ margin: "0 0 28px", fontSize: "clamp(15px, 1.8vw, 17px)", lineHeight: 1.8, color: "rgba(245,238,220,0.85)" }}>
                 We bridge the gap between policymakers and educators — working toward the integration
                 of play-based pedagogy into Nepal's elementary schools through primary and secondary
                 research, and direct work with children.
               </p>
-              <p style={{ margin: "0 0 10px", fontSize: 10, fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(245,238,220,0.45)" }}>
+              <p style={{ margin: "0 0 10px", fontSize: 12, fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "rgba(245,238,220,0.60)" }}>
                 Research scope
               </p>
               <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 32 }}>
                 {["Pedagogy", "Policy"].map(tag => (
-                  <span key={tag} style={{ padding: "6px 16px", borderRadius: 100, fontSize: 13, fontWeight: 700, background: "rgba(245,238,220,0.10)", color: "#F5EEDC", border: "1.5px solid rgba(245,238,220,0.22)" }}>
+                  <span key={tag} style={{ padding: "7px 18px", borderRadius: 100, fontSize: 14, fontWeight: 700, background: "rgba(245,238,220,0.10)", color: "#F5EEDC", border: "1.5px solid rgba(245,238,220,0.22)" }}>
                     {tag}
                   </span>
                 ))}
@@ -182,11 +182,11 @@ const Home = () => {
                 { tag: "Pedagogy", body: "Evaluating the cognitive impact of play-based learning at primary schools in Nepal and the assessment methods used by teachers across the world." },
                 { tag: "Policy",   body: "Examining the alignment between national education directives and street-level practice — through policy transmission and the lived realities of educators and students." },
               ].map(({ tag, body }) => (
-                <div key={tag} style={{ borderRadius: 16, padding: "clamp(20px, 4%, 28px)", background: "rgba(245,238,220,0.08)", border: "1px solid rgba(245,238,220,0.14)" }}>
-                  <div style={{ display: "inline-flex", alignItems: "center", padding: "4px 12px", borderRadius: 100, fontSize: 10, fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.12em", background: "#DDA853", color: "#183B4E", marginBottom: 12 }}>
+                <div key={tag} style={{ borderRadius: 20, padding: "clamp(20px, 4%, 28px)", background: "rgba(245,238,220,0.08)", border: "1px solid rgba(245,238,220,0.14)" }}>
+                  <div style={{ display: "inline-flex", alignItems: "center", padding: "5px 14px", borderRadius: 100, fontSize: 12, fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.12em", background: "#DDA853", color: "#183B4E", marginBottom: 12 }}>
                     {tag}
                   </div>
-                  <p style={{ margin: 0, fontSize: 13, lineHeight: 1.75, color: "rgba(245,238,220,0.75)" }}>{body}</p>
+                  <p style={{ margin: 0, fontSize: 15, lineHeight: 1.75, color: "rgba(245,238,220,0.82)" }}>{body}</p>
                 </div>
               ))}
             </div>
@@ -201,22 +201,22 @@ const Home = () => {
           <Eyebrow label="Our Parent Organisation" dark />
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "clamp(32px, 6vw, 60px)", alignItems: "center" }}>
             <div>
-              <h2 style={{ margin: "0 0 20px", fontWeight: 900, fontSize: "clamp(28px, 4vw, 46px)", color: "#F5EEDC", lineHeight: 1.05 }}>
+              <h2 style={{ margin: "0 0 20px", fontWeight: 900, fontSize: "clamp(28px, 4vw, 46px)", color: "#F5EEDC", lineHeight: 1.1 }}>
                 Institute for<br />Rural Development
               </h2>
               <svg style={{ display: "block", marginBottom: 24 }} width="100" height="10" viewBox="0 0 100 10" fill="none">
                 <path d="M2 7 Q13 2 25 7 Q37 12 49 7 Q61 2 73 7 Q85 12 98 7" stroke="#DDA853" strokeWidth="2.5" strokeLinecap="round" fill="none" />
               </svg>
-              <p style={{ margin: "0 0 16px", fontSize: "clamp(13px, 1.8vw, 15px)", lineHeight: 1.8, color: "rgba(245,238,220,0.78)" }}>
+              <p style={{ margin: "0 0 16px", fontSize: "clamp(15px, 1.8vw, 17px)", lineHeight: 1.8, color: "rgba(245,238,220,0.85)" }}>
                 IRD is empowering and guiding local leadership and communities to build the foundation
                 for sustainable rural development — rooted in Nepal's ethos.
               </p>
-              <p style={{ margin: "0 0 32px", fontSize: "clamp(13px, 1.8vw, 15px)", lineHeight: 1.8, color: "rgba(245,238,220,0.55)" }}>
+              <p style={{ margin: "0 0 32px", fontSize: "clamp(15px, 1.8vw, 17px)", lineHeight: 1.8, color: "rgba(245,238,220,0.68)" }}>
                 Shape Balapan is an IRD initiative, bringing that same commitment to grassroots change
                 into Nepal's primary classrooms — one curious child at a time.
               </p>
               <a href="https://ird.com.np/" target="_blank" rel="noopener noreferrer"
-                style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "12px 24px", borderRadius: 100, background: "#DDA853", color: "#183B4E", fontWeight: 700, fontSize: 13, textDecoration: "none", transition: "all 0.2s" }}
+                style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "13px 26px", borderRadius: 100, background: "#DDA853", color: "#183B4E", fontWeight: 700, fontSize: 15, textDecoration: "none", transition: "all 0.2s" }}
                 onMouseEnter={e => { e.currentTarget.style.background = "#e8c070"; e.currentTarget.style.transform = "translateY(-2px)" }}
                 onMouseLeave={e => { e.currentTarget.style.background = "#DDA853"; e.currentTarget.style.transform = "" }}>
                 Visit IRD <ArrowRight size={14} />
@@ -228,13 +228,13 @@ const Home = () => {
                 { title: "Local Leadership",         body: "Rooting every initiative in the knowledge, agency, and lived experience of Nepal's local communities." },
                 { title: "Nepal's Ethos",            body: "Drawing on cultural values and contextual wisdom as the bedrock — not the backdrop — of development work." },
               ].map(({ title, body }) => (
-                <div key={title} style={{ borderRadius: 16, padding: "clamp(16px, 4%, 22px)", display: "flex", gap: 16, alignItems: "flex-start", background: "rgba(245,238,220,0.07)", border: "1px solid rgba(245,238,220,0.12)" }}>
-                  <div style={{ flexShrink: 0, width: 40, height: 40, borderRadius: "50%", background: "#DDA853", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                    <Leaf size={15} color="#183B4E" />
+                <div key={title} style={{ borderRadius: 20, padding: "clamp(16px, 4%, 22px)", display: "flex", gap: 16, alignItems: "flex-start", background: "rgba(245,238,220,0.07)", border: "1px solid rgba(245,238,220,0.12)" }}>
+                  <div style={{ flexShrink: 0, width: 42, height: 42, borderRadius: "50%", background: "#DDA853", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    <Leaf size={16} color="#183B4E" />
                   </div>
                   <div>
-                    <p style={{ margin: "0 0 4px", fontWeight: 900, fontSize: 13, color: "#DDA853" }}>{title}</p>
-                    <p style={{ margin: 0, fontSize: 13, lineHeight: 1.7, color: "rgba(245,238,220,0.68)" }}>{body}</p>
+                    <p style={{ margin: "0 0 4px", fontWeight: 900, fontSize: 16, color: "#DDA853" }}>{title}</p>
+                    <p style={{ margin: 0, fontSize: 15, lineHeight: 1.7, color: "rgba(245,238,220,0.76)" }}>{body}</p>
                   </div>
                 </div>
               ))}
@@ -251,29 +251,29 @@ const Home = () => {
         <div style={{ position: "relative", zIndex: 1, maxWidth: 1060, margin: "0 auto" }}>
           <Eyebrow label="What We Stand For" dark />
           <div style={{ display: "flex", flexWrap: "wrap", alignItems: "flex-end", justifyContent: "space-between", gap: 16, marginBottom: "clamp(28px, 5vw, 48px)" }}>
-            <h2 style={{ margin: 0, fontWeight: 900, fontSize: "clamp(36px, 5vw, 58px)", color: "#F5EEDC", lineHeight: 0.9, textTransform: "uppercase" }}>
+            <h2 style={{ margin: 0, fontWeight: 900, fontSize: "clamp(36px, 5vw, 58px)", color: "#F5EEDC", lineHeight: 1, textTransform: "uppercase" }}>
               Our<br />Values
             </h2>
             <TopLink to="/vision"
-              style={{ display: "inline-flex", alignItems: "center", gap: 8, fontSize: 13, fontWeight: 700, color: "#DDA853", borderBottom: "2px solid #DDA853", paddingBottom: 2, textDecoration: "none", transition: "gap 0.15s" }}
+              style={{ display: "inline-flex", alignItems: "center", gap: 8, fontSize: 15, fontWeight: 700, color: "#DDA853", borderBottom: "2px solid #DDA853", paddingBottom: 2, textDecoration: "none", transition: "gap 0.15s" }}
               onMouseEnter={e => e.currentTarget.style.gap = "12px"}
               onMouseLeave={e => e.currentTarget.style.gap = "8px"}>
               See all five values <ArrowRight size={14} />
             </TopLink>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 16 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: 18 }}>
             {[
               { Icon: Shield, title: "Emotional Safety",         blurb: "Children learn best in classrooms where they feel emotionally safe.", highlight: false },
               { Icon: Users,  title: "Collaborative Inquiry",    blurb: "We enter schools as learners first, honoring educators' lived experience.", highlight: true },
               { Icon: Search, title: "Curiosity over Criticism", blurb: "Inquiry — not judgment — guides how we approach policy and practice.", highlight: false },
             ].map(({ Icon, title, blurb, highlight }) => (
-              <div key={title} style={{ borderRadius: 16, padding: "clamp(20px, 4%, 28px)", display: "flex", flexDirection: "column", gap: 14, background: highlight ? "rgba(245,238,220,0.10)" : "rgba(24,59,78,0.35)", border: "1px solid rgba(245,238,220,0.12)" }}>
+              <div key={title} style={{ borderRadius: 20, padding: "clamp(20px, 4%, 28px)", display: "flex", flexDirection: "column", gap: 14, background: highlight ? "rgba(245,238,220,0.10)" : "rgba(24,59,78,0.35)", border: "1px solid rgba(245,238,220,0.12)" }}>
                 <div style={{ width: 48, height: 48, borderRadius: "50%", background: "#DDA853", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                   <Icon size={18} color="#183B4E" strokeWidth={2.2} />
                 </div>
                 <div>
-                  <h3 style={{ margin: "0 0 6px", fontWeight: 900, fontSize: "clamp(13px, 1.8vw, 15px)", color: "#DDA853", lineHeight: 1.3 }}>{title}</h3>
-                  <p style={{ margin: 0, fontSize: 13, lineHeight: 1.7, color: "rgba(245,238,220,0.70)" }}>{blurb}</p>
+                  <h3 style={{ margin: "0 0 6px", fontWeight: 900, fontSize: "clamp(16px, 1.8vw, 18px)", color: "#DDA853", lineHeight: 1.3 }}>{title}</h3>
+                  <p style={{ margin: 0, fontSize: 15, lineHeight: 1.7, color: "rgba(245,238,220,0.78)" }}>{blurb}</p>
                 </div>
               </div>
             ))}
@@ -290,7 +290,7 @@ const Home = () => {
             Meet the innovative minds!
           </p>
           <TopLink to="/team"
-            style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "16px 32px", borderRadius: 100, background: "#DDA853", color: "#183B4E", fontWeight: 700, fontSize: 15, textDecoration: "none", boxShadow: "0 4px 20px rgba(221,168,83,0.30)", transition: "all 0.2s" }}
+            style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "16px 32px", borderRadius: 100, background: "#DDA853", color: "#183B4E", fontWeight: 700, fontSize: 16, textDecoration: "none", boxShadow: "0 6px 22px rgba(221,168,83,0.32)", transition: "all 0.2s" }}
             onMouseEnter={e => { e.currentTarget.style.background = "#e8c070"; e.currentTarget.style.transform = "translateY(-2px)" }}
             onMouseLeave={e => { e.currentTarget.style.background = "#DDA853"; e.currentTarget.style.transform = "" }}>
             Check out the Team <ArrowRight size={16} />

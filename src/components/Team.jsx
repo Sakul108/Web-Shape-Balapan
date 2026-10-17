@@ -1,4 +1,4 @@
-import { ArrowRight } from "lucide-react"
+import { ArrowRight, FlaskConical, Sigma, BookOpen, Palette, HeartHandshake, Compass, Sparkles } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 import Aasthadi from "../assets/images/members/Aastha.webp"
 import Sakul    from "../assets/images/members/Sakul.webp"
@@ -35,7 +35,7 @@ const ADVISORS = [
   { id: "bipin",  name: "Bipin Pandey",  role: "Advisor & Outreach", image: Bipin,  description: "Currently based in Germany pursuing advanced STEM studies, Bipin advises on integrating science and technology into play-based learning frameworks, offering a global perspective on STEM pedagogy.", tags: ["STEM Education", "Global Perspective", "Outreach"] },
 ]
 
-// ── Shared scroll-to-top link ────────────────────────────────────────────────
+
 const TopLink = ({ to, children, className = "", style = {}, onMouseEnter, onMouseLeave }) => {
   const navigate = useNavigate()
   const handleClick = (e) => {
@@ -53,8 +53,8 @@ const TopLink = ({ to, children, className = "", style = {}, onMouseEnter, onMou
 
 const Tag = ({ label, onDark }) => (
   <span style={{
-    display: "inline-block", padding: "4px 11px", borderRadius: 100,
-    fontSize: 10, fontWeight: 600, letterSpacing: "0.10em", textTransform: "uppercase",
+    display: "inline-block", padding: "5px 12px", borderRadius: 100,
+    fontSize: 12, fontWeight: 600, letterSpacing: "0.06em", textTransform: "uppercase",
     background: onDark ? "rgba(221,168,83,0.18)" : "rgba(39,84,138,0.10)",
     color: onDark ? "#DDA853" : "#27548A",
     border: `1px solid ${onDark ? "rgba(221,168,83,0.35)" : "rgba(39,84,138,0.20)"}`,
@@ -64,9 +64,9 @@ const Tag = ({ label, onDark }) => (
 )
 
 const Eyebrow = ({ label, dark }) => (
-  <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
-    <div style={{ width: 28, height: 2.5, borderRadius: 2, background: "#DDA853" }} />
-    <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.22em", textTransform: "uppercase", color: dark ? "rgba(221,168,83,0.80)" : "#27548A" }}>
+  <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
+    <div style={{ width: 28, height: 3, borderRadius: 2, background: "#DDA853" }} />
+    <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: dark ? "rgba(221,168,83,0.90)" : "#27548A" }}>
       {label}
     </span>
   </div>
@@ -77,73 +77,116 @@ const PhotoBox = ({ image, name, height = 240, bg = "#183B4E" }) => {
   return (
     <div style={{ width: "100%", height, background: bg, overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center" }}>
       {image ? (
-        <img src={image} alt={name} style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center", display: "block" }} />
+        <img src={image} alt={name} style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center", display: "block", transition: "transform 0.5s ease" }} />
       ) : (
         <div style={{ textAlign: "center" }}>
           <div style={{ width: 72, height: 72, borderRadius: "50%", background: "rgba(221,168,83,0.15)", border: "2px dashed rgba(221,168,83,0.40)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 8px" }}>
             <span style={{ fontSize: 26, fontWeight: 900, color: "#DDA853" }}>{initials}</span>
           </div>
-          <span style={{ fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase", color: "rgba(221,168,83,0.45)" }}>Photo coming</span>
+          <span style={{ fontSize: 12, letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(221,168,83,0.65)" }}>Photo coming</span>
         </div>
       )}
     </div>
   )
 }
 
+const zoomIn  = e => { const i = e.currentTarget.querySelector("img"); if (i) i.style.transform = "scale(1.05)" }
+const zoomOut = e => { const i = e.currentTarget.querySelector("img"); if (i) i.style.transform = "" }
+
 const FounderCard = ({ member }) => (
-  <div className="founder-card" style={{ background: "#183B4E", borderRadius: 20, overflow: "hidden", border: "1.5px solid rgba(221,168,83,0.20)" }}>
+  <div className="founder-card">
     <style>{`
       .founder-card {
+        position: relative;
         display: grid;
-        grid-template-columns: clamp(160px, 30%, 340px) 1fr;
+        grid-template-columns: clamp(240px, 36%, 400px) 1fr;
+        align-items: center;
+        background: #183B4E;
+        border-radius: 28px;
+        overflow: hidden;
+        border: 1.5px solid rgba(221,168,83,0.25);
+        box-shadow: 0 14px 44px rgba(24,59,78,0.18);
       }
       .founder-photo-wrap {
         position: relative;
-        min-height: 360px;
+        padding: 44px 32px 44px 44px;
       }
-      .founder-photo-wrap img,
-      .founder-photo-wrap > div {
-        height: 100% !important;
+      .founder-frame {
+        position: relative;
+        transform: rotate(-3deg);
+        transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
       }
-      .founder-divider {
-        position: absolute;
-        top: 10%; right: 0; bottom: 10%;
-        width: 2px;
-        background: linear-gradient(to bottom, transparent, #DDA853, transparent);
-        opacity: 0.4;
+      .founder-card:hover .founder-frame { transform: rotate(0deg) scale(1.03); }
+      .founder-frame::before {
+        content: "";
+        position: absolute; inset: 0;
+        background: #DDA853;
+        border-radius: 22px;
+        transform: rotate(6deg) translate(10px, 6px);
+        transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
       }
-      @media (max-width: 600px) {
-        .founder-card {
-          grid-template-columns: 1fr !important;
-        }
-        .founder-photo-wrap {
-          min-height: 0 !important;
-          height: 300px !important;
-        }
-        .founder-divider {
-          display: none !important;
-        }
+      .founder-card:hover .founder-frame::before { transform: rotate(3deg) translate(8px, 6px); }
+      .founder-photo {
+        position: relative;
+        border-radius: 22px;
+        overflow: hidden;
+        border: 5px solid #F5EEDC;
+        box-shadow: 0 12px 30px rgba(0,0,0,0.30);
+      }
+      .founder-card:hover .founder-photo img { transform: scale(1.06); }
+      .founder-tape {
+        position: absolute; top: -14px; left: 50%;
+        width: 96px; height: 28px;
+        transform: translateX(-50%) rotate(3deg);
+        background: rgba(245,238,220,0.85);
+        border-radius: 4px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.20);
+        z-index: 3;
+      }
+      .founder-sticker {
+        position: absolute; right: -14px; bottom: -14px;
+        width: 56px; height: 56px; border-radius: 50%;
+        background: #DDA853;
+        border: 4px solid #F5EEDC;
+        display: flex; align-items: center; justify-content: center;
+        box-shadow: 0 8px 18px rgba(0,0,0,0.30);
+        transform: rotate(-8deg);
+        transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        z-index: 4;
+      }
+      .founder-card:hover .founder-sticker { transform: rotate(14deg) scale(1.15); }
+      @media (max-width: 700px) {
+        .founder-card { grid-template-columns: 1fr; }
+        .founder-photo-wrap { padding: 36px 36px 12px; }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .founder-frame, .founder-frame::before, .founder-sticker { transition: none; transform: none; }
       }
     `}</style>
 
     <div className="founder-photo-wrap">
-      <PhotoBox image={member.image} name={member.name} height="100%" bg="#0e2537" />
-      <div className="founder-divider" />
+      <div className="founder-frame">
+        <span className="founder-tape" aria-hidden="true" />
+        <div className="founder-photo">
+          <PhotoBox image={member.image} name={member.name} height={380} bg="#0e2537" />
+        </div>
+        <span className="founder-sticker" aria-hidden="true"><RoleIcon role={member.role} size={26} /></span>
+      </div>
     </div>
 
     <div style={{ padding: "clamp(20px, 5%, 44px)", display: "flex", flexDirection: "column", justifyContent: "center" }}>
       <div style={{ marginBottom: 20 }}>
-        <span style={{ display: "inline-block", padding: "5px 14px", borderRadius: 100, background: "#DDA853", color: "#183B4E", fontSize: 10, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" }}>
+        <span style={{ display: "inline-block", padding: "6px 16px", borderRadius: 100, background: "#DDA853", color: "#183B4E", fontSize: 12, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" }}>
           {member.role}
         </span>
       </div>
-      <h3 style={{ margin: "0 0 6px", fontWeight: 900, fontSize: "clamp(24px, 3vw, 40px)", lineHeight: 1.1, color: "#F5EEDC" }}>
+      <h3 style={{ margin: "0 0 6px", fontWeight: 900, fontSize: "clamp(26px, 3vw, 40px)", lineHeight: 1.1, color: "#F5EEDC" }}>
         {member.name}
       </h3>
       <svg style={{ display: "block", margin: "14px 0 20px" }} width="56" height="6" viewBox="0 0 56 6">
         <path d="M1 4 Q7 1 14 4 Q21 7 28 4 Q35 1 42 4 Q49 7 55 4" stroke="#DDA853" strokeWidth="2" strokeLinecap="round" fill="none" />
       </svg>
-      <p style={{ margin: "0 0 28px", fontSize: 14, lineHeight: 1.85, color: "rgba(245,238,220,0.75)", maxWidth: 520 }}>
+      <p style={{ margin: "0 0 28px", fontSize: "clamp(15px, 1.6vw, 17px)", lineHeight: 1.85, color: "rgba(245,238,220,0.82)", maxWidth: 540 }}>
         {member.description}
       </p>
       <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
@@ -153,20 +196,41 @@ const FounderCard = ({ member }) => (
   </div>
 )
 
-const BoardCard = ({ member }) => (
-  <div style={{ background: "#fff", borderRadius: 16, overflow: "hidden", border: "1px solid rgba(24,59,78,0.10)", display: "flex", flexDirection: "column", transition: "transform 0.22s ease, box-shadow 0.22s ease" }}
-    onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-4px)"; e.currentTarget.style.boxShadow = "0 16px 40px rgba(24,59,78,0.13)" }}
-    onMouseLeave={e => { e.currentTarget.style.transform = ""; e.currentTarget.style.boxShadow = "" }}>
-    <div style={{ position: "relative" }}>
-      <PhotoBox image={member.image} name={member.name} height={250} bg="#183B4E" />
-      <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 3, background: "#DDA853" }} />
+
+const RoleIcon = ({ role, size = 22 }) => {
+  const r = role.toLowerCase()
+  const props = { size, color: "#183B4E", strokeWidth: 2.2 }
+  if (r.includes("founder"))   return <Sparkles {...props} />
+  if (r.includes("science"))   return <FlaskConical {...props} />
+  if (r.includes("math"))      return <Sigma {...props} />
+  if (r.includes("english"))   return <BookOpen {...props} />
+  if (r.includes("web"))       return <Palette {...props} />
+  if (r.includes("emotional")) return <HeartHandshake {...props} />
+  return <Compass {...props} />
+}
+
+const TILTS = [-1.6, 1.2, -0.9, 1.6]
+
+const BoardCard = ({ member, index = 0 }) => (
+  <div className="member-card" style={{ "--tilt": `${TILTS[index % TILTS.length]}deg` }}>
+    {/* tape strip */}
+    <span className="member-tape" aria-hidden="true" />
+
+    {/* photo "polaroid" */}
+    <div className="member-photo">
+      <PhotoBox image={member.image} name={member.name} height={300} bg="#183B4E" />
+      <span className="member-sticker" aria-hidden="true"><RoleIcon role={member.role} /></span>
     </div>
-    <div style={{ padding: "22px 22px 26px", display: "flex", flexDirection: "column", flex: 1 }}>
-      <p style={{ margin: "0 0 3px", fontWeight: 900, fontSize: 19, color: "#183B4E", lineHeight: 1.2 }}>{member.name}</p>
-      <p style={{ margin: "0 0 12px", fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#27548A" }}>{member.role}</p>
-      <div style={{ width: 32, height: 2, background: "#DDA853", borderRadius: 2, marginBottom: 14 }} />
-      <p style={{ margin: "0 0 18px", fontSize: 13, lineHeight: 1.7, color: "rgba(24,59,78,0.75)", flex: 1 }}>{member.description}</p>
-      <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+
+    <div style={{ padding: "20px 10px 10px", display: "flex", flexDirection: "column", flex: 1 }}>
+      <p style={{ margin: "0 0 8px", fontWeight: 900, fontSize: 23, color: "#183B4E", lineHeight: 1.15 }}>{member.name}</p>
+      <div style={{ marginBottom: 14 }}>
+        <span style={{ display: "inline-block", padding: "5px 13px", borderRadius: 100, background: "#DDA853", color: "#183B4E", fontSize: 12, fontWeight: 800, letterSpacing: "0.08em", textTransform: "uppercase" }}>
+          {member.role}
+        </span>
+      </div>
+      <p style={{ margin: "0 0 18px", fontSize: 15, lineHeight: 1.7, color: "rgba(24,59,78,0.80)", flex: 1 }}>{member.description}</p>
+      <div style={{ display: "flex", gap: 6, flexWrap: "wrap", paddingTop: 14, borderTop: "2px dotted rgba(24,59,78,0.18)" }}>
         {member.tags.map(t => <Tag key={t} label={t} />)}
       </div>
     </div>
@@ -174,18 +238,18 @@ const BoardCard = ({ member }) => (
 )
 
 const AdvisorCard = ({ member }) => (
-  <div style={{ background: "rgba(255,255,255,0.06)", borderRadius: 16, overflow: "hidden", border: "1px solid rgba(221,168,83,0.18)", display: "flex", flexDirection: "column", transition: "transform 0.22s ease, box-shadow 0.22s ease" }}
-    onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-4px)"; e.currentTarget.style.boxShadow = "0 16px 40px rgba(0,0,0,0.20)" }}
-    onMouseLeave={e => { e.currentTarget.style.transform = ""; e.currentTarget.style.boxShadow = "" }}>
-    <div style={{ position: "relative" }}>
+  <div style={{ background: "rgba(255,255,255,0.06)", borderRadius: 20, overflow: "hidden", border: "1px solid rgba(221,168,83,0.18)", display: "flex", flexDirection: "column", transition: "transform 0.22s ease, box-shadow 0.22s ease" }}
+    onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-4px)"; e.currentTarget.style.boxShadow = "0 16px 40px rgba(0,0,0,0.20)"; zoomIn(e) }}
+    onMouseLeave={e => { e.currentTarget.style.transform = ""; e.currentTarget.style.boxShadow = ""; zoomOut(e) }}>
+    <div style={{ position: "relative", overflow: "hidden" }}>
       <PhotoBox image={member.image} name={member.name} height={250} bg="#152e3e" />
       <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 3, background: "#DDA853" }} />
     </div>
     <div style={{ padding: "22px 22px 26px", display: "flex", flexDirection: "column", flex: 1 }}>
-      <p style={{ margin: "0 0 3px", fontWeight: 900, fontSize: 19, color: "#F5EEDC", lineHeight: 1.2 }}>{member.name}</p>
-      <p style={{ margin: "0 0 12px", fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#DDA853" }}>{member.role}</p>
+      <p style={{ margin: "0 0 3px", fontWeight: 900, fontSize: 21, color: "#F5EEDC", lineHeight: 1.2 }}>{member.name}</p>
+      <p style={{ margin: "0 0 12px", fontSize: 12, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "#DDA853" }}>{member.role}</p>
       <div style={{ width: 32, height: 2, background: "#DDA853", borderRadius: 2, marginBottom: 14 }} />
-      <p style={{ margin: "0 0 18px", fontSize: 13, lineHeight: 1.7, color: "rgba(245,238,220,0.68)", flex: 1 }}>{member.description}</p>
+      <p style={{ margin: "0 0 18px", fontSize: 15, lineHeight: 1.7, color: "rgba(245,238,220,0.78)", flex: 1 }}>{member.description}</p>
       <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
         {member.tags.map(t => <Tag key={t} label={t} onDark />)}
       </div>
@@ -196,19 +260,78 @@ const AdvisorCard = ({ member }) => (
 const Team = () => (
   <main style={{ width: "100%", background: "#F5EEDC" }}>
 
+    <style>{`
+      .member-card {
+        position: relative;
+        display: flex; flex-direction: column;
+        background: #fff;
+        border-radius: 26px;
+        padding: 14px 14px 18px;
+        border: 1px solid rgba(24,59,78,0.10);
+        box-shadow: 0 10px 28px rgba(24,59,78,0.10);
+        transform: rotate(var(--tilt, 0deg));
+        transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+      }
+      .member-card:hover {
+        transform: rotate(0deg) translateY(-8px) scale(1.02);
+        box-shadow: 0 24px 52px rgba(24,59,78,0.18);
+      }
+      .member-tape {
+        position: absolute; top: -12px; left: 50%;
+        width: 92px; height: 26px;
+        transform: translateX(-50%) rotate(-3deg);
+        background: rgba(221,168,83,0.85);
+        border-radius: 4px;
+        box-shadow: 0 2px 6px rgba(24,59,78,0.12);
+        z-index: 3;
+      }
+      .member-photo {
+        position: relative;
+        border-radius: 18px;
+        overflow: hidden;
+        border: 3px solid #F5EEDC;
+        box-shadow: inset 0 0 0 1px rgba(24,59,78,0.08);
+      }
+      .member-card:hover .member-photo img { transform: scale(1.06); }
+      .member-sticker {
+        position: absolute; right: 12px; bottom: 12px;
+        width: 46px; height: 46px; border-radius: 50%;
+        background: #DDA853;
+        border: 3px solid #fff;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 22px;
+        box-shadow: 0 6px 16px rgba(24,59,78,0.25);
+        transform: rotate(-8deg);
+        transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+      .member-card:hover .member-sticker { transform: rotate(14deg) scale(1.18); }
+      .member-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+        gap: 40px 28px;
+        padding-top: 8px;
+      }
+      @media (max-width: 600px) {
+        .member-card, .member-card:hover { transform: none; }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .member-card, .member-card:hover, .member-sticker { transition: none; transform: none; }
+      }
+    `}</style>
+
     {/* HERO — same min-height as Vision hero */}
-    <section style={{ position: "relative", overflow: "hidden", minHeight: "clamp(320px, 55vh, 620px)", display: "flex", alignItems: "center" }}>
+    <section style={{ position: "relative", overflow: "hidden", minHeight: "clamp(320px, 55vh, 620px)", display: "flex", alignItems: "center", borderBottom: "4px solid #DDA853" }}>
       <div style={{ position: "absolute", inset: 0, backgroundImage: `url(${heroImg})`, backgroundSize: "cover", backgroundPosition: "center" }} />
       <div style={{ position: "absolute", inset: 0, background: "linear-gradient(105deg, rgba(15,37,55,0.93) 0%, rgba(15,37,55,0.72) 50%, rgba(15,37,55,0.25) 100%)" }} />
       <div style={{ position: "relative", zIndex: 1, maxWidth: 1060, margin: "0 auto", width: "100%", padding: "clamp(48px, 10vw, 88px) clamp(20px, 4vw, 40px)" }}>
         <Eyebrow label="Shape Balapan" dark />
-        <h1 style={{ margin: "0 0 24px", fontWeight: 900, fontSize: "clamp(48px, 9vw, 100px)", lineHeight: 0.92, letterSpacing: "-0.02em", color: "#F5EEDC" }}>
+        <h1 style={{ margin: "0 0 24px", fontWeight: 900, fontSize: "clamp(48px, 9vw, 100px)", lineHeight: 0.95, letterSpacing: "-0.02em", color: "#F5EEDC" }}>
           Meet<br /><span style={{ color: "#DDA853" }}>Our</span><br />Team
         </h1>
         <svg style={{ display: "block", margin: "0 0 28px" }} width="120" height="11" viewBox="0 0 120 11" fill="none">
           <path d="M2 8 Q15 3 30 8 Q45 13 60 8 Q75 3 90 8 Q105 13 118 8" stroke="#DDA853" strokeWidth="3" strokeLinecap="round" fill="none" />
         </svg>
-        <p style={{ color: "rgba(245,238,220,0.80)", fontSize: "clamp(14px, 1.8vw, 17px)", lineHeight: 1.8, maxWidth: 440, margin: 0 }}>
+        <p style={{ color: "rgba(245,238,220,0.85)", fontSize: "clamp(15px, 1.8vw, 18px)", lineHeight: 1.8, maxWidth: 460, margin: 0 }}>
           Researchers, educators, and passionate students united by one belief — every child in Nepal
           deserves a classroom where curiosity is celebrated.
         </p>
@@ -219,7 +342,7 @@ const Team = () => (
     <section style={{ padding: "clamp(40px, 8vw, 80px) clamp(20px, 4vw, 40px)", maxWidth: 1060, margin: "0 auto" }}>
       <div style={{ marginBottom: 40 }}>
         <Eyebrow label="Founding" />
-        <h2 style={{ margin: 0, fontWeight: 900, fontSize: "clamp(28px, 4vw, 48px)", color: "#183B4E", lineHeight: 1.05 }}>Founder</h2>
+        <h2 style={{ margin: 0, fontWeight: 900, fontSize: "clamp(28px, 4vw, 48px)", color: "#183B4E", lineHeight: 1.1 }}>Founder</h2>
       </div>
       <FounderCard member={FOUNDER} />
     </section>
@@ -229,10 +352,10 @@ const Team = () => (
       <div style={{ maxWidth: 1060, margin: "0 auto" }}>
         <div style={{ marginBottom: 40 }}>
           <Eyebrow label="The Core Group" />
-          <h2 style={{ margin: 0, fontWeight: 900, fontSize: "clamp(28px, 4vw, 48px)", color: "#183B4E", lineHeight: 1.05 }}>Core Members</h2>
+          <h2 style={{ margin: 0, fontWeight: 900, fontSize: "clamp(28px, 4vw, 48px)", color: "#183B4E", lineHeight: 1.1 }}>Core Members</h2>
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 24 }}>
-          {BOARD.map(m => <BoardCard key={m.id} member={m} />)}
+        <div className="member-grid">
+          {BOARD.map((m, i) => <BoardCard key={m.id} member={m} index={i} />)}
         </div>
       </div>
     </section>
@@ -243,9 +366,9 @@ const Team = () => (
       <div style={{ maxWidth: 1060, margin: "0 auto", position: "relative", zIndex: 1 }}>
         <div style={{ marginBottom: 40 }}>
           <Eyebrow label="Outreach & Guidance" dark />
-          <h2 style={{ margin: 0, fontWeight: 900, fontSize: "clamp(28px, 4vw, 48px)", color: "#F5EEDC", lineHeight: 1.05 }}>Advisors</h2>
+          <h2 style={{ margin: 0, fontWeight: 900, fontSize: "clamp(28px, 4vw, 48px)", color: "#F5EEDC", lineHeight: 1.1 }}>Advisors</h2>
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: 24 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 24 }}>
           {ADVISORS.map(m => <AdvisorCard key={m.id} member={m} />)}
         </div>
       </div>
@@ -254,7 +377,7 @@ const Team = () => (
     {/* CTA — now scrolls to top of Vision */}
     <section style={{ padding: "clamp(40px, 8vw, 80px) 20px", textAlign: "center", background: "#F5EEDC" }}>
       <h3 style={{ margin: "0 0 8px", fontWeight: 900, fontSize: "clamp(22px, 3vw, 34px)", color: "#183B4E" }}>Why do we do this?</h3>
-      <p style={{ margin: "0 0 32px", fontSize: 15, color: "rgba(24,59,78,0.60)", lineHeight: 1.6 }}>Read the full vision.</p>
+      <p style={{ margin: "0 0 32px", fontSize: 16, color: "rgba(24,59,78,0.68)", lineHeight: 1.6 }}>Read the full vision.</p>
       <TopLink to="/vision"
         className="inline-flex items-center gap-2 px-8 py-4 rounded-full font-bold text-base shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:scale-95 transition-all duration-200"
         style={{ background: "#DDA853", color: "#183B4E", textDecoration: "none" }}

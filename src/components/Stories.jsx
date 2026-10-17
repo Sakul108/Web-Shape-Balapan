@@ -13,10 +13,11 @@ import Fish      from "../assets/images/artwork/Fish.webp"
 import Festivals from "../assets/images/artwork/Festivals.webp"
 import Art       from "../assets/images/artwork/Art.webp"
 
+// Slightly deeper theme colours so the small pill text stays readable on the pale backgrounds
 const THEMES = {
-  "Culture":       { color: "#E8927A", bg: "#E8927A22", label: "Culture"       },
-  "Education":     { color: "#7EB5D6", bg: "#7EB5D622", label: "Education"     },
-  "Nature & Play": { color: "#9AC48C", bg: "#9AC48C22", label: "Nature & Play" },
+  "Culture":       { color: "#C9684F", bg: "#E8927A22", label: "Culture"       },
+  "Education":     { color: "#3F86B0", bg: "#7EB5D622", label: "Education"     },
+  "Nature & Play": { color: "#5E9150", bg: "#9AC48C22", label: "Nature & Play" },
 }
 
 const ARTWORKS = [
@@ -133,11 +134,11 @@ const TopLink = ({ to, children, style = {}, onMouseEnter, onMouseLeave }) => {
 }
 
 const Eyebrow = ({ label, dark = false }) => (
-  <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
-    <div style={{ width: 28, height: 2.5, borderRadius: 2, background: "#DDA853" }} />
+  <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
+    <div style={{ width: 28, height: 3, borderRadius: 2, background: "#DDA853" }} />
     <span style={{
-      fontSize: 10, fontWeight: 700, letterSpacing: "0.22em", textTransform: "uppercase",
-      color: dark ? "rgba(221,168,83,0.80)" : "#27548A",
+      fontSize: 12, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase",
+      color: dark ? "rgba(221,168,83,0.90)" : "#27548A",
     }}>
       {label}
     </span>
@@ -149,11 +150,11 @@ const ThemePill = ({ theme, small = false }) => {
   return (
     <span style={{
       display: "inline-block",
-      padding: small ? "3px 9px" : "4px 12px",
+      padding: small ? "4px 11px" : "5px 14px",
       borderRadius: 100,
-      fontSize: small ? 9 : 10,
+      fontSize: small ? 12 : 12,
       fontWeight: 700,
-      letterSpacing: "0.10em",
+      letterSpacing: "0.08em",
       textTransform: "uppercase",
       background: t.bg,
       color: t.color,
@@ -169,45 +170,49 @@ const ArtworkPlaceholder = ({ theme, height }) => {
   return <div style={{ width: "100%", height, background: t.bg }} />
 }
 
+const imgZoomIn  = e => { const i = e.currentTarget.querySelector("img"); if (i) i.style.transform = "scale(1.05)" }
+const imgZoomOut = e => { const i = e.currentTarget.querySelector("img"); if (i) i.style.transform = "" }
+
 const FeaturedCard = ({ artwork }) => {
   const t = THEMES[artwork.theme] || THEMES["Culture"]
   return (
     <div style={{
-      background: "#fff", borderRadius: 20, overflow: "hidden",
+      background: "#fff", borderRadius: 24, overflow: "hidden",
       border: "1px solid rgba(24,59,78,0.10)",
+      boxShadow: "0 6px 22px rgba(24,59,78,0.06)",
       display: "flex", flexDirection: "column", position: "relative",
       transition: "transform 0.22s ease, box-shadow 0.22s ease",
     }}
-      onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-5px)"; e.currentTarget.style.boxShadow = "0 20px 48px rgba(24,59,78,0.14)" }}
-      onMouseLeave={e => { e.currentTarget.style.transform = ""; e.currentTarget.style.boxShadow = "" }}
+      onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-5px)"; e.currentTarget.style.boxShadow = "0 20px 48px rgba(24,59,78,0.14)"; imgZoomIn(e) }}
+      onMouseLeave={e => { e.currentTarget.style.transform = ""; e.currentTarget.style.boxShadow = "0 6px 22px rgba(24,59,78,0.06)"; imgZoomOut(e) }}
     >
       <div style={{
         position: "absolute", top: 14, right: 14, zIndex: 2,
-        width: 30, height: 30, borderRadius: "50%", background: "#DDA853",
+        width: 32, height: 32, borderRadius: "50%", background: "#DDA853",
         display: "flex", alignItems: "center", justifyContent: "center",
         boxShadow: "0 4px 12px rgba(221,168,83,0.45)",
       }}>
-        <Star size={13} color="#183B4E" fill="#183B4E" strokeWidth={0} />
+        <Star size={14} color="#183B4E" fill="#183B4E" strokeWidth={0} />
       </div>
-      <div style={{ position: "relative", height: 260 }}>
+      <div style={{ position: "relative", height: 260, overflow: "hidden" }}>
         {artwork.image
-          ? <img src={artwork.image} alt={artwork.title} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+          ? <img src={artwork.image} alt={artwork.title} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", transition: "transform 0.5s ease" }} />
           : <ArtworkPlaceholder theme={artwork.theme} height={260} />
         }
         <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 4, background: t.color }} />
       </div>
-      <div style={{ padding: "20px 22px 26px", flex: 1, display: "flex", flexDirection: "column" }}>
+      <div style={{ padding: "22px 24px 28px", flex: 1, display: "flex", flexDirection: "column" }}>
         <div style={{ marginBottom: 10 }}>
           <ThemePill theme={artwork.theme} />
         </div>
-        <h3 style={{ margin: "0 0 4px", fontWeight: 900, fontSize: 19, color: "#183B4E", lineHeight: 1.2 }}>
+        <h3 style={{ margin: "0 0 4px", fontWeight: 900, fontSize: 21, color: "#183B4E", lineHeight: 1.2 }}>
           "{artwork.title}"
         </h3>
-        <p style={{ margin: "0 0 12px", fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color: "#27548A" }}>
+        <p style={{ margin: "0 0 12px", fontSize: 12, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", color: "#27548A" }}>
           {artwork.medium}
         </p>
         <div style={{ width: 28, height: 2, background: "#DDA853", borderRadius: 2, marginBottom: 12 }} />
-        <p style={{ margin: 0, fontSize: 13, lineHeight: 1.75, color: "rgba(24,59,78,0.72)", flex: 1 }}>
+        <p style={{ margin: 0, fontSize: 15, lineHeight: 1.75, color: "rgba(24,59,78,0.80)", flex: 1 }}>
           {artwork.caption}
         </p>
       </div>
@@ -219,33 +224,34 @@ const GalleryCard = ({ artwork }) => {
   const t = THEMES[artwork.theme] || THEMES["Culture"]
   return (
     <div style={{
-      background: "#fff", borderRadius: 16, overflow: "hidden",
+      background: "#fff", borderRadius: 20, overflow: "hidden",
       border: "1px solid rgba(24,59,78,0.08)",
+      boxShadow: "0 4px 16px rgba(24,59,78,0.05)",
       display: "flex", flexDirection: "column",
       transition: "transform 0.22s ease, box-shadow 0.22s ease",
     }}
-      onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-4px)"; e.currentTarget.style.boxShadow = "0 14px 36px rgba(24,59,78,0.12)" }}
-      onMouseLeave={e => { e.currentTarget.style.transform = ""; e.currentTarget.style.boxShadow = "" }}
+      onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-4px)"; e.currentTarget.style.boxShadow = "0 14px 36px rgba(24,59,78,0.12)"; imgZoomIn(e) }}
+      onMouseLeave={e => { e.currentTarget.style.transform = ""; e.currentTarget.style.boxShadow = "0 4px 16px rgba(24,59,78,0.05)"; imgZoomOut(e) }}
     >
-      <div style={{ position: "relative", height: 200 }}>
+      <div style={{ position: "relative", height: 200, overflow: "hidden" }}>
         {artwork.image
-          ? <img src={artwork.image} alt={artwork.title} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+          ? <img src={artwork.image} alt={artwork.title} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", transition: "transform 0.5s ease" }} />
           : <ArtworkPlaceholder theme={artwork.theme} height={200} />
         }
         <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 3, background: t.color }} />
       </div>
-      <div style={{ padding: "16px 18px 20px", flex: 1, display: "flex", flexDirection: "column" }}>
+      <div style={{ padding: "18px 20px 22px", flex: 1, display: "flex", flexDirection: "column" }}>
         <div style={{ marginBottom: 8 }}>
           <ThemePill theme={artwork.theme} small />
         </div>
-        <p style={{ margin: "0 0 3px", fontWeight: 900, fontSize: 15, color: "#183B4E", lineHeight: 1.25 }}>
+        <p style={{ margin: "0 0 3px", fontWeight: 900, fontSize: 17, color: "#183B4E", lineHeight: 1.25 }}>
           "{artwork.title}"
         </p>
-        <p style={{ margin: "0 0 10px", fontSize: 10, fontWeight: 700, letterSpacing: "0.07em", textTransform: "uppercase", color: "#27548A" }}>
+        <p style={{ margin: "0 0 10px", fontSize: 12, fontWeight: 700, letterSpacing: "0.05em", textTransform: "uppercase", color: "#27548A" }}>
           {artwork.medium}
         </p>
         <div style={{ width: 24, height: 2, background: "#DDA853", borderRadius: 2, marginBottom: 10 }} />
-        <p style={{ margin: 0, fontSize: 12.5, lineHeight: 1.7, color: "rgba(24,59,78,0.70)", flex: 1 }}>
+        <p style={{ margin: 0, fontSize: 14.5, lineHeight: 1.7, color: "rgba(24,59,78,0.78)", flex: 1 }}>
           {artwork.caption}
         </p>
       </div>
@@ -255,8 +261,8 @@ const GalleryCard = ({ artwork }) => {
 
 const Stat = ({ value, label }) => (
   <div style={{ textAlign: "center" }}>
-    <div style={{ fontWeight: 900, fontSize: "clamp(28px, 4vw, 44px)", color: "#DDA853", lineHeight: 1 }}>{value}</div>
-    <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: "rgba(245,238,220,0.60)", marginTop: 6 }}>{label}</div>
+    <div style={{ fontWeight: 900, fontSize: "clamp(30px, 4vw, 46px)", color: "#DDA853", lineHeight: 1 }}>{value}</div>
+    <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "rgba(245,238,220,0.75)", marginTop: 6 }}>{label}</div>
   </div>
 )
 
@@ -267,12 +273,12 @@ const Stories = () => (
     <style>{`
       .stories-spotlight-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
         gap: 28px;
       }
       .stories-gallery-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
         gap: 22px;
       }
       .stories-stats-row {
@@ -310,6 +316,7 @@ const Stories = () => (
       position: "relative", overflow: "hidden",
       minHeight: "clamp(320px, 55vh, 620px)",
       display: "flex", alignItems: "center",
+      borderBottom: "4px solid #DDA853",
     }}>
       <div style={{
         position: "absolute", inset: 0,
@@ -329,7 +336,7 @@ const Stories = () => (
         <h1 style={{
           margin: "0 0 24px", fontWeight: 900,
           fontSize: "clamp(48px, 9vw, 100px)",
-          lineHeight: 0.92, letterSpacing: "-0.02em", color: "#F5EEDC",
+          lineHeight: 0.95, letterSpacing: "-0.02em", color: "#F5EEDC",
         }}>
           Their<br /><span style={{ color: "#DDA853" }}>Stories</span><br />in Colour
         </h1>
@@ -337,9 +344,9 @@ const Stories = () => (
           <path d="M2 8 Q15 3 30 8 Q45 13 60 8 Q75 3 90 8 Q105 13 118 8" stroke="#DDA853" strokeWidth="3" strokeLinecap="round" fill="none" />
         </svg>
         <p style={{
-          color: "rgba(245,238,220,0.80)",
-          fontSize: "clamp(14px, 1.8vw, 17px)",
-          lineHeight: 1.8, maxWidth: 480, margin: 0,
+          color: "rgba(245,238,220,0.85)",
+          fontSize: "clamp(15px, 1.8vw, 18px)",
+          lineHeight: 1.8, maxWidth: 500, margin: 0,
         }}>
           Every brushstroke here belongs to a child who was given space to imagine.
           These artworks are the living proof of what play-based learning unlocks.
@@ -365,26 +372,26 @@ const Stories = () => (
       <div className="stories-intro-grid" style={{ maxWidth: 1060, margin: "0 auto" }}>
         <div>
           <Eyebrow label="About This Gallery" />
-          <h2 style={{ margin: "0 0 20px", fontWeight: 900, fontSize: "clamp(24px, 3.5vw, 40px)", color: "#183B4E", lineHeight: 1.1 }}>
+          <h2 style={{ margin: "0 0 20px", fontWeight: 900, fontSize: "clamp(26px, 3.5vw, 42px)", color: "#183B4E", lineHeight: 1.15 }}>
             Art as evidence of learning
           </h2>
-          <p style={{ margin: "0 0 16px", fontSize: "clamp(14px, 1.6vw, 16px)", lineHeight: 1.85, color: "rgba(24,59,78,0.72)" }}>
+          <p style={{ margin: "0 0 16px", fontSize: "clamp(15px, 1.6vw, 17px)", lineHeight: 1.85, color: "rgba(24,59,78,0.80)" }}>
             After each Shape Balapan session, children are offered unstructured time to draw, paint, or create with whatever materials are available. We don't give them a prompt — we give them freedom. What they choose to make tells us more about what they absorbed than any test could.
           </p>
-          <p style={{ margin: "0 0 24px", fontSize: "clamp(14px, 1.6vw, 16px)", lineHeight: 1.85, color: "rgba(24,59,78,0.72)" }}>
+          <p style={{ margin: "0 0 24px", fontSize: "clamp(15px, 1.6vw, 17px)", lineHeight: 1.85, color: "rgba(24,59,78,0.80)" }}>
             Artworks are organised into three themes that reflect what children returned to most naturally:
           </p>
           <div className="stories-theme-row">
             {THEMES_LIST.map(t => (
               <span key={t} style={{
                 display: "inline-flex", alignItems: "center", gap: 7,
-                padding: "7px 16px", borderRadius: 100,
+                padding: "8px 18px", borderRadius: 100,
                 background: THEMES[t].bg,
                 border: `1.5px solid ${THEMES[t].color}55`,
-                fontSize: 11, fontWeight: 700, letterSpacing: "0.08em",
+                fontSize: 13, fontWeight: 700, letterSpacing: "0.06em",
                 textTransform: "uppercase", color: THEMES[t].color,
               }}>
-                <span style={{ width: 7, height: 7, borderRadius: "50%", background: THEMES[t].color, display: "inline-block", flexShrink: 0 }} />
+                <span style={{ width: 8, height: 8, borderRadius: "50%", background: THEMES[t].color, display: "inline-block", flexShrink: 0 }} />
                 {t}
               </span>
             ))}
@@ -398,7 +405,7 @@ const Stories = () => (
       <div style={{ maxWidth: 1060, margin: "0 auto" }}>
         <div style={{ marginBottom: 40 }}>
           <Eyebrow label="Spotlight Art" />
-          <h2 style={{ margin: 0, fontWeight: 900, fontSize: "clamp(28px, 4vw, 48px)", color: "#183B4E", lineHeight: 1.05 }}>
+          <h2 style={{ margin: 0, fontWeight: 900, fontSize: "clamp(28px, 4vw, 48px)", color: "#183B4E", lineHeight: 1.1 }}>
             Spotlight
           </h2>
         </div>
@@ -413,7 +420,7 @@ const Stories = () => (
       <div style={{ maxWidth: 1060, margin: "0 auto" }}>
         <div style={{ marginBottom: 40 }}>
           <Eyebrow label="The Collection" />
-          <h2 style={{ margin: 0, fontWeight: 900, fontSize: "clamp(28px, 4vw, 48px)", color: "#183B4E", lineHeight: 1.05 }}>
+          <h2 style={{ margin: 0, fontWeight: 900, fontSize: "clamp(28px, 4vw, 48px)", color: "#183B4E", lineHeight: 1.1 }}>
             All Artworks
           </h2>
         </div>
@@ -428,16 +435,16 @@ const Stories = () => (
       <h3 style={{ margin: "0 0 8px", fontWeight: 900, fontSize: "clamp(22px, 3vw, 34px)", color: "#183B4E" }}>
         Meet the people
       </h3>
-      <p style={{ margin: "0 0 32px", fontSize: 15, color: "rgba(24,59,78,0.60)", lineHeight: 1.6 }}>
+      <p style={{ margin: "0 0 32px", fontSize: 16, color: "rgba(24,59,78,0.68)", lineHeight: 1.6 }}>
         Every artwork collected by the Team
       </p>
       <TopLink to="/team"
         style={{
           display: "inline-flex", alignItems: "center", gap: 8,
-          padding: "14px 32px", borderRadius: 100,
+          padding: "15px 32px", borderRadius: 100,
           background: "#DDA853", color: "#183B4E",
-          fontWeight: 700, fontSize: 15, textDecoration: "none",
-          boxShadow: "0 8px 24px rgba(221,168,83,0.20)",
+          fontWeight: 700, fontSize: 16, textDecoration: "none",
+          boxShadow: "0 8px 24px rgba(221,168,83,0.24)",
           transition: "background 0.18s ease",
         }}
         onMouseEnter={e => (e.currentTarget.style.background = "#e8c070")}

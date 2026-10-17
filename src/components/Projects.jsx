@@ -14,7 +14,7 @@ import { ArrowRight, BookOpen, Snowflake, Search, FileText, Download, Link2, Che
 const Eyebrow = ({ label, light = false }) => (
   <div className="flex items-center gap-3 mb-3">
     <div className="w-8 h-0.75 rounded-full" style={{ background: "#DDA853" }} />
-    <span className="text-xs font-bold uppercase tracking-[0.2em]"
+    <span className="text-[13px] font-bold uppercase tracking-[0.18em]"
       style={{ color: light ? "#DDA853" : "#27548A" }}>
       {label}
     </span>
@@ -22,7 +22,7 @@ const Eyebrow = ({ label, light = false }) => (
 )
 
 const Tag = ({ name, light = false }) => (
-  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider"
+  <span className="inline-flex items-center px-3 py-1 rounded-full text-[13px] font-bold uppercase tracking-wider"
     style={light
       ? { background: "rgba(245,238,220,0.15)", color: "#F5EEDC", border: "1px solid rgba(245,238,220,0.25)" }
       : { background: "rgba(39,84,138,0.10)",   color: "#27548A", border: "1px solid rgba(39,84,138,0.18)" }
@@ -46,21 +46,66 @@ const TopLink = ({ to, children, className = "", style = {}, onMouseEnter, onMou
   )
 }
 
+/* ---------- Toggle buttons ---------- */
+
+
+const MainTab = ({ active, onClick, children }) => (
+  <button
+    type="button"
+    onClick={onClick}
+    aria-pressed={active}
+    className="px-6 sm:px-8 py-3 rounded-full font-bold text-base"
+    style={{
+      background: active ? "#183B4E" : "transparent",
+      color: active ? "#F5EEDC" : "#183B4E",
+      border: "1.5px solid #183B4E",
+      cursor: "pointer",
+      transition: "all 0.2s",
+    }}
+    onMouseEnter={e => { if (!active) e.currentTarget.style.background = "rgba(24,59,78,0.08)" }}
+    onMouseLeave={e => { if (!active) e.currentTarget.style.background = "transparent" }}
+  >
+    {children}
+  </button>
+)
+
+
+const SubTab = ({ active, onClick, children }) => (
+  <button
+    type="button"
+    onClick={onClick}
+    aria-pressed={active}
+    className="px-5 sm:px-6 py-2.5 rounded-full font-bold text-[15px]"
+    style={{
+      background: active ? "#DDA853" : "transparent",
+      color: active ? "#183B4E" : "#F5EEDC",
+      border: active ? "1.5px solid #DDA853" : "1.5px solid rgba(245,238,220,0.35)",
+      cursor: "pointer",
+      transition: "all 0.2s",
+    }}
+    onMouseEnter={e => { if (!active) e.currentTarget.style.background = "rgba(245,238,220,0.10)" }}
+    onMouseLeave={e => { if (!active) e.currentTarget.style.background = "transparent" }}
+  >
+    {children}
+  </button>
+)
+
+
+
 const summerTeams = [
   {
-    id: "summer-team-1", number: "01", title: "From Parliament to Classroom",
+    id: "p1", number: "01", title: "From Parliament to Classroom",
     researchQuestion: "Is there any gap between government policy on no-examination for elementary school and the lived realities? Why?",
     description: "Participants will visit schools, parents, and students to interview them on the current status of the no-examination policy set by the Nepal government. They shall document the interviews as a discourse paper to identify the possible causes of whatever the situation is — a journey to understand the real state of policy implementation once the decision is made in Parliament.",
     tags: ["Policy Research", "Field Interviews", "Discourse Paper"], icon: Search, dark: true,
   },
   {
-    id: "summer-team-2", number: "02", title: "Rethinking Assessment",
+    id: "p2", number: "02", title: "Rethinking Assessment",
     researchQuestion: "How is the credibility of non-examination assessment established?",
     description: "Students will conduct a literature review on assessment decisions and practices made across the world, centred at the elementary level in three countries. Following this, participants will choose one chapter from either English or Mathematics and design a detailed lesson plan including phases of teaching and assessment — then present their work in front of a judge panel.",
     tags: ["Literature Review", "Lesson Design", "Panel Presentation"], icon: FileText, dark: false,
   },
 ]
-
 
 const ebook = {
   title: "Rethinking Assessment",
@@ -89,6 +134,8 @@ const winterTracks = [
   },
 ]
 
+/* ---------- Cards ---------- */
+
 const SummerCard = ({ team }) => {
   const { number, title, researchQuestion, description, tags, icon: Icon, dark } = team
   return (
@@ -98,12 +145,12 @@ const SummerCard = ({ team }) => {
         border: dark ? "none" : "1.5px solid rgba(39,84,138,0.15)",
       }}>
       <div className="flex items-start gap-4 mb-5">
-        <div className="shrink-0 w-12 h-12 rounded-full flex items-center justify-center font-black text-sm"
+        <div className="shrink-0 w-12 h-12 rounded-full flex items-center justify-center font-black text-[15px]"
           style={{ background: "#DDA853", color: "#183B4E" }}>
           {number}
         </div>
         <div>
-          <p className="text-xs font-bold uppercase tracking-widest mb-1"
+          <p className="text-[13px] font-bold uppercase tracking-widest mb-1"
             style={{ color: dark ? "rgba(221,168,83,0.7)" : "rgba(39,84,138,0.55)" }}>
             Team {number}
           </p>
@@ -119,12 +166,12 @@ const SummerCard = ({ team }) => {
           border: dark ? "1px solid rgba(221,168,83,0.22)" : "1px solid rgba(39,84,138,0.14)",
         }}>
         <Icon size={16} className="shrink-0 mt-0.5" style={{ color: "#DDA853" }} />
-        <p className="text-sm leading-relaxed italic"
+        <p className="text-[15px] sm:text-base leading-relaxed italic"
           style={{ color: dark ? "rgba(245,238,220,0.85)" : "rgba(24,59,78,0.85)" }}>
           "{researchQuestion}"
         </p>
       </div>
-      <p className="text-sm sm:text-base leading-relaxed mb-5"
+      <p className="text-base leading-relaxed mb-5"
         style={{ color: dark ? "rgba(245,238,220,0.75)" : "rgba(24,59,78,0.75)" }}>
         {description}
       </p>
@@ -135,7 +182,7 @@ const SummerCard = ({ team }) => {
   )
 }
 
-// Your live domain, no trailing slash. Used when copying the link from localhost.
+
 const SITE_URL = "https://shape-balapan.ird.com.np"
 
 const EbookSection = ({ book }) => {
@@ -171,17 +218,17 @@ const EbookSection = ({ book }) => {
 
         {/* Details */}
         <div className="p-6 sm:p-10 flex flex-col justify-center">
-          <p className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: "#DDA853" }}>
+          <p className="text-[13px] font-bold uppercase tracking-widest mb-2" style={{ color: "#DDA853" }}>
             From Team 2 · Rethinking Assessment
           </p>
           <h3 className="font-black leading-tight mb-2"
             style={{ color: "#F5EEDC", fontSize: "clamp(22px, 3vw, 30px)" }}>
             {book.title}
           </h3>
-          <p className="text-sm sm:text-base mb-4" style={{ color: "rgba(221,168,83,0.85)" }}>
+          <p className="text-base mb-4" style={{ color: "rgba(221,168,83,0.85)" }}>
             {book.subtitle}
           </p>
-          <p className="text-sm leading-relaxed mb-5" style={{ color: "rgba(245,238,220,0.75)" }}>
+          <p className="text-[15px] sm:text-base leading-relaxed mb-5" style={{ color: "rgba(245,238,220,0.75)" }}>
             {book.description}
           </p>
 
@@ -194,7 +241,7 @@ const EbookSection = ({ book }) => {
               href={book.pdfHref}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-bold text-sm w-fit"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-bold text-[15px] w-fit"
               style={{ background: "#DDA853", color: "#183B4E", textDecoration: "none", boxShadow: "0 4px 20px rgba(221,168,83,0.30)", transition: "all 0.2s" }}
               onMouseEnter={e => { e.currentTarget.style.background = "#e8c070"; e.currentTarget.style.transform = "translateY(-2px)" }}
               onMouseLeave={e => { e.currentTarget.style.background = "#DDA853"; e.currentTarget.style.transform = "" }}
@@ -205,7 +252,7 @@ const EbookSection = ({ book }) => {
             <button
               type="button"
               onClick={copyLink}
-              className="inline-flex items-center gap-2 px-5 py-3 rounded-full font-bold text-sm"
+              className="inline-flex items-center gap-2 px-5 py-3 rounded-full font-bold text-[15px]"
               style={{ background: "transparent", color: "#F5EEDC", border: "1.5px solid rgba(245,238,220,0.35)", cursor: "pointer", transition: "all 0.2s" }}
               onMouseEnter={e => { e.currentTarget.style.background = "rgba(245,238,220,0.10)" }}
               onMouseLeave={e => { e.currentTarget.style.background = "transparent" }}
@@ -225,8 +272,8 @@ const WinterCard = ({ track }) => {
   return (
     <div className="rounded-3xl overflow-hidden mb-6"
       style={{
-        background: dark ? "#183B4E" : "rgba(39,84,138,0.06)",
-        border: dark ? "none" : "1.5px solid rgba(39,84,138,0.14)",
+        background: dark ? "#183B4E" : "rgba(245,238,220,0.55)",
+        border: dark ? "none" : "1.5px solid rgba(39,84,138,0.15)",
       }}>
       <div className="flex flex-col sm:grid sm:grid-cols-2">
         <div className="relative overflow-hidden" style={{ minHeight: 220 }}>
@@ -237,11 +284,11 @@ const WinterCard = ({ track }) => {
               ? "linear-gradient(135deg, rgba(24,59,78,0.4) 0%, transparent 60%)"
               : "linear-gradient(135deg, rgba(39,84,138,0.28) 0%, transparent 60%)",
           }} />
-          <div className="absolute top-4 left-4 px-3 py-1 rounded-full font-black text-xs uppercase tracking-widest"
+          <div className="absolute top-4 left-4 px-3 py-1 rounded-full font-black text-[13px] uppercase tracking-widest"
             style={{ background: "#DDA853", color: "#183B4E" }}>
             {subject}
           </div>
-          <div className="absolute top-4 right-4 w-9 h-9 rounded-full flex items-center justify-center font-black text-xs"
+          <div className="absolute top-4 right-4 w-9 h-9 rounded-full flex items-center justify-center font-black text-[13px]"
             style={{ background: "rgba(24,59,78,0.65)", color: "#F5EEDC" }}>
             {number}
           </div>
@@ -252,7 +299,7 @@ const WinterCard = ({ track }) => {
               style={{ color: dark ? "#F5EEDC" : "#183B4E", fontSize: "clamp(18px, 2.5vw, 24px)" }}>
               {title}
             </h3>
-            <p className="text-sm leading-relaxed mb-5"
+            <p className="text-[15px] sm:text-base leading-relaxed mb-5"
               style={{ color: dark ? "rgba(245,238,220,0.75)" : "rgba(24,59,78,0.75)" }}>
               {description}
             </p>
@@ -262,12 +309,12 @@ const WinterCard = ({ track }) => {
           </div>
           <div className="mt-5 pt-4 flex flex-wrap items-center gap-x-3 gap-y-1"
             style={{ borderTop: dark ? "1px solid rgba(245,238,220,0.12)" : "1px solid rgba(39,84,138,0.14)" }}>
-            <span className="text-xs font-bold uppercase tracking-widest" style={{ color: "#DDA853" }}>Content Lead</span>
-            <span className="text-xs" style={{ color: dark ? "rgba(245,238,220,0.65)" : "rgba(24,59,78,0.65)" }}>{lead}</span>
+            <span className="text-[13px] font-bold uppercase tracking-widest" style={{ color: "#DDA853" }}>Content Lead</span>
+            <span className="text-[13px]" style={{ color: dark ? "rgba(245,238,220,0.65)" : "rgba(24,59,78,0.65)" }}>{lead}</span>
             {members && (
               <>
-                <span className="text-xs font-bold uppercase tracking-widest" style={{ color: "#DDA853" }}>Team</span>
-                <span className="text-xs" style={{ color: dark ? "rgba(245,238,220,0.65)" : "rgba(24,59,78,0.65)" }}>{members}</span>
+                <span className="text-[13px] font-bold uppercase tracking-widest" style={{ color: "#DDA853" }}>Team</span>
+                <span className="text-[13px]" style={{ color: dark ? "rgba(245,238,220,0.65)" : "rgba(24,59,78,0.65)" }}>{members}</span>
               </>
             )}
           </div>
@@ -277,19 +324,42 @@ const WinterCard = ({ track }) => {
   )
 }
 
+/* ---------- Page ---------- */
+
 const Projects = () => {
   const { hash, search } = useLocation()
 
-  // Scroll to a section when the URL asks for it. Both of these work:
-  //   /projects?section=ebook   (recommended: a query can't be stripped like a #hash)
-  //   /projects#ebook
-  // Retries for ~3s: images load late, and the global scroll-to-top may run after mount.
+ 
+  const urlKey = `${search}|${hash}`
+  const wantsEbook = (() => {
+    const section = new URLSearchParams(search).get("section")
+    const fromHash = decodeURIComponent((hash || "").slice(1))
+    return (section || fromHash) === "ebook"
+  })()
+
+  const [program, setProgram] = useState("summer")          // "summer" | "winter"
+  const [summerProject, setSummerProject] = useState(wantsEbook ? "p2" : "p1")
+
+  
+  const [lastUrlKey, setLastUrlKey] = useState(urlKey)
+  if (urlKey !== lastUrlKey) {
+    setLastUrlKey(urlKey)
+    if (wantsEbook) {
+      setProgram("summer")
+      setSummerProject("p2")
+    }
+  }
+
+  const activeTeam = summerTeams.find(t => t.id === summerProject)
+
+  
   useEffect(() => {
     const section = new URLSearchParams(search).get("section")
     const fromHash = decodeURIComponent((hash || window.location.hash).slice(1))
     const id = section || fromHash
     if (!id) return
 
+    
     const scrollToTarget = () =>
       document.getElementById(id)?.scrollIntoView({ behavior: "instant", block: "start" })
 
@@ -297,7 +367,7 @@ const Projects = () => {
     const interval = setInterval(scrollToTarget, 100)
     const stop = setTimeout(() => clearInterval(interval), 3000)
 
-    // Stop as soon as the visitor scrolls or interacts on their own
+    
     const cancel = () => { clearInterval(interval); clearTimeout(stop) }
     const events = ["wheel", "touchstart", "keydown", "pointerdown"]
     events.forEach(e => window.addEventListener(e, cancel, { once: true, passive: true }))
@@ -316,6 +386,7 @@ const Projects = () => {
         position: "relative", overflow: "hidden",
         minHeight: "clamp(320px, 55vh, 620px)",
         display: "flex", alignItems: "center",
+        borderBottom: "4px solid #DDA853",
       }}>
         <div style={{
           position: "absolute", inset: 0,
@@ -338,99 +409,134 @@ const Projects = () => {
               stroke="#DDA853" strokeWidth="3" strokeLinecap="round" fill="none" />
           </svg>
           <p className="leading-relaxed max-w-xl"
-            style={{ color: "rgba(245,238,220,0.80)", fontSize: "clamp(14px, 1.8vw, 17px)" }}>
+            style={{ color: "rgba(245,238,220,0.80)", fontSize: "clamp(15px, 1.8vw, 18px)" }}>
             Every initiative at Shape Balapan is a small experiment in what school can feel like —
             joyful, curious, and grounded in the lives of Nepal's children.
           </p>
         </div>
       </section>
 
-      {/* SUMMER 2026 */}
-      <section className="relative py-16 sm:py-20 px-6 sm:px-10 overflow-hidden" style={{ background: "#27548A" }}>
-        <div className="absolute inset-0 opacity-[0.05] pointer-events-none"
-          style={{ backgroundImage: `url(${Shapes})`, backgroundSize: "cover" }} />
-        <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full blur-3xl pointer-events-none"
-          style={{ background: "#DDA853", opacity: 0.12 }} />
-        <div className="relative z-10 max-w-5xl mx-auto">
-          <Eyebrow label="Current Program" light />
-          <h2 className="font-black uppercase tracking-tight leading-tight mb-2"
-            style={{ color: "#F5EEDC", fontSize: "clamp(32px, 4.5vw, 52px)" }}>
-            Summer<br />2026
-          </h2>
-          <p className="mb-4 text-sm" style={{ color: "rgba(245,238,220,0.55)" }}>
-            An 8-week research program — two teams, two questions, one shared goal.
-          </p>
-          <div className="flex flex-wrap gap-x-6 gap-y-2 mb-10">
-            {[
-              { label: "Team 1 Lead", name: "Ms. Aastha" },
-              { label: "Team 2 Lead", name: "Sakul" },
-              { label: "Outreach",    name: "Mr. Laxman" },
-              { label: "Peer Mentors",name: "Prakriti & Tol" },
-            ].map(({ label, name }) => (
-              <div key={label} className="flex items-center gap-2">
-                <span className="text-xs font-bold uppercase tracking-widest" style={{ color: "#DDA853" }}>{label}</span>
-                <span className="text-xs" style={{ color: "rgba(245,238,220,0.60)" }}>{name}</span>
-              </div>
-            ))}
-          </div>
-          {summerTeams.map(t => <SummerCard key={t.id} team={t} />)}
-
-          {/* E-BOOK — sits beneath the Summer 2026 teams, still inside the blue section */}
-          <div id="ebook" className="mt-10 scroll-mt-24">
-            <Eyebrow label="Team 2 Output" light />
-            <h3 className="font-black leading-tight mb-6"
-              style={{ color: "#F5EEDC", fontSize: "clamp(22px, 3vw, 30px)" }}>
-              The E-Book
-            </h3>
-            <EbookSection book={ebook} />
+      {/* PROGRAM SWITCH */}
+      <section className="px-6 sm:px-10 pt-10 pb-8" style={{ background: "#F5EEDC" }}>
+        <div className="max-w-5xl mx-auto">
+          <Eyebrow label="Projects TimeLine" />
+          <div className="flex flex-wrap gap-3">
+            <MainTab active={program === "summer"} onClick={() => setProgram("summer")}>
+              Summer 2026
+            </MainTab>
+            <MainTab active={program === "winter"} onClick={() => setProgram("winter")}>
+              Winter Camp 2025
+            </MainTab>
           </div>
         </div>
       </section>
+
+      {/* SUMMER 2026 */}
+      {program === "summer" && (
+        <section className="relative py-16 sm:py-20 px-6 sm:px-10 overflow-hidden" style={{ background: "#27548A" }}>
+          <div className="absolute inset-0 opacity-[0.05] pointer-events-none"
+            style={{ backgroundImage: `url(${Shapes})`, backgroundSize: "cover" }} />
+          <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full blur-3xl pointer-events-none"
+            style={{ background: "#DDA853", opacity: 0.12 }} />
+          <div className="relative z-10 max-w-5xl mx-auto">
+            <Eyebrow label="Current Program" light />
+            <h2 className="font-black uppercase tracking-tight leading-tight mb-2"
+              style={{ color: "#F5EEDC", fontSize: "clamp(32px, 4.5vw, 52px)" }}>
+              Summer<br />2026
+            </h2>
+            <p className="mb-4 text-[15px]" style={{ color: "rgba(245,238,220,0.55)" }}>
+              An 8-week research program — two teams, two questions, one shared goal.
+            </p>
+            <div className="flex flex-wrap gap-x-6 gap-y-2 mb-8">
+              {[
+                { label: "Team 1 Lead", name: "Ms. Aastha" },
+                { label: "Team 2 Lead", name: "Sakul" },
+                { label: "Outreach",    name: "Mr. Laxman" },
+                { label: "Peer Mentors",name: "Prakriti & Tol" },
+              ].map(({ label, name }) => (
+                <div key={label} className="flex items-center gap-2">
+                  <span className="text-[13px] font-bold uppercase tracking-widest" style={{ color: "#DDA853" }}>{label}</span>
+                  <span className="text-[13px]" style={{ color: "rgba(245,238,220,0.60)" }}>{name}</span>
+                </div>
+              ))}
+            </div>
+
+            {/* PROJECT SWITCH */}
+            <div className="flex flex-wrap gap-3 mb-8">
+              <SubTab active={summerProject === "p1"} onClick={() => setSummerProject("p1")}>
+                Project 1
+              </SubTab>
+              <SubTab active={summerProject === "p2"} onClick={() => setSummerProject("p2")}>
+                Project 2
+              </SubTab>
+            </div>
+
+            {/* Selected project */}
+            <SummerCard key={activeTeam.id} team={activeTeam} />
+
+            {/* E-BOOK — belongs to Project 2 (Team 2), so it only shows there */}
+            {summerProject === "p2" && (
+              <div id="ebook" className="mt-10 scroll-mt-24">
+                <Eyebrow label="Team 2 Output" light />
+                <h3 className="font-black leading-tight mb-6"
+                  style={{ color: "#F5EEDC", fontSize: "clamp(22px, 3vw, 30px)" }}>
+                  The E-Book
+                </h3>
+                <EbookSection book={ebook} />
+              </div>
+            )}
+          </div>
+        </section>
+      )}
 
       {/* WINTER CAMP 2025 */}
-      <section className="relative py-16 sm:py-20 px-6 sm:px-10 overflow-hidden">
-        <div className="absolute -top-24 -left-24 w-80 h-80 rounded-full blur-3xl pointer-events-none"
-          style={{ background: "#27548A", opacity: 0.10 }} />
-        <div className="relative z-10 max-w-5xl mx-auto">
-          <Eyebrow label="Past Program" />
-          <h2 className="font-black uppercase tracking-tight leading-tight mb-2"
-            style={{ color: "#183B4E", fontSize: "clamp(32px, 4.5vw, 52px)" }}>
-            Winter<br />Camp 2025
-          </h2>
-          <p className="mb-4 text-sm" style={{ color: "rgba(24,59,78,0.50)" }}>
-            Three subject tracks delivered to Grade 5 students at New Horizon School, Butwal.
-          </p>
-          <div className="grid sm:grid-cols-2 gap-5 mb-10">
-            <div className="rounded-2xl p-5 sm:p-6 flex gap-4 items-start" style={{ background: "#183B4E" }}>
-              <div className="shrink-0 w-11 h-11 rounded-full flex items-center justify-center"
-                style={{ background: "#DDA853" }}>
-                <BookOpen size={17} color="#183B4E" />
+      {program === "winter" && (
+        <section className="relative py-16 sm:py-20 px-6 sm:px-10 overflow-hidden" style={{ background: "#27548A" }}>
+          <div className="absolute inset-0 opacity-[0.05] pointer-events-none"
+            style={{ backgroundImage: `url(${Shapes})`, backgroundSize: "cover" }} />
+          <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full blur-3xl pointer-events-none"
+            style={{ background: "#DDA853", opacity: 0.12 }} />
+          <div className="relative z-10 max-w-5xl mx-auto">
+            <Eyebrow label="Past Program" light />
+            <h2 className="font-black uppercase tracking-tight leading-tight mb-2"
+              style={{ color: "#F5EEDC", fontSize: "clamp(32px, 4.5vw, 52px)" }}>
+              Winter<br />Camp 2025
+            </h2>
+            <p className="mb-4 text-[15px]" style={{ color: "rgba(245,238,220,0.55)" }}>
+              Three subject tracks delivered to Grade 5 students at New Horizon School, Butwal.
+            </p>
+            <div className="grid sm:grid-cols-2 gap-5 mb-10">
+              <div className="rounded-2xl p-5 sm:p-6 flex gap-4 items-start" style={{ background: "#183B4E" }}>
+                <div className="shrink-0 w-11 h-11 rounded-full flex items-center justify-center"
+                  style={{ background: "#DDA853" }}>
+                  <BookOpen size={17} color="#183B4E" />
+                </div>
+                <div>
+                  <p className="font-black text-[15px] mb-1" style={{ color: "#DDA853" }}>STEAM Experience</p>
+                  <p className="text-[15px] sm:text-base leading-relaxed" style={{ color: "rgba(245,238,220,0.72)" }}>
+                    Mathematics, English and Science (STEM) in a playful learning style.
+                  </p>
+                </div>
               </div>
-              <div>
-                <p className="font-black text-sm mb-1" style={{ color: "#DDA853" }}>STEAM Experience</p>
-                <p className="text-sm leading-relaxed" style={{ color: "rgba(245,238,220,0.72)" }}>
-                  Mathematics, English and Science (STEM) in a playful learning style.
-                </p>
+              <div className="rounded-2xl p-5 sm:p-6 flex gap-4 items-start"
+                style={{ background: "rgba(245,238,220,0.55)", border: "1.5px solid rgba(39,84,138,0.15)" }}>
+                <div className="shrink-0 w-11 h-11 rounded-full flex items-center justify-center"
+                  style={{ background: "#DDA853" }}>
+                  <Snowflake size={17} color="#183B4E" />
+                </div>
+                <div>
+                  <p className="font-black text-[15px] mb-1" style={{ color: "#183B4E" }}>EI & Camp Support</p>
+                  <p className="text-[15px] sm:text-base leading-relaxed" style={{ color: "rgba(24,59,78,0.72)" }}>
+                    Rojina led Emotional Intelligence sessions across the camp.
+                    Mr. Bipin provided essential support throughout.
+                  </p>
+                </div>
               </div>
             </div>
-            <div className="rounded-2xl p-5 sm:p-6 flex gap-4 items-start"
-              style={{ background: "rgba(39,84,138,0.08)", border: "1.5px solid rgba(39,84,138,0.15)" }}>
-              <div className="shrink-0 w-11 h-11 rounded-full flex items-center justify-center"
-                style={{ background: "#DDA853" }}>
-                <Snowflake size={17} color="#183B4E" />
-              </div>
-              <div>
-                <p className="font-black text-sm mb-1" style={{ color: "#183B4E" }}>EI & Camp Support</p>
-                <p className="text-sm leading-relaxed" style={{ color: "rgba(24,59,78,0.72)" }}>
-                  Rojina led Emotional Intelligence sessions across the camp.
-                  Mr. Bipin provided essential support throughout.
-                </p>
-              </div>
-            </div>
+            {winterTracks.map(t => <WinterCard key={t.id} track={t} />)}
           </div>
-          {winterTracks.map(t => <WinterCard key={t.id} track={t} />)}
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* OUTREACH */}
       <section className="relative py-16 sm:py-20 px-6 sm:px-10 overflow-hidden" style={{ background: "#27548A" }}>
@@ -463,7 +569,7 @@ const Projects = () => {
                 </div>
                 <div className="p-5 flex flex-col flex-1">
                   <h4 className="font-black mb-2" style={{ color: "#F5EEDC", fontSize: 18 }}>{p.title}</h4>
-                  <p className="text-sm leading-relaxed mb-4 flex-1" style={{ color: "rgba(245,238,220,0.72)" }}>{p.description}</p>
+                  <p className="text-[15px] sm:text-base leading-relaxed mb-4 flex-1" style={{ color: "rgba(245,238,220,0.72)" }}>{p.description}</p>
                   <div className="flex flex-wrap gap-2">
                     {p.tags.map(t => <Tag key={t} name={t} light />)}
                   </div>

@@ -5,13 +5,20 @@ const EMAIL = "shapebalapan@gmail.com"
 const INSTAGRAM_URL = "https://www.instagram.com/shape_balapan"
 
 const Eyebrow = ({ label, dark }) => (
-  <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
-    <div style={{ width: 28, height: 2.5, borderRadius: 2, background: "#DDA853" }} />
-    <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.22em", textTransform: "uppercase", color: dark ? "rgba(221,168,83,0.80)" : "#27548A" }}>
+  <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
+    <div style={{ width: 28, height: 3, borderRadius: 2, background: "#DDA853" }} />
+    <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: dark ? "rgba(221,168,83,0.90)" : "#27548A" }}>
       {label}
     </span>
   </div>
 )
+
+const labelStyle = {
+  display: "block", fontSize: 13, fontWeight: 700, letterSpacing: "0.08em",
+  textTransform: "uppercase", color: "#27548A", marginBottom: 6,
+}
+
+const errorStyle = { margin: "4px 0 0", fontSize: 13, color: "#d04848" }
 
 const Contact = () => {
   const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" })
@@ -45,11 +52,11 @@ const Contact = () => {
 
   const inputStyle = (key) => ({
     width: "100%",
-    padding: "13px 16px",
-    borderRadius: 10,
+    padding: "14px 16px",
+    borderRadius: 12,
     border: `1.5px solid ${touched[key] && errors[key] ? "#e05c5c" : "rgba(24,59,78,0.18)"}`,
     background: "#fff",
-    fontSize: 14,
+    fontSize: 16,
     color: "#183B4E",
     outline: "none",
     boxSizing: "border-box",
@@ -61,18 +68,18 @@ const Contact = () => {
     <main style={{ width: "100%", background: "#F5EEDC" }}>
 
       {/* HERO */}
-      <section style={{ background: "#183B4E", padding: "clamp(56px, 10vw, 96px) clamp(20px, 4vw, 40px) clamp(40px, 7vw, 72px)", position: "relative", overflow: "hidden" }}>
+      <section style={{ background: "#183B4E", padding: "clamp(56px, 10vw, 96px) clamp(20px, 4vw, 40px) clamp(40px, 7vw, 72px)", position: "relative", overflow: "hidden", borderBottom: "4px solid #DDA853" }}>
         <div style={{ position: "absolute", top: -80, right: -80, width: 320, height: 320, borderRadius: "50%", background: "#DDA853", opacity: 0.08, filter: "blur(80px)", pointerEvents: "none" }} />
         <div style={{ position: "absolute", bottom: -60, left: -60, width: 260, height: 260, borderRadius: "50%", background: "#27548A", opacity: 0.30, filter: "blur(60px)", pointerEvents: "none" }} />
         <div style={{ maxWidth: 1060, margin: "0 auto", position: "relative", zIndex: 1 }}>
           <Eyebrow label="Shape Balapan" dark />
-          <h1 style={{ margin: "0 0 20px", fontWeight: 900, fontSize: "clamp(48px, 9vw, 96px)", lineHeight: 0.92, letterSpacing: "-0.02em", color: "#F5EEDC" }}>
+          <h1 style={{ margin: "0 0 20px", fontWeight: 900, fontSize: "clamp(48px, 9vw, 96px)", lineHeight: 0.95, letterSpacing: "-0.02em", color: "#F5EEDC" }}>
             Get In<br /><span style={{ color: "#DDA853" }}>Touch</span>
           </h1>
           <svg style={{ display: "block", margin: "0 0 24px" }} width="120" height="11" viewBox="0 0 120 11" fill="none">
             <path d="M2 8 Q15 3 30 8 Q45 13 60 8 Q75 3 90 8 Q105 13 118 8" stroke="#DDA853" strokeWidth="3" strokeLinecap="round" fill="none" />
           </svg>
-          <p style={{ color: "rgba(245,238,220,0.75)", fontSize: "clamp(14px, 1.8vw, 17px)", lineHeight: 1.8, maxWidth: 420, margin: 0 }}>
+          <p style={{ color: "rgba(245,238,220,0.82)", fontSize: "clamp(15px, 1.8vw, 18px)", lineHeight: 1.8, maxWidth: 440, margin: 0 }}>
             Whether you're a school, researcher, parent, or just curious — we'd love to hear from you.
           </p>
         </div>
@@ -85,10 +92,10 @@ const Contact = () => {
           {/* LEFT — info */}
           <div>
             <Eyebrow label="Contact" />
-            <h2 style={{ margin: "0 0 16px", fontWeight: 900, fontSize: "clamp(28px, 4vw, 42px)", color: "#183B4E", lineHeight: 1.05 }}>
+            <h2 style={{ margin: "0 0 16px", fontWeight: 900, fontSize: "clamp(28px, 4vw, 42px)", color: "#183B4E", lineHeight: 1.1 }}>
               Let's start a<br />conversation
             </h2>
-            <p style={{ margin: "0 0 36px", fontSize: 15, lineHeight: 1.8, color: "rgba(24,59,78,0.70)" }}>
+            <p style={{ margin: "0 0 36px", fontSize: 16, lineHeight: 1.8, color: "rgba(24,59,78,0.78)" }}>
               Fill in the form and send via Gmail or your email app — or reach us directly through any of the channels below.
             </p>
 
@@ -121,21 +128,21 @@ const Contact = () => {
                   href: null,
                 },
               ].map(({ icon, label, value, href, external }) => (
-                <div key={label} style={{ display: "flex", alignItems: "center", gap: 16, padding: "16px 20px", borderRadius: 14, background: "#fff", border: "1px solid rgba(24,59,78,0.10)" }}>
-                  <div style={{ flexShrink: 0, width: 42, height: 42, borderRadius: "50%", background: "#DDA853", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <div key={label} style={{ display: "flex", alignItems: "center", gap: 16, padding: "16px 20px", borderRadius: 16, background: "#fff", border: "1px solid rgba(24,59,78,0.10)", boxShadow: "0 4px 16px rgba(24,59,78,0.04)" }}>
+                  <div style={{ flexShrink: 0, width: 44, height: 44, borderRadius: "50%", background: "#DDA853", display: "flex", alignItems: "center", justifyContent: "center" }}>
                     {icon}
                   </div>
                   <div style={{ minWidth: 0 }}>
-                    <p style={{ margin: 0, fontSize: 10, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: "#27548A" }}>{label}</p>
+                    <p style={{ margin: 0, fontSize: 12, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#27548A" }}>{label}</p>
                     {href ? (
                       <a href={href} target={external ? "_blank" : undefined} rel={external ? "noopener noreferrer" : undefined}
-                        style={{ margin: "2px 0 0", fontSize: 14, fontWeight: 700, color: "#183B4E", textDecoration: "none", display: "block", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}
+                        style={{ margin: "2px 0 0", fontSize: 16, fontWeight: 700, color: "#183B4E", textDecoration: "none", display: "block", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}
                         onMouseEnter={e => (e.currentTarget.style.color = "#27548A")}
                         onMouseLeave={e => (e.currentTarget.style.color = "#183B4E")}>
                         {value}
                       </a>
                     ) : (
-                      <p style={{ margin: "2px 0 0", fontSize: 14, fontWeight: 700, color: "#183B4E" }}>{value}</p>
+                      <p style={{ margin: "2px 0 0", fontSize: 16, fontWeight: 700, color: "#183B4E" }}>{value}</p>
                     )}
                   </div>
                 </div>
@@ -143,8 +150,8 @@ const Contact = () => {
             </div>
 
             {/* IRD note */}
-            <div style={{ marginTop: 28, padding: "16px 20px", borderRadius: 14, background: "#183B4E", border: "1px solid rgba(221,168,83,0.20)" }}>
-              <p style={{ margin: 0, fontSize: 12, lineHeight: 1.7, color: "rgba(245,238,220,0.65)" }}>
+            <div style={{ marginTop: 28, padding: "18px 22px", borderRadius: 16, background: "#183B4E", border: "1px solid rgba(221,168,83,0.20)" }}>
+              <p style={{ margin: 0, fontSize: 14, lineHeight: 1.7, color: "rgba(245,238,220,0.75)" }}>
                 Shape Balapan is an initiative of the{" "}
                 <a href="https://ird.com.np/" target="_blank" rel="noopener noreferrer"
                   style={{ color: "#DDA853", fontWeight: 700, textDecoration: "none" }}>
@@ -156,10 +163,10 @@ const Contact = () => {
           </div>
 
           {/* RIGHT — form */}
-          <div style={{ background: "#fff", borderRadius: 20, padding: "clamp(24px, 4vw, 40px)", border: "1px solid rgba(24,59,78,0.10)", boxShadow: "0 8px 40px rgba(24,59,78,0.07)" }}>
+          <div style={{ background: "#fff", borderRadius: 24, padding: "clamp(24px, 4vw, 40px)", border: "1px solid rgba(24,59,78,0.10)", boxShadow: "0 12px 44px rgba(24,59,78,0.08)" }}>
             <div style={{ marginBottom: 28 }}>
-              <p style={{ margin: "0 0 4px", fontWeight: 900, fontSize: 22, color: "#183B4E" }}>Send a message</p>
-              <p style={{ margin: 0, fontSize: 13, color: "rgba(24,59,78,0.55)" }}>We'll get back to you as soon as we can.</p>
+              <p style={{ margin: "0 0 4px", fontWeight: 900, fontSize: 24, color: "#183B4E" }}>Send a message</p>
+              <p style={{ margin: 0, fontSize: 15, color: "rgba(24,59,78,0.65)" }}>We'll get back to you as soon as we can.</p>
             </div>
 
             <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
@@ -167,8 +174,8 @@ const Contact = () => {
               {/* Name + Email row */}
               <div className="contact-name-email" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
                 <div>
-                  <label style={{ display: "block", fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#27548A", marginBottom: 6 }}>
-                    Name <span style={{ color: "#e05c5c" }}>*</span>
+                  <label style={labelStyle}>
+                    Name <span style={{ color: "#d04848" }}>*</span>
                   </label>
                   <input
                     type="text"
@@ -180,11 +187,11 @@ const Contact = () => {
                     onFocus={e => (e.target.style.borderColor = "#DDA853", e.target.style.boxShadow = "0 0 0 3px rgba(221,168,83,0.15)")}
                     onBlurCapture={e => (e.target.style.boxShadow = "")}
                   />
-                  {touched.name && errors.name && <p style={{ margin: "4px 0 0", fontSize: 11, color: "#e05c5c" }}>{errors.name}</p>}
+                  {touched.name && errors.name && <p style={errorStyle}>{errors.name}</p>}
                 </div>
                 <div>
-                  <label style={{ display: "block", fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#27548A", marginBottom: 6 }}>
-                    Email <span style={{ color: "#e05c5c" }}>*</span>
+                  <label style={labelStyle}>
+                    Email <span style={{ color: "#d04848" }}>*</span>
                   </label>
                   <input
                     type="email"
@@ -196,13 +203,13 @@ const Contact = () => {
                     onFocus={e => (e.target.style.borderColor = "#DDA853", e.target.style.boxShadow = "0 0 0 3px rgba(221,168,83,0.15)")}
                     onBlurCapture={e => (e.target.style.boxShadow = "")}
                   />
-                  {touched.email && errors.email && <p style={{ margin: "4px 0 0", fontSize: 11, color: "#e05c5c" }}>{errors.email}</p>}
+                  {touched.email && errors.email && <p style={errorStyle}>{errors.email}</p>}
                 </div>
               </div>
 
               {/* Subject */}
               <div>
-                <label style={{ display: "block", fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#27548A", marginBottom: 6 }}>
+                <label style={labelStyle}>
                   Subject
                 </label>
                 <input
@@ -218,8 +225,8 @@ const Contact = () => {
 
               {/* Message */}
               <div>
-                <label style={{ display: "block", fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#27548A", marginBottom: 6 }}>
-                  Message <span style={{ color: "#e05c5c" }}>*</span>
+                <label style={labelStyle}>
+                  Message <span style={{ color: "#d04848" }}>*</span>
                 </label>
                 <textarea
                   rows={5}
@@ -227,11 +234,11 @@ const Contact = () => {
                   value={form.message}
                   onChange={e => set("message", e.target.value)}
                   onBlur={() => touch("message")}
-                  style={{ ...inputStyle("message"), resize: "vertical", minHeight: 120 }}
+                  style={{ ...inputStyle("message"), resize: "vertical", minHeight: 130 }}
                   onFocus={e => (e.target.style.borderColor = "#DDA853", e.target.style.boxShadow = "0 0 0 3px rgba(221,168,83,0.15)")}
                   onBlurCapture={e => (e.target.style.boxShadow = "")}
                 />
-                {touched.message && errors.message && <p style={{ margin: "4px 0 0", fontSize: 11, color: "#e05c5c" }}>{errors.message}</p>}
+                {touched.message && errors.message && <p style={errorStyle}>{errors.message}</p>}
               </div>
 
               {/* Two send buttons */}
@@ -242,9 +249,9 @@ const Contact = () => {
                   onClick={handleGmail}
                   style={{
                     display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
-                    width: "100%", padding: "14px 24px", borderRadius: 100,
+                    width: "100%", padding: "15px 24px", borderRadius: 100,
                     background: "#DDA853", color: "#183B4E",
-                    fontWeight: 800, fontSize: 13, letterSpacing: "0.12em", textTransform: "uppercase",
+                    fontWeight: 800, fontSize: 14, letterSpacing: "0.1em", textTransform: "uppercase",
                     border: "none", cursor: "pointer",
                     transition: "background 0.18s, transform 0.15s",
                     opacity: valid ? 1 : 0.7,
@@ -266,9 +273,9 @@ const Contact = () => {
                   onClick={handleMailto}
                   style={{
                     display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
-                    width: "100%", padding: "14px 24px", borderRadius: 100,
+                    width: "100%", padding: "15px 24px", borderRadius: 100,
                     background: "transparent", color: "#183B4E",
-                    fontWeight: 800, fontSize: 13, letterSpacing: "0.12em", textTransform: "uppercase",
+                    fontWeight: 800, fontSize: 14, letterSpacing: "0.1em", textTransform: "uppercase",
                     border: "2px solid rgba(24,59,78,0.20)", cursor: "pointer",
                     transition: "border-color 0.18s, transform 0.15s",
                     opacity: valid ? 1 : 0.7,
@@ -289,19 +296,19 @@ const Contact = () => {
 
       {/* BOTTOM CTA */}
       <section style={{ background: "#EDE6D0", padding: "clamp(40px, 6vw, 64px) 20px", textAlign: "center" }}>
-        <p style={{ margin: "0 0 6px", fontWeight: 900, fontSize: "clamp(18px, 2.5vw, 26px)", color: "#183B4E" }}>
+        <p style={{ margin: "0 0 6px", fontWeight: 900, fontSize: "clamp(20px, 2.5vw, 28px)", color: "#183B4E" }}>
           Follow our journey on Instagram
         </p>
-        <p style={{ margin: "0 0 24px", fontSize: 14, color: "rgba(24,59,78,0.55)" }}>Stay updated on our research, stories, and impact.</p>
+        <p style={{ margin: "0 0 24px", fontSize: 16, color: "rgba(24,59,78,0.68)" }}>Stay updated on our research, stories, and impact.</p>
         <a
           href={INSTAGRAM_URL}
           target="_blank"
           rel="noopener noreferrer"
           style={{
             display: "inline-flex", alignItems: "center", gap: 8,
-            padding: "12px 28px", borderRadius: 100,
+            padding: "14px 30px", borderRadius: 100,
             background: "#DDA853", color: "#183B4E",
-            fontWeight: 800, fontSize: 13, letterSpacing: "0.12em", textTransform: "uppercase",
+            fontWeight: 800, fontSize: 14, letterSpacing: "0.1em", textTransform: "uppercase",
             textDecoration: "none", transition: "background 0.18s, transform 0.15s",
           }}
           onMouseEnter={e => { e.currentTarget.style.background = "#e8c070"; e.currentTarget.style.transform = "translateY(-2px)" }}
