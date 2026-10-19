@@ -18,6 +18,26 @@ const SITE_URL = "https://shape-balapan.ird.com.np"
 
 const KASKI_PATH = "/projects/kaski-case-study"
 
+
+const RESOURCES = [
+  { title: "EFL Students’ Difficulties on Using Subject-Verb Agreement",
+    url: "https://www.researchgate.net/publication/375365616_EFL_Students'_Difficulties_on_Using_Subject-Verb_Agreement" },
+  { title: "Subject-verb agreement as a key element of effective english reading and writing",
+    url: "https://journalss.org/index.php/mod/article/view/14178" },
+  { title: "NYLearns - New York State’s curriculum management and standards-based system",
+    url: "https://nylearns.org/module/standards/Tools/Browse?LinkStandardId=232344&StandardId=232734" },
+  { title: "IXL third grade language arts skills",
+    url: "https://www.ixl.com/ela/grade-3" },
+  { title: "Basic Level Curriculum English, CDC E-library",
+    url: "http://lib.moecdc.gov.np/elibrary/pages/view.php?ref=9946&k=#" },
+  { title: "Grade three English Textbook CDC",
+    url: "https://giwmscdnone.gov.np/media/pdf_upload/%E0%A4%AE%E0%A5%87%E0%A4%B0%E0%A5%8B%20%E0%A4%85%E0%A4%82%E0%A4%97%E0%A5%8D%E0%A4%B0%E0%A5%87%E0%A4%9C%E0%A5%80%20%E0%A4%95%E0%A4%95%E0%A5%8D%E0%A4%B7%E0%A4%BE%20%20%E0%A5%A9_ipbasdw.pdf" },
+  { title: "Grade four English Textbook by CDC",
+    url: "https://learning.cehrd.gov.np/pluginfile.php/129/mod_resource/content/1/my%20english%204.pdf" },
+  { title: "Grade five English textbook CDC",
+    url: "https://learning.cehrd.gov.np/pluginfile.php/149/mod_resource/content/1/english%205.pdf" },
+]
+
 const NAVY = "#183B4E"
 const GOLD = "#DDA853"
 const CREAM = "#F5EEDC"
@@ -116,11 +136,13 @@ const KaskiCaseStudy = () => {
             </span>
           </div>
 
-          <h1 className="font-black leading-tight mb-5"
-            style={{ color: CREAM, fontSize: "clamp(28px, 5vw, 46px)" }}>
+          <h1 className="font-black mb-6"
+            style={{ color: CREAM, fontSize: "clamp(22px, 5vw, 46px)", lineHeight: 1.2, textWrap: "balance" }}>
             When learning outcomes are not met:
-            <br />
-            <span style={{ color: GOLD }}>A case study of fifth grade students in Kaski, Nepal</span>
+            <span className="block mt-3 sm:mt-0 text-[0.7em] sm:text-[1em] leading-snug sm:leading-tight"
+              style={{ color: GOLD, textWrap: "balance" }}>
+              A case study of fifth grade students in Kaski, Nepal
+            </span>
           </h1>
 
           <p className="text-[15px] sm:text-base mb-6" style={{ color: "rgba(245,238,220,0.8)", lineHeight: 1.7 }}>
@@ -146,18 +168,18 @@ const KaskiCaseStudy = () => {
       <article className="max-w-3xl mx-auto px-6 sm:px-10 py-12 sm:py-16">
 
         <P>
-          Take a pen and paper because we are about to take you back to your English classroom in fifth
-          grade. Identify subject, verb, and object in the following sentences:
+          Take a pen and paper, because we are about to take you back to your English classroom in
+          fifth grade. Identify the subject, verb, and object in the following sentences:
         </P>
 
         <div className="mb-6" style={{ color: NAVY, lineHeight: 1.9 }}>
-          <p className="text-[16px] sm:text-[17px]">1. Joey drinks chocolate milk everyday.</p>
+          <p className="text-[16px] sm:text-[17px]">1. Joey drinks chocolate milk every day.</p>
           <p className="text-[16px] sm:text-[17px]">Verb:</p>
           <p className="text-[16px] sm:text-[17px]">Subject:</p>
           <p className="text-[16px] sm:text-[17px]">Object:</p>
         </div>
         <P>The answer is at the end of this article.</P>
-        <P>You got that correct? Ok next.</P>
+        <P>Did you get that correct? Okay, next.</P>
 
         <div className="mb-6" style={{ color: NAVY, lineHeight: 1.9 }}>
           <p className="text-[16px] sm:text-[17px]">2. She is singing joyfully.</p>
@@ -168,15 +190,15 @@ const KaskiCaseStudy = () => {
         <P>The answer is at the end of this article.</P>
 
         <P>
-          Did you get that correct? Take a moment to remember your teachers because of whom you are
-          able to understand Subject-Verb Agreement. In the English language, it is easier to understand
-          “who or what performs an action” when verbs agree with their respective subject (Putri, 2023).
-          Verbs in sentences are modified according to time of the action and the number of subjects the
-          verb possesses (Karshiboyeva, 2026). It is an important fundamental concept in English
-          grammar because tense, voice, adjective clause, parallelism, and many other rules build on
-          SVA. In New York state, the third grade curriculum includes a requirement to ensure
-          subject-verb and pronoun-antecedent agreement (NYLearns). The following questions are
-          required for third graders:
+          Did you get that correct? Take a moment to remember your teachers, because of whom you are
+          able to understand Subject-Verb Agreement (SVA). In the English language, it is easier to
+          understand “who or what performs an action” when verbs agree with their respective
+          subjects (Putri, 2023). Verbs in sentences are modified according to the time of the
+          action and the number of subjects the verb possesses (Karshiboyeva, 2026). It is an
+          important fundamental concept in English grammar because tense, voice, adjective clauses,
+          parallelism, and many other rules build on SVA. In New York State, the third-grade
+          curriculum includes a requirement to ensure subject-verb and pronoun-antecedent agreement
+          (NYLearns). The following questions are required for third graders:
         </P>
 
         <Figure
@@ -187,13 +209,13 @@ const KaskiCaseStudy = () => {
 
         <P>
           Academic standards and learning outcomes are set by the concerned bodies to ensure that
-          students learn what is required of them. In Nepal, the Curriculum Development Centre has set
-          certain standards for schools all over the country, primarily followed by government schools, as
-          private schools tend to go beyond the standards set by the government. We looked at the
-          curriculum from grade one to five; the basics of singular/plural nouns and singular/plural verbs
-          are touched upon in grade three; tenses such as present simple, past simple, past continuous,
-          present continuous, and simple future are included in the grade five textbook (CDC E-Library,
-          2022).
+          students learn what is required of them. In Nepal, the Curriculum Development Centre has
+          set certain standards for schools all over the country, primarily followed by government
+          schools, as private schools tend to go beyond the standards set by the government. We
+          looked at the curriculum from grade one to grade five; the basics of singular/plural nouns
+          and singular/plural verbs are touched upon in grade three; tenses such as present simple,
+          past simple, past continuous, present continuous, and simple future are included in the
+          grade five textbook (CDC E-Library, 2022).
         </P>
 
         <Figure
@@ -204,31 +226,31 @@ const KaskiCaseStudy = () => {
         />
 
         <P>
-          Looking at these requirements, we set out to teach tenses to fifth graders at a public school in
-          Kaski district from August 29 to September 9. Our logic was that students were already familiar
-          with SVA. We aimed to observe the difference between a group of students who received both
-          assessment of learning and assessment for learning and a group of students who received only
-          assessment of learning. We didn’t anticipate that we’d meet with the ground reality of
-          classrooms: fifth graders in that school were not able to form basic sentences in English. So we
-          swiftly shifted to making this summer research project a teaching project. During the process we
-          identified a number of elements that need to be addressed before educators design curriculum
-          and assessment standards in Nepal. We are presenting it as an account of one classroom, just
-          as we saw it. The identities of students have been changed, but the works presented by those
-          students are of their own.
+          Looking at these requirements, we set out to teach tenses to fifth graders at a public
+          school in the Kaski district from August 29 to September 9. Our logic was that students
+          were already familiar with SVA. We aimed to observe the difference between a group of
+          students who received both assessment of learning and assessment for learning and a group
+          of students who received only assessment of learning. We didn’t anticipate that we’d meet
+          with the ground reality of classrooms: fifth graders in that school were not able to form
+          basic sentences in English. So, we swiftly shifted to making this summer research project
+          a teaching project. During the process, we identified a number of elements that need to be
+          addressed before educators design curriculum and assessment standards in Nepal. We are
+          presenting it as an account of one classroom, just as we saw it. The identities of
+          students have been changed, but the work presented by those students is their own.
         </P>
 
         <H>Students prioritize completing assignments over asking for help</H>
 
         <Figure
           src={fig3}
-          alt="Illustration of a student holding her homework, with chalkboard notes asking why students are not confident to ask for help"
-          caption="Figure 3: Figure generated using AI."
+          alt="Illustration of a student holding  homework"
+          caption="Figure 3: Student with handbook."
         />
 
         <P>
           A significant difference was observed between students' homework performance and their
           performance during independent assessment. Some students submitted correct and
-          well-completed homework, but were unable to answer similar questions correctly when
+          well-completed homework but were unable to answer similar questions correctly when
           assessed independently in the classroom.
         </P>
 
@@ -244,11 +266,11 @@ const KaskiCaseStudy = () => {
         </Quote>
 
         <P>
-          When Drishti said this while turning in her work one day, we initiated a conversation to know the
-          reality of what she implied. That was when we found out that she completed her previous
-          assignments with the help of elder brother. During the independent assessment, she made
-          mistakes in several questions, despite the questions being based on concepts covered during
-          the learning activities.
+          When Drishti said this while turning in her work one day, we initiated a conversation to
+          know the reality of what she implied. That was when we found out that she had completed
+          her previous assignments with the help of her elder brother. During the independent
+          assessment, she made mistakes in several questions, despite the questions being based on
+          concepts covered during the learning activities.
         </P>
 
         <FigureBeside
@@ -266,14 +288,14 @@ const KaskiCaseStudy = () => {
         />
 
         <P>
-          Drishti is one representative of the classroom where students feel more comfortable to lie to
-          teachers than ask for help. Another stark example of this classroom culture was observed when
-          students completed assignments on the chapter not taught them to yet. Our student researchers
-          asked students to identify subject, verb, and object from the sentences published in the chapter
-          of tenses. “We made sure to explain to each student that the task was to identify SVO, not
-          tenses,” Rabina emphasized. Yet some students turned in assignments where they correctly
-          identified Tense-Aspect-Mood, the chapter not taught to them. This raised questions about how
-          the students obtained the answers.
+          Drishti is one representative of the classroom where students feel more comfortable lying
+          to teachers than asking for help. Another stark example of this classroom culture was
+          observed when students completed assignments on the chapter not yet taught to them. Our
+          student researchers asked students to identify the subject, verb, and object from the
+          sentences published in the chapter on tenses. “We made sure to explain to each student
+          that the task was to identify SVO, not tenses,” Rabina emphasized. Yet some students
+          turned in assignments where they correctly identified Tense-Aspect-Mood, the chapter not
+          taught to them. This raised questions about how the students obtained the answers.
         </P>
 
         <Figure
@@ -284,12 +306,12 @@ const KaskiCaseStudy = () => {
         />
 
         <P>
-          However, the test he took at the end of the chapter indicates a gap in knowledge. The contrast
-          between their highly accurate homework and their incorrect assessment responses suggests
-          that the homework may have been completed with the help of external sources. Possible
-          sources may include assistance from family members, teachers, online searches, or AI tools
-          even though AI use cannot be confirmed solely from the submitted homework and assessment
-          results.
+          However, the test he took at the end of the chapter indicates a gap in knowledge. The
+          contrast between their highly accurate homework and their incorrect assessment responses
+          suggests that the homework may have been completed with the help of external sources.
+          Possible sources may include assistance from family members, teachers, online searches, or
+          AI tools, even though AI use cannot be confirmed solely from the submitted homework and
+          assessment results.
         </P>
 
         <Figure
@@ -307,13 +329,13 @@ const KaskiCaseStudy = () => {
         </P>
 
         <P>
-          Our hypothesis is that when students get more opportunities to take tests that do not reflect final
-          grades, they shall seek help from teachers in classrooms. The classroom culture right now can
-          be changed not by eliminating examinations or reducing homework, but by telling students that
-          making mistakes is a wonderful way to learn. Anyone who has grown up in Nepal knows that
-          our classrooms do not encourage making mistakes and the fear of reprimand for not turning in
-          assignments is high. Unless this culture isn’t addressed and worked on, introducing so-called
-          “foreign methods” is unlikely to work.
+          Our hypothesis is that when students get more opportunities to take tests that do not
+          reflect final grades, they shall seek help from teachers in classrooms. The classroom
+          culture right now can be changed not by eliminating examinations or reducing homework, but
+          by telling students that making mistakes is a wonderful way to learn. Anyone who has grown
+          up in Nepal knows that our classrooms do not encourage making mistakes, and the fear of
+          reprimand for not turning in assignments is high. Unless this culture is addressed and
+          worked on, introducing so-called “foreign methods” is unlikely to work.
         </P>
 
         <P>
@@ -322,24 +344,26 @@ const KaskiCaseStudy = () => {
           concepts behind the answers.
         </P>
 
-        <H>Scores can be a sheer luck unless tested with challenge</H>
+        <H>Scores can be sheer luck unless tested with challenge</H>
 
         <P>
-          At SHAPE Balapan we prioritize play not to let go of challenging cognitive tasks, but to make
-          sure that children feel supported and safe during those challenging tasks, so it shouldn’t come
-          as a surprise when we push for tests that push students to learn. And we say this after
-          observing a test paper that could have deceived a teacher if it was not designed to challenge
-          the learner.
+          At SHAPE Balapan, we prioritize play not to let go of challenging cognitive tasks, but to
+          make sure that children feel supported and safe during those challenging tasks, so it
+          shouldn’t come as a surprise when we push for tests that push students to learn. And we
+          say this after observing a test paper that could have deceived a teacher if it had not
+          been designed to challenge the learner.
         </P>
 
-        <P>Bibek correctly identified subject, verb, and object in the following sentence:</P>
+        <P>
+          Bibek correctly identified the subject, verb, and object in the following sentence:
+        </P>
 
         <p className="text-[16px] sm:text-[17px] mb-2 pl-6" style={{ color: NAVY, lineHeight: 1.9 }}>1. Cows eat grass.</p>
         <P>Subject: Cows, verb: eat, object: grass.</P>
 
         <P>
-          A teacher is likely to think that the student got the grasp on the concept. Alright, let us move
-          forward to another sentence in the same assessment.
+          A teacher is likely to think that the student got a grasp of the concept. All right, let
+          us move forward to another sentence in the same assessment.
         </P>
 
         <p className="text-[16px] sm:text-[17px] mb-2 pl-6" style={{ color: NAVY, lineHeight: 1.9 }}>2. We love our teacher.</p>
@@ -370,33 +394,34 @@ const KaskiCaseStudy = () => {
         </div>
 
         <P>
-          If Bibek had asked these questions in the first sentence, he would not have thought love, a verb,
-          to be the subject in the second sentence. Also, if he writes ‘our’ as the verb, this shows that he
-          might not have a clear understanding of verbs. The next step here is to help Bibek understand
-          that someone performs work in a sentence and mitigate his learning gap.
+          If Bibek had asked these questions in the first sentence, he would not have thought love,
+          a verb, to be the subject in the second sentence. Also, if he writes ‘our’ as the verb,
+          this shows that he might not have a clear understanding of verbs. The next step here is to
+          help Bibek understand that someone performs work in a sentence and to mitigate his
+          learning gap.
         </P>
 
         <P>
-          In the third sentence, he chose beautifully as the object which was tricky because the concept of
-          transitive verb and intransitive verb hasn’t been introduced yet; however, we see the concern
-          more with whether he was able to choose the subject and the verb correctly because he seems
-          to be applying a three-slot template (subject, verb, object) and not asking what each word
-          actually does. This is also the reason why his object is correct in all sentences except the third
-          sentence that doesn’t have an object. Beautifully is used as an adverb here which could be
-          confusing to a student who has learnt to divide the sentence into three chunks and categorize
-          subject, verb and object.
+          In the third sentence, he chose beautifully as the object, which was tricky because the
+          concept of transitive and intransitive verbs hasn’t been introduced yet; however, we see
+          the concern more with whether he was able to choose the subject and the verb correctly,
+          because he seems to be applying a three-slot template (subject, verb, object) and not
+          asking what each word actually does. This is also the reason why his object is correct in
+          all sentences except the third sentence, which doesn’t have an object. Beautifully is used
+          as an adverb here, which could be confusing to a student who has learnt to divide the
+          sentence into three chunks and categorize the subject, verb, and object.
         </P>
 
         <P>
-          In the fourth sentence, the learning gap is seen in the concept of auxiliary verbs which can be
-          addressed once the main verb lands well. When both can and speak show up in a sentence, it
-          is the right time to introduce helping verbs and main verbs.
+          In the fourth sentence, the learning gap is seen in the concept of auxiliary verbs, which
+          can be addressed once the main verb lands well. When both can and speak show up in a
+          sentence, it is the right time to introduce helping verbs and main verbs.
         </P>
 
         <P>
-          It is crucial to meet students where they are while designing lesson plans but also to have a
-          clear end-goal or else students are likely to be left behind in knowledge but upgraded to higher
-          classrooms due to more lenient policies.
+          It is crucial to meet students where they are while designing lesson plans, but also to
+          have a clear end goal, or else students are likely to be left behind in knowledge but
+          upgraded to higher classrooms due to more lenient policies.
         </P>
 
         <H>Follow up on learning outcomes</H>
@@ -430,95 +455,100 @@ const KaskiCaseStudy = () => {
         />
 
         <P>
-          This evidence demonstrates that the concept itself isn’t missing from the curriculum, rather the
-          learning outcomes aren’t being met before promoting students to higher class. Task in figure 9
-          addresses singular subject with singular verb. The task in figure 10 aims to teach that auxiliary
-          verbs too change based on the subject. After third grade, the exercises return in grade four with
-          a longer list of forms (<em>is/are</em>, <em>don't/doesn't</em>, <em>haven't/hasn't</em>, <em>wasn't/weren't</em>).
-          By grade five, students have met subject-verb agreement in print for at least two years. Yet the
-          fifth graders we taught could not form basic sentences and struggled with subject-verb agreement.
+          This evidence demonstrates that the concept itself isn’t missing from the curriculum;
+          rather, the learning outcomes aren’t being met before promoting students to a higher
+          class. The task in Figure 9 addresses a singular subject with a singular verb. The task in
+          Figure 10 aims to teach that auxiliary verbs, too, change based on the subject. After
+          third grade, the exercises return in grade four with a longer list of forms
+          (<em>is/are</em>, <em>don't/doesn't</em>, <em>haven't/hasn't</em>,
+          <em>wasn't/weren't</em>). By grade five, students have met subject-verb agreement in print
+          for at least two years. Yet the fifth graders we taught could not form basic sentences and
+          struggled with subject-verb agreement.
         </P>
 
         <P>
-          Our hypothesis behind why fifth graders are not familiar with subject-verb agreement is that they
-          aren’t taught grammar with explicit technical terms. We make this hypothesis also from our
-          winter camp in December, 2025 at a private school in Butwal; students in that school could
-          speak and write fluent English, but they weren’t learned in subject-verb agreement as a rule.
-          The English textbooks do not include explanations behind grammar rules which raises a
-          question: where do students read from? Figure 10 gives two options in brackets, and a child can
-          choose one without knowing why. All other exercises assume the rule and test it, but they do not
-          teach it. In the pages we reviewed, we did not find an explanation of what a singular or plural
-          subject is, how to tell one from the other, or how the verb changes with it. The textbook asks
-          students to practise a rule it never states.
+          Our hypothesis behind why fifth graders are not familiar with subject-verb agreement is
+          that they aren’t taught grammar with explicit technical terms. We also make this
+          hypothesis from our winter camp in December 2025 at a private school in Butwal; students
+          in that school could speak and write fluent English, but they had not learned subject-verb
+          agreement as a rule. The English textbooks do not include explanations behind grammar
+          rules, which raises a question: where do students read from? Figure 9 gives two options in
+          brackets, and a child can choose one without knowing why. All other exercises assume the
+          rule and test it, but they do not teach it. In the pages we reviewed, we did not find an
+          explanation of what a singular or plural subject is, how to tell one from the other, or
+          how the verb changes with it. The textbook asks students to practise a rule it never
+          states.
         </P>
 
         <P>
-          If the explanation is not in the book, it has to come from somewhere else: a teacher's oral
-          explanation, a tuition class, a guidebook, or an older sibling at home. Each of these is unevenly
-          available. A student like Drishti, who has a brother to help with assignments get the homework
-          done, but doesn’t really study it. Other students get the assignments done anyhow with the help
-          of the internet now. This also changes how we read the homework-versus-assessment gap. But
-          when tested in class, all these exercises fail in preparation. The classroom culture becomes all
-          about filling in the answer without students having to put in effort to read the chapter on their
-          own or not having resources to read on their own. Students who turn to someone else for
-          answers may be responding sensibly to a book that offers practice but no detailed explanation
-          suitable for elementary school students’ cognitive and linguistic development.
+          If the explanation is not in the book, it has to come from somewhere else: a teacher's
+          oral explanation, a tuition class, a guidebook, or an older sibling at home. Each of these
+          is unevenly available. A student like Drishti, who has a brother to help with assignments,
+          gets the homework done but doesn’t really study it. Other students get the assignments
+          done anyhow with the help of the internet now. This also changes how we read the
+          homework-versus-assessment gap. But when students are tested in class, all these exercises
+          fail in preparation. The classroom culture becomes all about filling in the answer without
+          students having to put in effort to read the chapter on their own, or because they do not
+          have resources to read on their own. Students who turn to someone else for answers may be
+          responding sensibly to a book that offers practice but no detailed explanation suitable
+          for elementary school students’ cognitive and linguistic development.
         </P>
 
         <P>
-          Standards tell us what a child should be able to do by the end of a grade, but they do not tell us
-          whether the materials, or the classroom, give the child proper support to get there. It doesn’t
-          even tell if teachers are getting enough resources to help students before they promote them to
-          a higher class. Hence, we strongly recommend the Ministry of Government to establish a
-          system where the learning outcomes are being monitored strictly rather than bypassing the
-          requirements in order to promote students. Because how did the students reach fifth grade
-          without learning how to form basic sentences? Asking this question does justice to students who
-          will be promoted again this year without getting the help they require.
+          Standards tell us what a child should be able to do by the end of a grade, but they do not
+          tell us whether the materials, or the classroom, gives the child proper support to get
+          there. It doesn’t even tell if teachers are getting enough resources to help students
+          before they promote them to a higher class. Hence, we strongly recommend that the Ministry
+          of Education establish a system where the learning outcomes are being monitored strictly
+          rather than the requirements being bypassed in order to promote students. How did the
+          students reach fifth grade without learning how to form basic sentences? Asking this
+          question does justice to students who will be promoted again this year without getting the
+          help they require.
         </P>
 
         <H>Reflection by Rabina Poudel</H>
 
         <Quote>
           <QuoteLine>“Yo sabae bhanda ugra class ho feri, baccha haru lai herna garo huna sakxa”</QuoteLine>
-          <QuoteLine>“This is the worst class in the school, so it might be a little hard to handle the students” the class
-            teacher cautioned us before we started our lessons there.</QuoteLine>
         </Quote>
 
         <P>
-          They were fifth graders, and as lively
-          as they were, I realized getting their attention and keeping them on a task was a real challenge.
-          On my second day, one student bluntly said, “the lesson is boring” when asked why he wasn't
-          paying attention. “Was our lesson really disengaging or was he struggling to understand?,” I
-          wondered.
+          “This is the worst class in the school, so it might be a little hard to handle the
+          students,” the class teacher cautioned us before we started our lessons there. They were
+          fifth graders, and as lively as they were, I realized getting their attention and keeping
+          them on a task was a real challenge. On my second day, one student bluntly said, “The
+          lesson is boring,” when asked why he wasn't paying attention. “Was our lesson really
+          disengaging, or was he struggling to understand?” I wondered.
         </P>
 
         <P>
           Hearing my struggle, a friend in SHAPE Balapan gave me an idea of using rewards. The next
-          day, I walked into the classroom with a bag of chocofun and announced, ”Whoever stays
-          engaged, asks and answers questions and completes their work will get a reward.” Suddenly,
-          the dynamics shifted. Students had questions to ask and answers to share, all while keeping an
-          eager eye to the chocofuns on the desk. They competed to answer, even prompting their friends
-          to pay attention. Some even urged me to go forward with the lesson and teach them new
-          material saying that they already understood the concept. Engagement made the class
-          effortless; it was my best day in the entire teaching experience there. At that moment, I thought
-          of wanting to be an educator not driven by the dread realities of the education system in Nepal,
-          but by the pure joy of a curious and motivated class. When curiosity and participation are
-          rewarded, students stop being afraid of asking questions or making mistakes. Even if they
-          initially engage just for reward, the initial spark may open the door to genuine intrinsic
-          motivation. Ultimately, they may develop a deep connection to learning.
+          day, I walked into the classroom with a bag of chocofun and announced, “Whoever stays
+          engaged, asks and answers questions, and completes their work will get a reward.”
+          Suddenly, the dynamics shifted. Students had questions to ask and answers to share, all
+          while keeping an eager eye on the chocofuns on the desk. They competed to answer, even
+          prompting their friends to pay attention. Some even urged me to go forward with the lesson
+          and teach them new material, saying that they already understood the concept. Engagement
+          made the class effortless; it was my best day in the entire teaching experience there. At
+          that moment, I thought of wanting to be an educator not driven by the dreadful realities
+          of the education system in Nepal, but by the pure joy of a curious and motivated class.
+          When curiosity and participation are rewarded, students stop being afraid of asking
+          questions or making mistakes. Even if they initially engage just for reward, the initial
+          spark may open the door to genuine intrinsic motivation. Ultimately, they may develop a
+          deep connection to learning.
         </P>
 
         <P>
-          While bringing treats or costly rewards isn't sustainable for every classroom, we can definitely
-          think of creative, low to no cost rewards. We tried to put zero-cost reward in action by pairing
-          grammar practise with drawing. We asked students if they liked to draw. When they
-          enthusiastically said yes, we gave them the personal freedom to draw anything of their choice
-          and then compose sentences about their artwork to practise subject-verb agreement. They were
-          excited to create and share their work. Other ways we can build rewards for children especially
-          for elementary students include game based activities, giving special responsibilities like asking
-          them to teach their peers and providing meaningful recognition for their efforts. Rewarding and
-          encouraging students does not just benefit the learners; it creates a deeply rewarding
-          experience for the teacher as well.
+          While bringing treats or costly rewards isn't sustainable for every classroom, we can
+          definitely think of creative, low- to no-cost rewards. We tried to put zero-cost rewards
+          into action by pairing grammar practice with drawing. We asked students if they liked to
+          draw. When they enthusiastically said yes, we gave them the personal freedom to draw
+          anything of their choice and then compose sentences about their artwork to practise
+          subject-verb agreement. They were excited to create and share their work. Other ways we
+          can build rewards for children, especially for elementary students, include game-based
+          activities, special responsibilities like asking them to teach their peers, and meaningful
+          recognition for their efforts. Rewarding and encouraging students does not just benefit
+          the learners; it creates a deeply rewarding experience for the teacher as well.
         </P>
 
         <P>
@@ -531,56 +561,60 @@ const KaskiCaseStudy = () => {
         <H>Reflection by Elvina Baral</H>
 
         <P>
-          We initially planned on teaching tenses. For our first activity, we chose Anand, one of the
-          students, and requested he speak a few sentences about what his friend was doing. He stayed
-          silent for a long time. So, we asked Pratik to try instead. But, he too, struggled to respond. This
-          was the first indication that students’ foundations in English were much weaker than we
-          anticipated. This forced us to rethink our entire lesson plan. Instead of moving directly with
-          tenses, we decided to work with basic concepts of Subject Verb Agreement. Yet, even after
-          simplifying the material, students were still struggling. We soon realized that before moving to
-          grammar, students needed help with sentence formation and identifying the subjects, verbs and
-          objects. Terms like “noun”, “pronoun”, “adjective” were unfamiliar to them and we repeatedly had
-          to translate them in Nepali.
+          We initially planned on teaching tenses. For our first activity, we chose Anand, one of
+          the students, and requested he speak a few sentences about what his friend was doing. He
+          stayed silent for a long time. So, we asked Pratik to try instead. But he, too, struggled
+          to respond. This was the first indication that students’ foundations in English were much
+          weaker than we anticipated. This forced us to rethink our entire lesson plan. Instead of
+          moving directly to tenses, we decided to work with basic concepts of Subject-Verb
+          Agreement. Yet, even after simplifying the material, students were still struggling. We
+          soon realized that before moving to grammar, students needed help with forming sentences
+          and identifying subjects, verbs, and objects. Terms like “noun,” “pronoun,” and
+          “adjective” were unfamiliar to them, and we repeatedly had to translate them into Nepali.
         </P>
 
         <P>
           The next day, we began by working on the sentence structure. When we asked the class to
-          identify the subject and object written on the board, they couldn't find the right answers yet but
-          they were participating. We thought that the engagement meant we were getting somewhere.
-          As they continued practising, the class began answering correctly. However when we wrote a
-          similar sentence and asked an individual student to answer, he couldn't do it. The confidence we
-          saw before disappeared. Some remained silent and others struggled to find the right answer.
-          Sometimes, their classmates answered before they had the time to think for themselves. We
-          tried making them work independently in their notebooks, but it was difficult to distinguish
-          between what the students could do on their own versus what they could do with guidance.
+          identify the subject and object written on the board, they couldn't find the right answers
+          yet, but they were participating. We thought that the engagement meant we were getting
+          somewhere. As they continued practising, the class began answering correctly. However,
+          when we wrote a similar sentence and asked an individual student to answer, he couldn't do
+          it. The confidence we saw before disappeared. Some remained silent, and others struggled
+          to find the right answer. Sometimes, their classmates answered before they had the time to
+          think for themselves. We tried making them work independently in their notebooks, but it
+          was difficult to distinguish between what the students could do on their own and what they
+          could do with guidance.
         </P>
 
         <P>
-          We kept trying to reach the students. We introduced more games, chocolates as rewards and
-          tried to make the sentence formation interactive. These approaches definitely made the class
-          more interactive, yet, when I looked at their homework and how they performed independently, I
-          found myself questioning how much of the participation was translating into actual learning. As
-          the days passed I became increasingly aware of how much we still didn't understand about
-          each student's learning needs and how little we could accomplish in the time we had. We had
-          only 1 week, limited knowledge about each students’ learning history and much bigger learning
-          gaps than we had anticipated. This gave me an insight that I have much more to learn before I
-          can claim about effective implementation.
+          We kept trying to reach the students. We introduced more games and chocolates as rewards,
+          and tried to make the sentence formation interactive. These approaches definitely made the
+          class more interactive, yet when I looked at their homework and how they performed
+          independently, I found myself questioning how much of the participation was translating
+          into actual learning. As the days passed, I became increasingly aware of how much we still
+          didn't understand about each student's learning needs and how little we could accomplish
+          in the time we had. We had only one week, limited knowledge about each student’s learning
+          history, and much bigger learning gaps than we had anticipated. This gave me an insight
+          that I have much more to learn before I can make claims about effective implementation.
         </P>
+
+        <div className="mt-10 mb-6" style={{ color: NAVY, lineHeight: 1.9 }}>
+          <p className="text-[16px] sm:text-[17px]">Answers:</p>
+          <p className="text-[16px] sm:text-[17px]">(1. Verb: drinks, Subject: Joey, Object: chocolate milk)</p>
+          <p className="text-[16px] sm:text-[17px]">(2. Verb: singing, Subject: She, Object: there is no object in this sentence)</p>
+        </div>
 
         <H>Resources Used</H>
 
-        <ul className="mb-6" style={{ color: NAVY, lineHeight: 1.9 }}>
-          {[
-            "EFL Students’ Difficulties on Using Subject-Verb Agreement",
-            "Subject-verb agreement as a key element of effective english reading and writing",
-            "NYLearns - New York State’s curriculum management and standards-based system",
-            "IXL third grade language arts skills",
-            "Basic Level Curriculum English, CDC E-library",
-            "Grade three English Textbook CDC",
-            "Grade four English Textbook by CDC",
-            "Grade five English textbook CDC",
-          ].map(r => (
-            <li key={r} className="text-[16px] sm:text-[17px]">{r}</li>
+        <ul className="mb-6 space-y-3" style={{ color: NAVY, lineHeight: 1.7 }}>
+          {RESOURCES.map(r => (
+            <li key={r.url} className="text-[16px] sm:text-[17px]">
+              <a href={r.url} target="_blank" rel="noopener noreferrer"
+                className="underline underline-offset-4 break-words"
+                style={{ color: "#27548A", textDecorationColor: GOLD, textDecorationThickness: "2px" }}>
+                {r.title}
+              </a>
+            </li>
           ))}
         </ul>
 
