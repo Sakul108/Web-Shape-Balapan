@@ -121,25 +121,28 @@ const KaskiCaseStudy = () => {
 
       {/* HEADER */}
       <section className="px-6 sm:px-10"
-        style={{ background: NAVY, borderBottom: `4px solid ${GOLD}`, padding: "clamp(40px, 8vw, 72px) 0" }}>
-        <div className="max-w-3xl mx-auto px-0 sm:px-0">
+        style={{
+          background: NAVY, borderBottom: `4px solid ${GOLD}`,
+          paddingTop: "clamp(40px, 8vw, 72px)", paddingBottom: "clamp(40px, 8vw, 72px)",
+        }}>
+        <div className="max-w-3xl mx-auto">
           <a href="/projects?section=case-study" onClick={goBack}
             className="inline-flex items-center gap-2 mb-8 text-[13px] font-bold uppercase tracking-widest"
             style={{ color: GOLD, textDecoration: "none" }}>
             <ArrowLeft size={14} /> Back to Projects
           </a>
 
-          <div className="flex items-center gap-3 mb-3">
-            <div className="w-8 h-0.75 rounded-full" style={{ background: GOLD }} />
-            <span className="text-[13px] font-bold uppercase tracking-[0.18em]" style={{ color: GOLD }}>
+          <div className="flex items-center gap-2 sm:gap-3 mb-4">
+            <div className="w-6 sm:w-8 h-0.75 rounded-full shrink-0" style={{ background: GOLD }} />
+            <span className="text-[11px] sm:text-[13px] font-bold uppercase tracking-[0.1em] sm:tracking-[0.18em]" style={{ color: GOLD }}>
               Team 2 · Rethinking Assessment
             </span>
           </div>
 
-          <h1 className="font-black mb-6"
-            style={{ color: CREAM, fontSize: "clamp(22px, 5vw, 46px)", lineHeight: 1.2, textWrap: "balance" }}>
+          <h1 className="font-black mb-7"
+            style={{ color: CREAM, fontSize: "clamp(22px, 5vw, 46px)", lineHeight: 1.25, textWrap: "balance" }}>
             When learning outcomes are not met:
-            <span className="block mt-3 sm:mt-0 text-[0.7em] sm:text-[1em] leading-snug sm:leading-tight"
+            <span className="block mt-4 sm:mt-0 text-[0.7em] sm:text-[1em] leading-snug sm:leading-tight"
               style={{ color: GOLD, textWrap: "balance" }}>
               A case study of fifth grade students in Kaski, Nepal
             </span>
