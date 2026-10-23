@@ -3,6 +3,11 @@ import heroImg from "../assets/images/Vision.webp"
 import { useNavigate } from "react-router-dom"
 import { Shield, Users, Search, Globe, Lock, ArrowRight } from "lucide-react"
 
+/* Shared by Vision and Team so both hero images get exactly the same crop.
+   Keep these values identical in both files. */
+const HERO_HEIGHT = "clamp(480px, 62vh, 640px)"
+const HERO_FOCUS  = "center 70%"
+
 const values = [
   { Icon: Shield, title: "Emotional Safety as a Foundation for Learning",   body: "We believe children learn best in classrooms where they feel emotionally safe, and we are committed to supporting educators in creating those spaces." },
   { Icon: Users,  title: "Collaborative Inquiry",                           body: "We enter schools and communities as learners first and collaborators second, honoring educators' lived experience as essential knowledge rather than data to be extracted." },
@@ -12,10 +17,9 @@ const values = [
 ]
 
 const Eyebrow = ({ label, light = false }) => (
-  <div className="flex items-center gap-3 mb-3">
-    <div className="w-8 h-0.75 rounded-full" style={{ background: "#DDA853" }} />
-    <span className="text-xs font-bold uppercase tracking-[0.2em]"
-      style={{ color: light ? "#DDA853" : "#27548A" }}>
+  <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
+    <div style={{ width: 28, height: 3, borderRadius: 2, background: "#DDA853" }} />
+    <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: light ? "rgba(221,168,83,0.90)" : "#27548A" }}>
       {label}
     </span>
   </div>
@@ -44,14 +48,15 @@ const Vision = () => {
       <section style={{
         position: "relative",
         overflow: "hidden",
-        minHeight: "clamp(320px, 55vh, 620px)",
+        height: HERO_HEIGHT,
         display: "flex",
         alignItems: "center",
+        borderBottom: "4px solid #DDA853",
       }}>
         <div style={{
           position: "absolute", inset: 0,
           backgroundImage: `url(${heroImg})`,
-          backgroundSize: "cover", backgroundPosition: "center",
+          backgroundSize: "cover", backgroundPosition: HERO_FOCUS,
         }} />
         <div style={{
           position: "absolute", inset: 0,
@@ -60,13 +65,13 @@ const Vision = () => {
         <div style={{
           position: "relative", zIndex: 1,
           maxWidth: 1060, margin: "0 auto", width: "100%",
-          padding: "clamp(48px, 10vw, 88px) clamp(20px, 4vw, 40px)",
+          padding: "clamp(32px, 6vw, 56px) clamp(20px, 4vw, 40px)",
         }}>
           <Eyebrow label="Shape Balapan" light />
           <h1 style={{
             margin: "0 0 24px", fontWeight: 900,
             fontSize: "clamp(48px, 9vw, 100px)",
-            lineHeight: 0.92, letterSpacing: "-0.02em", color: "#F5EEDC",
+            lineHeight: 0.95, letterSpacing: "-0.02em", color: "#F5EEDC",
           }}>
             Our<br /><span style={{ color: "#DDA853" }}>Vision</span>
           </h1>
@@ -75,9 +80,9 @@ const Vision = () => {
               stroke="#DDA853" strokeWidth="3" strokeLinecap="round" fill="none" />
           </svg>
           <p style={{
-            color: "rgba(245,238,220,0.80)",
-            fontSize: "clamp(14px, 1.8vw, 17px)",
-            lineHeight: 1.8, maxWidth: 440, margin: 0,
+            color: "rgba(245,238,220,0.85)",
+            fontSize: "clamp(15px, 1.8vw, 18px)",
+            lineHeight: 1.8, maxWidth: 460, margin: 0,
           }}>
             A Nepal where every child's curiosity is met with joy — and every classroom is a space
             where learning through play is not the exception but the norm.
