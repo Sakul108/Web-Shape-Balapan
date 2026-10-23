@@ -4,38 +4,46 @@ import play from "../assets/images/seek.webp"
 import texture from "../assets/images/texture.webp"
 import Shapes from "../assets/images/Shapes.webp"
 import image from "../assets/images/Maths.webp"
-// ADD NEW PHOTOS HERE, then add them to GALLERY below:
-// import photo4 from "../assets/images/photo4.webp"
+import New from "../assets/images/New.webp"
+import Smiles from "../assets/images/Smiles.webp"
+import Happy from "../assets/images/Happy.webp"
+import Joy from "../assets/images/Joy.webp"
+
+import Moment from "../assets/images/Moment.webp"
+import Chess from "../assets/images/Chess.webp"
+
+
+
 import { useNavigate } from "react-router-dom"
 import { Shield, Users, Search, ArrowRight, Leaf, RefreshCw } from "lucide-react"
 
-/* ─────────────────────────────────────────────
-   EDIT ME: photos in the "Moments" grid.
-   Add more by importing above and adding a line here.
-   The grid reflows automatically (any number works).
-   ───────────────────────────────────────────── */
+
+const HERO_HEIGHT = "clamp(560px, 82vh, 760px)"
+const HERO_FOCUS  = "center 35%"
+
+
 const GALLERY = [
   { src: play,  alt: "Children doing crafts",      caption: "" },
   { src: image, alt: "Kids at Shape Balapan",      caption: "" },
-  { src: img,   alt: "Students smiling in class",  caption: "" },
-  // { src: photo4, alt: "Describe the photo", caption: "Optional short caption" },
+  { src: Smiles,   alt: "Students smiling in class",  caption: "" },
+  {src: New, alt: "Student with their playful smile", caption: ""},
+  {src: Happy, alt: "Student with their playful smile", caption: ""},
+  {src: Moment, alt: "Student with their playful smile", caption: ""},
+  {src: Joy, alt: "Student with their playful smile", caption: ""},
+  {src: Chess, alt: "Student with their playful smile", caption: ""},
+
+ 
 ]
 
-/* EDIT ME: milestones for the "Our Journey" timeline */
+
 const TIMELINE = [
   { when: "2025",        title: "Shape Balapan begins",   text: "Founded by Aastha Ghimire, inspired by game-based learning models." },
-  { when: "Winter 2025", title: "Winter Camp",            text: "Nepal's first play-based Winter Camp." },
-  { when: "Summer 2026", title: "Summer project",         text: "[Add one line about the Summer 2026 project]" },
+  { when: "Winter 2025", title: "Winter Camp",            text: "A camp built around Maths, Science, English and Emotional Learning." },
+  { when: "Summer 2026", title: "Summer project",         text: "Two teams diving deep into the field of education" },
   { when: "Today",       title: "300+ students, 8+ projects", text: "From simple sessions into full educational materials." },
   { when: "Next",        title: "Scaling up",             text: "Research into policy alignment and a wider reach across primary schools." },
 ]
 
-/* ─────────────────────────────────────────────
-   EDIT ME: the "Spot the pattern" play break.
-   Shapes: c = circle, s = square, t = triangle, d = diamond.
-   seq is what the child sees, answer is what comes next, rule is the
-   explanation shown after they guess. Add or reorder levels freely.
-   ───────────────────────────────────────────── */
 const PLAY_COLORS = { c: "#DDA853", s: "#F5EEDC", t: "#8DB4E2", d: "#E8A5A0" }
 const PLAY_NAMES  = { c: "circle", s: "square", t: "triangle", d: "diamond" }
 const LEVELS = [
@@ -46,16 +54,13 @@ const LEVELS = [
   { seq: ["c", "s", "t", "t", "c", "s", "t"], answer: "t", options: ["c", "t", "d", "s"], rule: "Circle, square, then two triangles, repeat." },
 ]
 
-/* EDIT ME: your own mascots go here.
-   hero: any number of mascots peeking along the bottom edge of the hero.
-   coaster: rides in the roller-coaster cart.
-   cta: above the final button. */
+
 const MASCOTS = {
   hero: [
     // { src: mascot1, alt: "", left: "40%", width: 150 },
   ],
-  coaster: null, // { src: mascotRider, alt: "" }
-  cta: null,     // { src, alt, width }
+  coaster: null, 
+  cta: null,    
 }
 
 const Eyebrow = ({ label, dark }) => (
@@ -103,11 +108,9 @@ const GoldBtn = ({ to, children }) => (
   </TopLink>
 )
 
-/* Renders one of your mascots in a slot, or nothing if the slot is empty */
 const Mascot = ({ slot, style = {} }) =>
   slot ? <img src={slot.src} alt={slot.alt || ""} style={{ position: "absolute", width: slot.width || 110, height: "auto", ...style }} /> : null
 
-/* One photo style everywhere: a print pinned to the wall by two strings */
 const Hung = ({ src, alt, caption, tilt = 0, drop = 0 }) => (
   <figure style={{ position: "relative", margin: 0, paddingTop: 40 + drop, transform: `rotate(${tilt}deg)`, transformOrigin: "50% 0" }}>
     <svg aria-hidden="true" viewBox="0 0 100 100" preserveAspectRatio="none" style={{ position: "absolute", top: 6, left: 0, width: "100%", height: 34 + drop }}>
@@ -119,6 +122,69 @@ const Hung = ({ src, alt, caption, tilt = 0, drop = 0 }) => (
       {caption ? <figcaption style={{ marginTop: 8, fontSize: 14, color: "#183B4E", textAlign: "center" }}>{caption}</figcaption> : null}
     </div>
   </figure>
+)
+
+/* ───────── HERO ───────── */
+const Hero = () => (
+  <section className="home-hero" style={{ position: "relative", overflow: "hidden", minHeight: HERO_HEIGHT, display: "flex", alignItems: "center", background: "#0F2537", borderBottom: "4px solid #DDA853" }}>
+    <style>{`
+      @keyframes heroZoom { from { transform: scale(1.04) } to { transform: scale(1.14) } }
+      @keyframes heroUp   { from { opacity: 0; transform: translateY(26px) } to { opacity: 1; transform: translateY(0) } }
+      @keyframes heroBob  { 0%,100% { transform: translateY(0) rotate(var(--r, 0deg)) } 50% { transform: translateY(-12px) rotate(var(--r, 0deg)) } }
+      @keyframes heroSpin { to { transform: rotate(360deg) } }
+      .hero-bg  { animation: heroZoom 18s ease-in-out infinite alternate; }
+      .hero-up  { animation: heroUp 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+      .hero-bob { animation: heroBob 5s ease-in-out infinite; }
+      .hero-spin{ animation: heroSpin 40s linear infinite; }
+      @media (max-width: 760px) { .hero-float { display: none !important; } }
+      @media (prefers-reduced-motion: reduce) {
+        .hero-bg, .hero-up, .hero-bob, .hero-spin { animation: none !important; }
+      }
+    `}</style>
+
+    
+    <div className="hero-bg" aria-hidden="true" style={{ position: "absolute", inset: 0, backgroundImage: `url(${img})`, backgroundSize: "cover", backgroundPosition: HERO_FOCUS }} />
+    <div aria-hidden="true" style={{ position: "absolute", inset: 0, background: "linear-gradient(105deg, rgba(15,37,55,0.95) 0%, rgba(15,37,55,0.78) 48%, rgba(15,37,55,0.35) 100%)" }} />
+    <div aria-hidden="true" style={{ position: "absolute", top: -140, left: -120, width: 420, height: 420, borderRadius: "50%", background: "#27548A", opacity: 0.45, filter: "blur(100px)" }} />
+    <div aria-hidden="true" style={{ position: "absolute", bottom: -160, right: -100, width: 440, height: 440, borderRadius: "50%", background: "#DDA853", opacity: 0.18, filter: "blur(110px)" }} />
+
+    {/* floating doodles */}
+    <svg className="hero-float hero-bob" aria-hidden="true" width="34" height="34" viewBox="0 0 24 24" style={{ position: "absolute", top: 54, left: "46%", "--r": "0deg", opacity: 0.7 }}><path d="M12 1L14.5 9.5 23 12 14.5 14.5 12 23 9.5 14.5 1 12 9.5 9.5Z" fill="none" stroke="#F5EEDC" strokeWidth="1.5" strokeLinejoin="round" /></svg>
+    <svg className="hero-float hero-bob" aria-hidden="true" width="26" height="26" viewBox="0 0 24 24" style={{ position: "absolute", bottom: 120, left: "4%", "--r": "0deg", opacity: 0.55, animationDelay: "1.2s" }}><path d="M12 1L14.5 9.5 23 12 14.5 14.5 12 23 9.5 14.5 1 12 9.5 9.5Z" fill="none" stroke="#DDA853" strokeWidth="1.7" strokeLinejoin="round" /></svg>
+    <svg className="hero-float hero-spin" aria-hidden="true" width="110" height="110" viewBox="0 0 100 100" style={{ position: "absolute", top: 40, right: "4%", opacity: 0.35 }}><circle cx="50" cy="50" r="44" fill="none" stroke="#DDA853" strokeWidth="2" strokeDasharray="3 9" strokeLinecap="round" /></svg>
+
+    <div style={{ position: "relative", zIndex: 2, maxWidth: 1060, margin: "0 auto", width: "100%", padding: "clamp(48px, 8vw, 80px) clamp(20px, 4vw, 40px) clamp(96px, 12vw, 130px)", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "clamp(32px, 6vw, 64px)", alignItems: "center" }}>
+      <div>
+        <div className="hero-up" style={{ animationDelay: "0.05s" }}><Eyebrow label="Game-Based Learning · Nepal" dark /></div>
+        <h1 className="hero-up" style={{ animationDelay: "0.15s", margin: "0 0 20px", fontWeight: 900, fontSize: "clamp(54px, 10vw, 112px)", lineHeight: 0.95, letterSpacing: "-0.02em", color: "#F5EEDC" }}>
+          Learning<br />Through<br />
+          <span style={{ color: "#DDA853", textShadow: "2px 2px 0 #0B2030, 4px 4px 0 #0B2030, 6px 6px 0 #0B2030" }}>Play</span>
+        </h1>
+        <svg className="hero-up" style={{ animationDelay: "0.25s", display: "block", margin: "0 0 24px" }} width="150" height="12" viewBox="0 0 150 12" fill="none" aria-hidden="true">
+          <path d="M2 9 Q18 3 37 9 Q56 15 74 9 Q92 3 111 9 Q130 15 148 9" stroke="#DDA853" strokeWidth="3" strokeLinecap="round" fill="none" />
+        </svg>
+        <p className="hero-up" style={{ animationDelay: "0.35s", margin: "0 0 30px", maxWidth: 460, fontSize: "clamp(16px, 1.9vw, 19px)", lineHeight: 1.75, color: "rgba(245,238,220,0.9)" }}>
+          We bring play-based, game-led learning into Nepal's primary classrooms, and research how it can shape policy.
+        </p>
+        <div className="hero-up" style={{ animationDelay: "0.45s", display: "flex", flexWrap: "wrap", alignItems: "center", gap: 16 }}>
+          <GoldBtn to="/projects">Check out our projects <ArrowRight size={16} /></GoldBtn>
+          <TopLink to="/vision"
+            style={{ display: "inline-flex", alignItems: "center", minHeight: 48, padding: "0 24px", borderRadius: 100, border: "2px solid rgba(245,238,220,0.7)", color: "#F5EEDC", fontWeight: 700, fontSize: 15, textDecoration: "none" }}>
+            Our vision
+          </TopLink>
+        </div>
+      </div>
+    </div>
+
+    {MASCOTS.hero.map((m, i) => (
+      <img key={i} src={m.src} alt={m.alt || ""} style={{ position: "absolute", bottom: 0, left: m.left, width: m.width || 150, height: "auto", zIndex: 3 }} />
+    ))}
+
+    {/* wavy edge into the next section */}
+    <svg aria-hidden="true" viewBox="0 0 1440 70" preserveAspectRatio="none" style={{ position: "absolute", left: 0, right: 0, bottom: -1, width: "100%", height: 56, zIndex: 2, display: "block" }}>
+      <path d="M0 40 Q 90 8 180 40 T 360 40 T 540 40 T 720 40 T 900 40 T 1080 40 T 1260 40 T 1440 40 V70 H0 Z" fill="#0F2537" />
+    </svg>
+  </section>
 )
 
 /* ───────── "Spot the pattern" play break ───────── */
@@ -372,64 +438,10 @@ const Home = () => {
   const tilts = [-2, 1.5, -1, 2, -1.5, 1]
   return (
     <main style={{ width: "100%", background: "#F5EEDC" }}>
-      {/* ── HERO ── */}
-      <section style={{ position: "relative", overflow: "hidden", background: "#183B4E", borderBottom: "4px solid #DDA853" }}>
-        <div aria-hidden="true" style={{ position: "absolute", top: -120, left: -100, width: 380, height: 380, borderRadius: "50%", background: "#27548A", opacity: 0.5, filter: "blur(90px)", pointerEvents: "none" }} />
-        <svg aria-hidden="true" width="34" height="34" viewBox="0 0 24 24" style={{ position: "absolute", top: 36, left: "3%", opacity: 0.55 }}><path d="M12 1L14.5 9.5 23 12 14.5 14.5 12 23 9.5 14.5 1 12 9.5 9.5Z" fill="none" stroke="#F5EEDC" strokeWidth="1.4" strokeLinejoin="round" /></svg>
-        <svg aria-hidden="true" width="26" height="26" viewBox="0 0 24 24" style={{ position: "absolute", bottom: 150, left: "5%", opacity: 0.45 }}><path d="M12 1L14.5 9.5 23 12 14.5 14.5 12 23 9.5 14.5 1 12 9.5 9.5Z" fill="none" stroke="#DDA853" strokeWidth="1.6" strokeLinejoin="round" /></svg>
-        <svg aria-hidden="true" width="92" height="70" viewBox="0 0 80 60" style={{ position: "absolute", top: 34, right: "6%", opacity: 0.6 }}><path d="M4 28L76 4 52 56 38 34zM38 34L76 4" fill="none" stroke="#F5EEDC" strokeWidth="2" strokeLinejoin="round" /></svg>
-        <svg aria-hidden="true" width="150" height="50" viewBox="0 0 150 50" style={{ position: "absolute", bottom: 40, right: 0, opacity: 0.5 }}><path d="M0 30q10-30 20 0t20 0 20 0 20 0 20 0 20 0 10 0" fill="none" stroke="#F5EEDC" strokeWidth="3" strokeLinecap="round" /></svg>
-
-        <div style={{ position: "relative", maxWidth: 1060, margin: "0 auto", padding: "clamp(40px, 8vw, 72px) clamp(20px, 4vw, 40px) clamp(110px, 14vw, 150px)", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "clamp(32px, 6vw, 64px)", alignItems: "center" }}>
-          <div>
-            <Eyebrow label="Game-Based Learning · Nepal" dark />
-            <h1 style={{ margin: "0 0 20px", fontWeight: 900, fontSize: "clamp(52px, 9vw, 100px)", lineHeight: 0.98, letterSpacing: "-0.02em", color: "#F5EEDC" }}>
-              Learning<br />Through<br />
-              <span style={{ color: "#DDA853", textShadow: "2px 2px 0 #0B2030, 4px 4px 0 #0B2030, 6px 6px 0 #0B2030" }}>Play</span>
-            </h1>
-            <svg style={{ display: "block", margin: "0 0 22px" }} width="150" height="12" viewBox="0 0 150 12" fill="none" aria-hidden="true">
-              <path d="M2 9 Q18 3 37 9 Q56 15 74 9 Q92 3 111 9 Q130 15 148 9" stroke="#DDA853" strokeWidth="3" strokeLinecap="round" fill="none" />
-            </svg>
-            <p style={{ margin: "0 0 28px", maxWidth: 440, fontSize: "clamp(16px, 1.9vw, 18px)", lineHeight: 1.7, color: "rgba(245,238,220,0.88)" }}>
-              We bring play-based, game-led learning into Nepal's primary classrooms, and research how it can shape policy.
-            </p>
-            <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 16 }}>
-              <GoldBtn to="/projects">Check out our projects <ArrowRight size={16} /></GoldBtn>
-              <TopLink to="/vision"
-                style={{ display: "inline-flex", alignItems: "center", minHeight: 48, padding: "0 24px", borderRadius: 100, border: "2px solid rgba(245,238,220,0.7)", color: "#F5EEDC", fontWeight: 700, fontSize: 15, textDecoration: "none" }}>
-                Our vision
-              </TopLink>
-            </div>
-          </div>
-
-          <div style={{ position: "relative", width: "100%", height: "clamp(320px, 46vw, 500px)" }}>
-            <img src={img} alt="Two students smiling with their drawing"
-              style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "100% 40%", WebkitMaskImage: "radial-gradient(ellipse 80% 78% at 62% 50%, #000 58%, transparent 100%)", maskImage: "radial-gradient(ellipse 80% 78% at 62% 50%, #000 58%, transparent 100%)" }} />
-            <div style={{ position: "absolute", left: 0, bottom: "4%", zIndex: 3, width: 118, height: 118, borderRadius: "50%", background: "#F5EEDC", color: "#183B4E", display: "flex", alignItems: "center", justifyContent: "center", textAlign: "center", padding: 14, boxSizing: "border-box", transform: "rotate(-8deg)", fontWeight: 900, fontSize: 13, lineHeight: 1.25, boxShadow: "0 10px 24px rgba(0,0,0,0.25)", border: "3px dashed #DDA853" }}>
-              Nepal's first play-based Winter Camp
-            </div>
-          </div>
-        </div>
-
-        {MASCOTS.hero.map((m, i) => (
-          <img key={i} src={m.src} alt={m.alt || ""} style={{ position: "absolute", bottom: 0, left: m.left, width: m.width || 150, height: "auto" }} />
-        ))}
-      </section>
-
-      {/* OUR JOURNEY: right after the hero, on cream */}
-      <section style={{ position: "relative", padding: "clamp(40px, 8vw, 80px) clamp(20px, 4vw, 40px)", background: "#F5EEDC", overflow: "hidden" }}>
-        <div aria-hidden="true" style={{ position: "absolute", inset: 0, backgroundImage: `url(${texture})`, backgroundSize: "cover", opacity: 0.06, pointerEvents: "none" }} />
-        <div style={{ position: "relative", zIndex: 1, maxWidth: 1060, margin: "0 auto" }}>
-          <Eyebrow label="How we got here" />
-          <h2 style={{ margin: "0 0 clamp(20px, 4vw, 32px)", fontWeight: 900, fontSize: "clamp(36px, 5vw, 58px)", color: "#183B4E", lineHeight: 1, textTransform: "uppercase" }}>
-            Our Journey
-          </h2>
-          <Coaster />
-        </div>
-      </section>
+      <Hero />
 
       {/* STATS */}
-      <div style={{ background: "#183B4E", padding: "24px 16px" }}>
+      <div style={{ background: "#0F2537", padding: "24px 16px", borderTop: "1px solid rgba(221,168,83,0.25)" }}>
         <div style={{ maxWidth: 860, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr 1fr", textAlign: "center" }}>
           {[
             { num: "300+", label: "Students Reached" },
@@ -444,10 +456,11 @@ const Home = () => {
         </div>
       </div>
 
-      {/* PLAY BREAK */}
-      <PatternPlay />
+      
 
-      {/* MOMENTS: same flat cream used for the Core Members band on the Team page */}
+      
+
+      {/* MOMENTS */}
       <section style={{ padding: "clamp(40px, 8vw, 80px) clamp(20px, 4vw, 40px)", background: "#EDE6D0" }}>
         <div style={{ maxWidth: 1060, margin: "0 auto" }}>
           <Eyebrow label="On the classroom wall" />
@@ -461,6 +474,20 @@ const Home = () => {
           </div>
         </div>
       </section>
+
+      {/* OUR JOURNEY */}
+      <section style={{ position: "relative", padding: "clamp(40px, 8vw, 80px) clamp(20px, 4vw, 40px)", background: "#F5EEDC", overflow: "hidden" }}>
+        <div aria-hidden="true" style={{ position: "absolute", inset: 0, backgroundImage: `url(${texture})`, backgroundSize: "cover", opacity: 0.06, pointerEvents: "none" }} />
+        <div style={{ position: "relative", zIndex: 1, maxWidth: 1060, margin: "0 auto" }}>
+          <Eyebrow label="How we got here" />
+          <h2 style={{ margin: "0 0 clamp(20px, 4vw, 32px)", fontWeight: 900, fontSize: "clamp(36px, 5vw, 58px)", color: "#183B4E", lineHeight: 1, textTransform: "uppercase" }}>
+            Our Journey
+          </h2>
+          <Coaster />
+        </div>
+      </section>
+
+     
 
       {/* WHAT WE DO */}
       <section style={{ position: "relative", padding: "clamp(40px, 8vw, 80px) clamp(20px, 4vw, 40px)", background: "#183B4E", overflow: "hidden" }}>
@@ -507,6 +534,9 @@ const Home = () => {
           </div>
         </div>
       </section>
+
+       {/* PLAY BREAK */}
+      <div style={{ background: "#EDE6D0" }}><PatternPlay /></div>
 
       {/* IRD */}
       <section style={{ position: "relative", padding: "clamp(40px, 8vw, 80px) clamp(20px, 4vw, 40px)", background: "#EDE5D0", overflow: "hidden" }}>

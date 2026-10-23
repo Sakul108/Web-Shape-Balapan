@@ -1,4 +1,4 @@
-import { ArrowRight, FlaskConical, Sigma, BookOpen, Palette, HeartHandshake, Compass, Sparkles, Camera, RefreshCw } from "lucide-react"
+import { ArrowRight, FlaskConical, Sigma, BookOpen, Palette, HeartHandshake, Compass, Sparkles,  RefreshCw } from "lucide-react"
 import { useEffect, useState } from "react"
 import { useNavigate, useLocation } from "react-router-dom"
 import Aasthadi from "../assets/images/members/Aastha.webp"
@@ -14,9 +14,6 @@ import Laxman   from "../assets/images/members/Laxman.webp"
 import Bipin    from "../assets/images/members/Bipin.webp"
 import heroImg  from "../assets/images/Team.webp"
 
-// import iskcon     from "../assets/images/trips/iskcon.webp"
-// import swayambhu  from "../assets/images/trips/swayambhunath.webp"
-// import funpark    from "../assets/images/trips/funpark.webp"
 
 
 const HERO_HEIGHT = "clamp(480px, 62vh, 640px)"
@@ -29,14 +26,15 @@ const FOUNDER = {
 }
 
 const BOARD = [
-  { id: "sakul",   name: "Sakul Khatri",        role: "Web & Graphics",                   image: Sakul,   description: "Sakul is the creative and technical backbone of Shape Balapan — creating its posters and social media posts, designing its visual identity, building its website, and leading project execution on the ground. His 10+ Instagram posts have passed 42K views.", tags: ["Design & Branding", "Social Media", "Web Development", "Project Leadership"] },
-  { id: "tol",     name: "Tol Prasad Kafle",     role: "Science Content Designer",         image: Tol,     description: "An experienced educator and active tutor, Tol brings deep institutional knowledge to the team. His dual role on the ground and in policy circles makes him an indispensable bridge between theory and practice.", tags: ["Science Content", "Classroom Tutoring", "Education Policy"] },
-  { id: "rojina",  name: "Rojina Paudel",         role: "Emotional Intelligence Researcher",image: Rojina,  description: "Currently at Soka University, Rojina brings a values-driven perspective rooted in humanistic education. She focuses on the emotional dimensions of play-based learning.", tags: ["EI Research", "Student Engagement", "Field Research"] },
-  { id: "rahul",   name: "Rahul Khadkathoki",    role: "Organizer & Researcher",           image: Rahul,   description: "An engineering student whose analytical mindset contributes to designing measurable learning outcomes and evidence-based assessments within the team's research frameworks.", tags: ["Research", "Event Organization", "Outcomes Assessment"] },
+  { id: "sakul",   name: "Sakul Khatri",        role: "Web & Graphics",                   image: Sakul,   description: "Sakul is the creative and technical backbone of Shape Balapan — creating its posters and social media posts, designing its visual identity, building its website, and leading project execution on the ground. His 10+ Instagram posts in total have passed 42K+ views.", tags: ["Design & Branding",  "Web Development", "Project Leadership"] },
+  { id: "tol",     name: "Tol Prasad Kafle",     role: "Science Content Designer",         image: Tol,     description: "An experienced educator and active tutor, Tol brings deep institutional knowledge to the team. His dual role on the ground and in policy circles makes him an indispensable bridge between theory and practice. He also serves as a project leader assisting in different initatives", tags: ["Science Content", "Classroom Tutoring", "Education Policy"] },
+  { id: "rojina",  name: "Rojina Paudel",         role: "Emotional Intelligence Researcher",image: Rojina,  description: "Currently at Soka University, Rojina brings a values-driven perspective rooted in humanistic education. She focuses on the emotional dimensions of play-based learning. She also assists in handling social media", tags: ["EI Research", "Student Engagement", "Field Research"] },
+   { id: "prakiti", name: "Prakiti Bhetwal",       role: "English Content Designer",         image: Prakiti, description: "Driven by curiosity about child development, Prakiti crafts English language content that sparks imagination and builds literacy through storytelling and play. She also leads in multiple projects.", tags: ["English Content", "Curriculum Design", "Project Leadership"] },
+  { id: "rabina",  name: "Rabina Poudel",         role: "English Content Designer",         image: Rabina,  description: "Rabina supports the team's English content efforts and documentation, ensuring research findings and learning materials reach the communities that inspired them. She was able to share her classroom experience through a case study after teaching primary students in Pokhara", tags: ["English Content", "Documentation", "Knowledge Sharing"] },
+
+  { id: "rahul",   name: "Rahul Khadkathoki",    role: "Organizer & Researcher",           image: Rahul,   description: "An engineering student whose analytical mindset contributes to designing measurable learning outcomes and evidence-based assessments within the team's research frameworks. He is also a Fullbright OF'27 Fellow", tags: ["Research", "Event Organization", "Outcomes Assessment"] },
   { id: "aayusha", name: "Aayusha Acharya",       role: "Math Content Designer",            image: Aayusha, description: "Aayusha designs playful, hands-on mathematics content that makes numbers feel like an adventure rather than a chore.", tags: ["Math Content", "Curriculum Design", "Play-Based Learning"] },
   { id: "tr",      name: "TR Pandit",             role: "Organizer & Researcher",           image: TR,      description: "A passionate student committed to educational equity, TR actively participates in fieldwork and community outreach, helping translate research insights into relatable narratives.", tags: ["Community Outreach", "Field Research", "Student Advocacy"] },
-  { id: "prakiti", name: "Prakiti Bhetwal",       role: "English Content Designer",         image: Prakiti, description: "Driven by curiosity about child development, Prakiti crafts English language content that sparks imagination and builds literacy through storytelling and play.", tags: ["English Content", "Curriculum Design", "Child Development"] },
-  { id: "rabina",  name: "Rabina Poudel",         role: "English Content Designer",         image: Rabina,  description: "Rabina supports the team's English content efforts and documentation, ensuring research findings and learning materials reach the communities that inspired them.", tags: ["English Content", "Documentation", "Knowledge Sharing"] },
 ]
 
 const ADVISORS = [
@@ -46,11 +44,6 @@ const ADVISORS = [
 
 
 
-const ADVENTURES = [
-  { src: null, place: "ISKCON Temple",  note: "" },   // src: iskcon
-  { src: null, place: "Swayambhunath",  note: "" },   // src: swayambhu
-  { src: null, place: "Fun park",       note: "" },   // src: funpark
-]
 
 const SQUADS = [
   { title: "Content Studio",    Icon: BookOpen, blurb: "Turns ideas into play-based lessons in science, math and English.", people: ["Tol Prasad Kafle", "Aayusha Acharya", "Prakiti Bhetwal", "Rabina Poudel"] },
@@ -243,23 +236,7 @@ const HashScroll = () => {
 }
 
 
-const Snap = ({ src, place, note, tilt = 0 }) => (
-  <figure style={{ position: "relative", margin: 0, background: "#fff", padding: "10px 10px 14px", borderRadius: 6, boxShadow: "0 12px 26px rgba(24,59,78,0.16)", transform: `rotate(${tilt}deg)` }}>
-    <span aria-hidden="true" style={{ position: "absolute", top: -12, left: "50%", width: 84, height: 24, transform: "translateX(-50%) rotate(-3deg)", background: "rgba(221,168,83,0.85)", borderRadius: 4, boxShadow: "0 2px 6px rgba(24,59,78,0.12)", zIndex: 2 }} />
-    {src ? (
-      <img src={src} alt={`The team at ${place}`} style={{ display: "block", width: "100%", aspectRatio: "4 / 3", objectFit: "cover" }} />
-    ) : (
-      <div style={{ aspectRatio: "4 / 3", background: "#183B4E", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 8, color: "rgba(221,168,83,0.75)" }}>
-        <Camera size={30} strokeWidth={1.8} aria-hidden="true" />
-        <span style={{ fontSize: 12, letterSpacing: "0.1em", textTransform: "uppercase" }}>Photo coming</span>
-      </div>
-    )}
-    <figcaption style={{ padding: "12px 6px 0" }}>
-      <p style={{ margin: 0, fontWeight: 900, fontSize: 18, color: "#183B4E" }}>{place}</p>
-      {note ? <p style={{ margin: "4px 0 0", fontSize: 14, lineHeight: 1.6, color: "rgba(24,59,78,0.75)" }}>{note}</p> : null}
-    </figcaption>
-  </figure>
-)
+
 
 const TopLink = ({ to, children, className = "", style = {}, onMouseEnter, onMouseLeave }) => {
   const navigate = useNavigate()
@@ -616,20 +593,6 @@ const Team = () => (
     </section>
 
    
-    <section style={{ background: "#F5EEDC", padding: "clamp(40px, 8vw, 80px) clamp(20px, 4vw, 40px)" }}>
-      <div style={{ maxWidth: 1060, margin: "0 auto" }}>
-        <div style={{ marginBottom: 40 }}>
-          <Eyebrow label="Beyond the classroom" />
-          <h2 style={{ margin: "0 0 12px", fontWeight: 900, fontSize: "clamp(28px, 4vw, 48px)", color: "#183B4E", lineHeight: 1.1 }}>Team Adventures</h2>
-          <p style={{ margin: 0, maxWidth: 520, fontSize: "clamp(15px, 1.8vw, 17px)", lineHeight: 1.7, color: "rgba(24,59,78,0.82)" }}>
-            Good research starts with good company. A few of the places we have explored together.
-          </p>
-        </div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: "40px 28px", paddingTop: 8 }}>
-          {ADVENTURES.map((a, i) => <Snap key={a.place} {...a} tilt={[-1.6, 1.2, -0.9, 1.5][i % 4]} />)}
-        </div>
-      </div>
-    </section>
 
     
     <section style={{ background: "#27548A", padding: "clamp(40px, 8vw, 80px) clamp(20px, 4vw, 40px)", position: "relative", overflow: "hidden" }}>
