@@ -3,8 +3,7 @@ import heroImg from "../assets/images/Vision.webp"
 import { useNavigate } from "react-router-dom"
 import { Shield, Users, Search, Globe, Lock, ArrowRight } from "lucide-react"
 
-/* Shared by Vision and Team so both hero images get exactly the same crop.
-   Keep these values identical in both files. */
+
 const HERO_HEIGHT = "clamp(480px, 62vh, 640px)"
 const HERO_FOCUS  = "center 70%"
 
@@ -58,10 +57,8 @@ const Vision = () => {
           backgroundImage: `url(${heroImg})`,
           backgroundSize: "cover", backgroundPosition: HERO_FOCUS,
         }} />
-        <div style={{
-          position: "absolute", inset: 0,
-          background: "linear-gradient(105deg, rgba(15,37,55,0.93) 0%, rgba(15,37,55,0.72) 50%, rgba(15,37,55,0.25) 100%)",
-        }} />
+        {/* Dark gradient overlay removed so the photo shows at full brightness.
+            A soft text shadow on the hero copy keeps it readable. */}
         <div style={{
           position: "relative", zIndex: 1,
           maxWidth: 1060, margin: "0 auto", width: "100%",
@@ -72,6 +69,7 @@ const Vision = () => {
             margin: "0 0 24px", fontWeight: 900,
             fontSize: "clamp(48px, 9vw, 100px)",
             lineHeight: 0.95, letterSpacing: "-0.02em", color: "#F5EEDC",
+            textShadow: "0 2px 18px rgba(11,32,48,0.65)",
           }}>
             Our<br /><span style={{ color: "#DDA853" }}>Vision</span>
           </h1>
@@ -80,9 +78,10 @@ const Vision = () => {
               stroke="#DDA853" strokeWidth="3" strokeLinecap="round" fill="none" />
           </svg>
           <p style={{
-            color: "rgba(245,238,220,0.85)",
+            color: "#F5EEDC",
             fontSize: "clamp(15px, 1.8vw, 18px)",
             lineHeight: 1.8, maxWidth: 460, margin: 0,
+            textShadow: "0 1px 12px rgba(11,32,48,0.85)",
           }}>
             A Nepal where every child's curiosity is met with joy — and every classroom is a space
             where learning through play is not the exception but the norm.

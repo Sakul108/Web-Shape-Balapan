@@ -13,7 +13,7 @@ import Fish      from "../assets/images/artwork/Fish.webp"
 import Festivals from "../assets/images/artwork/Festivals.webp"
 import Art       from "../assets/images/artwork/Art.webp"
 
-// Slightly deeper theme colours so the small pill text stays readable on the pale backgrounds
+
 const THEMES = {
   "Culture":       { color: "#C9684F", bg: "#E8927A22", label: "Culture"       },
   "Education":     { color: "#3F86B0", bg: "#7EB5D622", label: "Education"     },
@@ -323,10 +323,8 @@ const Stories = () => (
         backgroundImage: `url(${heroImg})`,
         backgroundSize: "cover", backgroundPosition: "center",
       }} />
-      <div style={{
-        position: "absolute", inset: 0,
-        background: "linear-gradient(105deg, rgba(15,37,55,0.93) 0%, rgba(15,37,55,0.72) 50%, rgba(15,37,55,0.25) 100%)",
-      }} />
+      {/* Dark gradient overlay removed so the photo shows at full brightness.
+          A soft text shadow on the hero copy keeps it readable. */}
       <div style={{
         position: "relative", zIndex: 1,
         maxWidth: 1060, margin: "0 auto", width: "100%",
@@ -337,6 +335,7 @@ const Stories = () => (
           margin: "0 0 24px", fontWeight: 900,
           fontSize: "clamp(48px, 9vw, 100px)",
           lineHeight: 0.95, letterSpacing: "-0.02em", color: "#F5EEDC",
+          textShadow: "0 2px 18px rgba(11,32,48,0.65)",
         }}>
           Their<br /><span style={{ color: "#DDA853" }}>Stories</span><br />in Colour
         </h1>
@@ -344,9 +343,10 @@ const Stories = () => (
           <path d="M2 8 Q15 3 30 8 Q45 13 60 8 Q75 3 90 8 Q105 13 118 8" stroke="#DDA853" strokeWidth="3" strokeLinecap="round" fill="none" />
         </svg>
         <p style={{
-          color: "rgba(245,238,220,0.85)",
+          color: "#F5EEDC",
           fontSize: "clamp(15px, 1.8vw, 18px)",
           lineHeight: 1.8, maxWidth: 500, margin: 0,
+          textShadow: "0 1px 12px rgba(11,32,48,0.85)",
         }}>
           Every brushstroke here belongs to a child who was given space to imagine.
           These artworks are the living proof of what play-based learning unlocks.

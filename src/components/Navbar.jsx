@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 import { Link, NavLink } from "react-router-dom"
 import logo from "../assets/images/logo.svg"
 
-// Routes are unchanged
+
 const navLinks = [
   { name: "Home",     path: "/" },
   { name: "Vision",   path: "/vision" },
@@ -53,9 +53,35 @@ const Navbar = () => {
     <>
       <style>{`
         .sb-nav { transition: box-shadow 0.25s ease, background 0.25s ease; }
-        .sb-nav-inner { transition: height 0.25s ease; }
-        .sb-logo img { transition: height 0.25s ease, transform 0.25s ease; }
-        .sb-logo:hover img { transform: rotate(-3deg) scale(1.04); }
+
+        /* Bar height + logo size (desktop) */
+        .sb-nav-inner { height: 70px; padding: 0 28px; transition: height 0.25s ease; }
+        .sb-nav-inner.is-scrolled { height: 58px; }
+
+        .sb-logo { display: flex; align-items: center; flex-shrink: 0; }
+        .sb-logo img {
+          display: block;
+          height: 46px; width: auto; max-width: 100%;
+          object-fit: contain;
+          /* keeps edges crisp on high-density phone screens */
+          image-rendering: -webkit-optimize-contrast;
+          image-rendering: crisp-edges;
+          image-rendering: auto;
+          backface-visibility: hidden;
+          transform: translateZ(0);
+          transition: height 0.25s ease, transform 0.25s ease;
+        }
+        .sb-nav-inner.is-scrolled .sb-logo img { height: 38px; }
+        .sb-logo:hover img { transform: translateZ(0) rotate(-3deg) scale(1.04); }
+
+        /* Phone: slightly smaller bar, logo kept sharp and compact */
+        @media (max-width: 767px) {
+          .sb-nav-inner { height: 58px; padding: 0 16px; }
+          .sb-nav-inner.is-scrolled { height: 52px; }
+          .sb-logo img { height: 36px; }
+          .sb-nav-inner.is-scrolled .sb-logo img { height: 32px; }
+          .sb-burger { width: 38px; height: 38px; }
+        }
 
         .sb-links { gap: 4px; padding: 5px; border-radius: 100px; background: rgba(24,59,78,0.05); }
         .sb-link {
@@ -113,15 +139,14 @@ const Navbar = () => {
         }}
       >
         <div
-          className="sb-nav-inner"
+          className={`sb-nav-inner${scrolled ? " is-scrolled" : ""}`}
           style={{
-            maxWidth: 1100, margin: "0 auto", padding: "0 28px",
-            height: scrolled ? 58 : 70,
+            maxWidth: 1100, margin: "0 auto",
             display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16,
           }}
         >
-          <Link to="/" onClick={closeAndScrollTop} className="sb-logo" style={{ display: "flex", alignItems: "center", flexShrink: 0 }} aria-label="Shape Balapan home">
-            <img src={logo} alt="Shape Balapan" style={{ height: scrolled ? 38 : 46, width: "auto", objectFit: "contain" }} />
+          <Link to="/" onClick={closeAndScrollTop} className="sb-logo" aria-label="Shape Balapan home">
+            <img src={logo} alt="Shape Balapan" decoding="async" />
           </Link>
 
           <ul className="sb-links" style={{ display: "none", listStyle: "none", margin: 0 }}>
@@ -182,14 +207,14 @@ const Navbar = () => {
         aria-hidden={!isOpen}
         style={{
           position: "fixed", top: 0, right: 0, bottom: 0, zIndex: 48,
-          width: "min(320px, 85vw)", background: "#183B4E",
+          width: "min(300px, 82vw)", background: "#183B4E",
           transform: isOpen ? "translateX(0)" : "translateX(100%)",
           transition: "transform 0.30s cubic-bezier(0.4,0,0.2,1)",
-          display: "flex", flexDirection: "column", padding: "28px 0 40px", overflowY: "auto",
+          display: "flex", flexDirection: "column", padding: "24px 0 32px", overflowY: "auto",
           visibility: isOpen ? "visible" : "hidden",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 28px 28px", borderBottom: "1px solid rgba(221,168,83,0.20)" }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 24px 22px", borderBottom: "1px solid rgba(221,168,83,0.20)" }}>
           <div>
             <p style={{ margin: 0, fontSize: 11, fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: "#DDA853" }}>Shape Balapan</p>
             <p style={{ margin: "4px 0 0", fontSize: 13, color: "rgba(245,238,220,0.65)" }}>Learning through play</p>
@@ -205,7 +230,7 @@ const Navbar = () => {
           </button>
         </div>
 
-        <nav aria-label="Mobile navigation" style={{ flex: 1, padding: "20px 0" }}>
+        <nav aria-label="Mobile navigation" style={{ flex: 1, padding: "14px 0" }}>
           <ul style={{ listStyle: "none", margin: 0, padding: 0 }}>
             {navLinks.map(link => (
               <li key={link.name}>
@@ -216,7 +241,7 @@ const Navbar = () => {
                   className="sb-drawer-link"
                   style={({ isActive }) => ({
                     display: "flex", alignItems: "center", justifyContent: "space-between",
-                    padding: "15px 28px", textDecoration: "none", fontSize: 16,
+                    padding: "13px 24px", textDecoration: "none", fontSize: 15,
                     fontWeight: isActive ? 800 : 600, letterSpacing: "0.05em",
                     color: isActive ? "#DDA853" : "rgba(245,238,220,0.88)",
                     background: isActive ? "rgba(221,168,83,0.10)" : "transparent",
@@ -233,13 +258,13 @@ const Navbar = () => {
           </ul>
         </nav>
 
-        <div style={{ padding: "0 28px" }}>
+        <div style={{ padding: "0 24px" }}>
           <Link
             to="/contact"
             onClick={closeAndScrollTop}
             style={{
               display: "flex", alignItems: "center", justifyContent: "center", gap: 8, width: "100%",
-              padding: "14px 24px", borderRadius: 100, background: "#DDA853", color: "#183B4E",
+              padding: "13px 24px", borderRadius: 100, background: "#DDA853", color: "#183B4E",
               fontWeight: 800, fontSize: 13, letterSpacing: "0.12em", textTransform: "uppercase",
               textDecoration: "none", boxSizing: "border-box",
             }}
@@ -249,7 +274,7 @@ const Navbar = () => {
               <path d="M2 7h10M8 3l4 4-4 4" stroke="#183B4E" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </Link>
-          <p style={{ textAlign: "center", marginTop: 16, fontSize: 12, color: "rgba(245,238,220,0.5)", letterSpacing: "0.05em" }}>
+          <p style={{ textAlign: "center", marginTop: 14, fontSize: 12, color: "rgba(245,238,220,0.5)", letterSpacing: "0.05em" }}>
             © {new Date().getFullYear()} Shape Balapan
           </p>
         </div>

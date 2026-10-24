@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react"
-import img from "../assets/images/HeroImages.webp"
+import { useCallback, useEffect, useRef, useState } from "react"
+import img from "../assets/images/Header.webp"
 import play from "../assets/images/seek.webp"
 import texture from "../assets/images/texture.webp"
 import Shapes from "../assets/images/Shapes.webp"
@@ -15,10 +15,10 @@ import Chess from "../assets/images/Chess.webp"
 
 
 import { useNavigate } from "react-router-dom"
-import { Shield, Users, Search, ArrowRight, Leaf, RefreshCw } from "lucide-react"
+import { Shield, Users, Search, ArrowRight, Leaf, RefreshCw, X, ChevronLeft, ChevronRight } from "lucide-react"
 
 
-const HERO_HEIGHT = "clamp(560px, 82vh, 760px)"
+const HERO_HEIGHT = "clamp(480px, 78vh, 760px)"
 const HERO_FOCUS  = "center 35%"
 
 
@@ -95,7 +95,7 @@ const GoldBtn = ({ to, children }) => (
     to={to}
     style={{
       display: "inline-flex", alignItems: "center", gap: 8,
-      padding: "15px 30px", borderRadius: 100,
+      padding: "14px 28px", borderRadius: 100,
       background: "#DDA853", color: "#183B4E",
       fontWeight: 700, fontSize: 15, textDecoration: "none",
       boxShadow: "0 6px 22px rgba(221,168,83,0.32)",
@@ -111,20 +111,195 @@ const GoldBtn = ({ to, children }) => (
 const Mascot = ({ slot, style = {} }) =>
   slot ? <img src={slot.src} alt={slot.alt || ""} style={{ position: "absolute", width: slot.width || 110, height: "auto", ...style }} /> : null
 
-const Hung = ({ src, alt, caption, tilt = 0, drop = 0 }) => (
-  <figure style={{ position: "relative", margin: 0, paddingTop: 40 + drop, transform: `rotate(${tilt}deg)`, transformOrigin: "50% 0" }}>
+
+const Hung = ({ src, alt, caption, tilt = 0, drop = 0, index, onOpen }) => (
+  <figure
+    className="hung"
+    style={{ position: "relative", margin: 0, paddingTop: 40 + drop, "--tilt": `${tilt}deg`, transformOrigin: "50% 0" }}
+  >
     <svg aria-hidden="true" viewBox="0 0 100 100" preserveAspectRatio="none" style={{ position: "absolute", top: 6, left: 0, width: "100%", height: 34 + drop }}>
       <path d="M50 0L5 100M50 0L95 100" stroke="#183B4E" strokeOpacity="0.65" strokeWidth="1.5" fill="none" vectorEffect="non-scaling-stroke" />
     </svg>
     <span aria-hidden="true" style={{ position: "absolute", top: 0, left: "50%", transform: "translateX(-50%)", width: 15, height: 15, borderRadius: "50%", background: "#DDA853", border: "2px solid #183B4E", boxSizing: "border-box", boxShadow: "0 2px 3px rgba(24,59,78,0.3)" }} />
-    <div style={{ background: "#FFFFFF", padding: "8px 8px 12px", borderRadius: 3, boxShadow: "0 10px 22px rgba(24,59,78,0.18)" }}>
-      <img src={src} alt={alt} style={{ display: "block", width: "100%", aspectRatio: "4 / 5", objectFit: "cover" }} />
-      {caption ? <figcaption style={{ marginTop: 8, fontSize: 14, color: "#183B4E", textAlign: "center" }}>{caption}</figcaption> : null}
-    </div>
+    <button
+      type="button"
+      className="hung-card"
+      onClick={() => onOpen(index)}
+      aria-label={`View photo ${index + 1} larger: ${alt}`}
+    >
+      <span className="hung-photo">
+        <img src={src} alt={alt} loading="lazy" decoding="async" />
+      </span>
+      {caption ? <span style={{ display: "block", marginTop: 8, fontSize: 14, color: "#183B4E", textAlign: "center" }}>{caption}</span> : null}
+    </button>
   </figure>
 )
 
-/* ───────── HERO ───────── */
+/* MOMENTS (interactive gallery + lightbox)*/
+const TILTS = [-2, 1.5, -1, 2, -1.5, 1]
+const DROPS = [0, 18, 6, 24, 10, 2]
+
+const Moments = () => {
+  const [open, setOpen] = useState(null)
+  const touchX = useRef(null)
+  const closeRef = useRef(null)
+  const lastFocus = useRef(null)
+  const total = GALLERY.length
+  const isOpen = open !== null
+
+  const openAt = (i) => { lastFocus.current = document.activeElement; setOpen(i) }
+  const closeBox = useCallback(() => {
+    setOpen(null)
+    if (lastFocus.current && lastFocus.current.focus) lastFocus.current.focus()
+  }, [])
+  const go = useCallback((d) => setOpen(i => (i === null ? null : (i + d + total) % total)), [total])
+
+  useEffect(() => {
+    if (!isOpen) return
+    const prevOverflow = document.body.style.overflow
+    document.body.style.overflow = "hidden"
+    const onKey = (e) => {
+      if (e.key === "Escape") closeBox()
+      else if (e.key === "ArrowRight") go(1)
+      else if (e.key === "ArrowLeft") go(-1)
+    }
+    window.addEventListener("keydown", onKey)
+    if (closeRef.current) closeRef.current.focus()
+    return () => {
+      window.removeEventListener("keydown", onKey)
+      document.body.style.overflow = prevOverflow
+    }
+  }, [isOpen, closeBox, go])
+
+  
+  useEffect(() => {
+    if (!isOpen) return
+    ;[1, -1].forEach(d => {
+      const im = new Image()
+      im.src = GALLERY[(open + d + total) % total].src
+    })
+  }, [open, isOpen, total])
+
+  const onTouchStart = (e) => { touchX.current = e.touches[0].clientX }
+  const onTouchEnd = (e) => {
+    if (touchX.current === null) return
+    const dx = e.changedTouches[0].clientX - touchX.current
+    touchX.current = null
+    if (Math.abs(dx) > 50) go(dx < 0 ? 1 : -1)
+  }
+
+  const current = isOpen ? GALLERY[open] : null
+
+  const navBtn = {
+    position: "absolute", top: "50%", transform: "translateY(-50%)",
+    width: 44, height: 44, borderRadius: "50%", border: "1.5px solid rgba(221,168,83,0.6)",
+    background: "rgba(15,37,55,0.7)", color: "#DDA853", cursor: "pointer",
+    display: "flex", alignItems: "center", justifyContent: "center", padding: 0,
+  }
+
+  return (
+    <section style={{ padding: "clamp(32px, 8vw, 80px) clamp(16px, 4vw, 40px)", background: "#EDE6D0" }}>
+      <style>{`
+        .moments-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: clamp(20px, 4vw, 36px); }
+        @media (max-width: 600px) {
+          .moments-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+          .moments-grid .hung { padding-top: 30px !important; }
+        }
+
+        .hung { transform: rotate(var(--tilt, 0deg)); transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1); will-change: transform; }
+        .hung-card {
+          display: block; width: 100%; margin: 0; border: none; cursor: zoom-in; text-align: inherit; font: inherit;
+          background: #FFFFFF; padding: 8px 8px 12px; border-radius: 3px;
+          box-shadow: 0 10px 22px rgba(24,59,78,0.18);
+          transition: box-shadow 0.3s ease;
+        }
+        .hung-card:focus-visible { outline: 3px solid #27548A; outline-offset: 3px; }
+        .hung-photo { position: relative; display: block; overflow: hidden; }
+        .hung-photo img { display: block; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; transition: transform 0.5s ease; }
+
+        @media (hover: hover) {
+          .hung:hover { transform: rotate(0deg) scale(1.05); z-index: 2; }
+          .hung:hover .hung-card { box-shadow: 0 18px 34px rgba(24,59,78,0.28); }
+          .hung:hover .hung-photo img { transform: scale(1.06); }
+        }
+        .hung:active { transform: rotate(0deg) scale(0.98); }
+
+        @keyframes lbFade { from { opacity: 0 } to { opacity: 1 } }
+        @keyframes lbPop  { from { opacity: 0; transform: scale(0.94) } to { opacity: 1; transform: scale(1) } }
+        .lb-overlay { animation: lbFade 0.2s ease-out; }
+        .lb-img { animation: lbPop 0.25s cubic-bezier(0.2, 0.7, 0.2, 1); }
+        .lb-btn:hover { background: rgba(221,168,83,0.9) !important; color: #183B4E !important; }
+        .lb-btn:focus-visible { outline: 3px solid #F5EEDC; outline-offset: 2px; }
+
+        @media (prefers-reduced-motion: reduce) {
+          .hung, .hung-card, .hung-photo img { transition: none !important; }
+          .lb-overlay, .lb-img { animation: none !important; }
+        }
+      `}</style>
+
+      <div style={{ maxWidth: 1060, margin: "0 auto" }}>
+        <Eyebrow label="On the classroom wall" />
+        <h2 style={{ margin: "0 0 8px", fontWeight: 900, fontSize: "clamp(30px, 5vw, 58px)", color: "#183B4E", lineHeight: 1, textTransform: "uppercase" }}>
+          Moments
+        </h2>
+        <p style={{ margin: "0 0 clamp(8px, 2vw, 16px)", fontSize: 14, color: "rgba(24,59,78,0.7)" }}>
+          Tap a photo to view it larger.
+        </p>
+        <div className="moments-grid">
+          {GALLERY.map((p, i) => (
+            <Hung key={i} index={i} src={p.src} alt={p.alt} caption={p.caption}
+              tilt={TILTS[i % TILTS.length]} drop={DROPS[i % DROPS.length]} onOpen={openAt} />
+          ))}
+        </div>
+      </div>
+
+      {isOpen && (
+        <div
+          className="lb-overlay"
+          role="dialog"
+          aria-modal="true"
+          aria-label={`Photo ${open + 1} of ${total}`}
+          onClick={closeBox}
+          onTouchStart={onTouchStart}
+          onTouchEnd={onTouchEnd}
+          style={{
+            position: "fixed", inset: 0, zIndex: 100, background: "rgba(11,32,48,0.92)",
+            display: "flex", alignItems: "center", justifyContent: "center", padding: "56px 16px 64px",
+          }}
+        >
+          <button ref={closeRef} type="button" className="lb-btn" onClick={(e) => { e.stopPropagation(); closeBox() }} aria-label="Close photo"
+            style={{ ...navBtn, top: 14, right: 14, transform: "none", width: 40, height: 40 }}>
+            <X size={18} />
+          </button>
+
+          <button type="button" className="lb-btn" onClick={(e) => { e.stopPropagation(); go(-1) }} aria-label="Previous photo"
+            style={{ ...navBtn, left: "clamp(8px, 2vw, 24px)" }}>
+            <ChevronLeft size={22} />
+          </button>
+          <button type="button" className="lb-btn" onClick={(e) => { e.stopPropagation(); go(1) }} aria-label="Next photo"
+            style={{ ...navBtn, right: "clamp(8px, 2vw, 24px)" }}>
+            <ChevronRight size={22} />
+          </button>
+
+          <figure key={open} onClick={(e) => e.stopPropagation()} style={{ margin: 0, maxWidth: "100%", display: "flex", flexDirection: "column", alignItems: "center" }}>
+            <img
+              className="lb-img"
+              src={current.src}
+              alt={current.alt}
+              style={{ display: "block", maxWidth: "min(92vw, 900px)", maxHeight: "74vh", width: "auto", height: "auto", objectFit: "contain", borderRadius: 4, border: "6px solid #FFFFFF", boxShadow: "0 20px 60px rgba(0,0,0,0.5)", background: "#FFFFFF" }}
+            />
+            <figcaption style={{ marginTop: 14, textAlign: "center", color: "rgba(245,238,220,0.9)", fontSize: 14 }}>
+              {current.caption ? <span style={{ display: "block", marginBottom: 4 }}>{current.caption}</span> : null}
+              <span style={{ fontWeight: 700, letterSpacing: "0.12em", color: "#DDA853" }}>{open + 1} / {total}</span>
+            </figcaption>
+          </figure>
+        </div>
+      )}
+    </section>
+  )
+}
+
+
 const Hero = () => (
   <section className="home-hero" style={{ position: "relative", overflow: "hidden", minHeight: HERO_HEIGHT, display: "flex", alignItems: "center", background: "#0F2537", borderBottom: "4px solid #DDA853" }}>
     <style>{`
@@ -144,32 +319,28 @@ const Hero = () => (
 
     
     <div className="hero-bg" aria-hidden="true" style={{ position: "absolute", inset: 0, backgroundImage: `url(${img})`, backgroundSize: "cover", backgroundPosition: HERO_FOCUS }} />
-    <div aria-hidden="true" style={{ position: "absolute", inset: 0, background: "linear-gradient(105deg, rgba(15,37,55,0.95) 0%, rgba(15,37,55,0.78) 48%, rgba(15,37,55,0.35) 100%)" }} />
-    <div aria-hidden="true" style={{ position: "absolute", top: -140, left: -120, width: 420, height: 420, borderRadius: "50%", background: "#27548A", opacity: 0.45, filter: "blur(100px)" }} />
-    <div aria-hidden="true" style={{ position: "absolute", bottom: -160, right: -100, width: 440, height: 440, borderRadius: "50%", background: "#DDA853", opacity: 0.18, filter: "blur(110px)" }} />
-
-    {/* floating doodles */}
+    
     <svg className="hero-float hero-bob" aria-hidden="true" width="34" height="34" viewBox="0 0 24 24" style={{ position: "absolute", top: 54, left: "46%", "--r": "0deg", opacity: 0.7 }}><path d="M12 1L14.5 9.5 23 12 14.5 14.5 12 23 9.5 14.5 1 12 9.5 9.5Z" fill="none" stroke="#F5EEDC" strokeWidth="1.5" strokeLinejoin="round" /></svg>
     <svg className="hero-float hero-bob" aria-hidden="true" width="26" height="26" viewBox="0 0 24 24" style={{ position: "absolute", bottom: 120, left: "4%", "--r": "0deg", opacity: 0.55, animationDelay: "1.2s" }}><path d="M12 1L14.5 9.5 23 12 14.5 14.5 12 23 9.5 14.5 1 12 9.5 9.5Z" fill="none" stroke="#DDA853" strokeWidth="1.7" strokeLinejoin="round" /></svg>
     <svg className="hero-float hero-spin" aria-hidden="true" width="110" height="110" viewBox="0 0 100 100" style={{ position: "absolute", top: 40, right: "4%", opacity: 0.35 }}><circle cx="50" cy="50" r="44" fill="none" stroke="#DDA853" strokeWidth="2" strokeDasharray="3 9" strokeLinecap="round" /></svg>
 
-    <div style={{ position: "relative", zIndex: 2, maxWidth: 1060, margin: "0 auto", width: "100%", padding: "clamp(48px, 8vw, 80px) clamp(20px, 4vw, 40px) clamp(96px, 12vw, 130px)", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "clamp(32px, 6vw, 64px)", alignItems: "center" }}>
+    <div style={{ position: "relative", zIndex: 2, maxWidth: 1060, margin: "0 auto", width: "100%", padding: "clamp(36px, 8vw, 80px) clamp(18px, 4vw, 40px) clamp(72px, 12vw, 130px)", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "clamp(28px, 6vw, 64px)", alignItems: "center" }}>
       <div>
         <div className="hero-up" style={{ animationDelay: "0.05s" }}><Eyebrow label="Game-Based Learning · Nepal" dark /></div>
-        <h1 className="hero-up" style={{ animationDelay: "0.15s", margin: "0 0 20px", fontWeight: 900, fontSize: "clamp(54px, 10vw, 112px)", lineHeight: 0.95, letterSpacing: "-0.02em", color: "#F5EEDC" }}>
+        <h1 className="hero-up" style={{ animationDelay: "0.15s", margin: "0 0 18px", fontWeight: 900, fontSize: "clamp(42px, 10vw, 112px)", lineHeight: 0.95, letterSpacing: "-0.02em", color: "#F5EEDC", textShadow: "0 2px 18px rgba(11,32,48,0.65)" }}>
           Learning<br />Through<br />
           <span style={{ color: "#DDA853", textShadow: "2px 2px 0 #0B2030, 4px 4px 0 #0B2030, 6px 6px 0 #0B2030" }}>Play</span>
         </h1>
-        <svg className="hero-up" style={{ animationDelay: "0.25s", display: "block", margin: "0 0 24px" }} width="150" height="12" viewBox="0 0 150 12" fill="none" aria-hidden="true">
+        <svg className="hero-up" style={{ animationDelay: "0.25s", display: "block", margin: "0 0 20px" }} width="150" height="12" viewBox="0 0 150 12" fill="none" aria-hidden="true">
           <path d="M2 9 Q18 3 37 9 Q56 15 74 9 Q92 3 111 9 Q130 15 148 9" stroke="#DDA853" strokeWidth="3" strokeLinecap="round" fill="none" />
         </svg>
-        <p className="hero-up" style={{ animationDelay: "0.35s", margin: "0 0 30px", maxWidth: 460, fontSize: "clamp(16px, 1.9vw, 19px)", lineHeight: 1.75, color: "rgba(245,238,220,0.9)" }}>
+        <p className="hero-up" style={{ animationDelay: "0.35s", margin: "0 0 26px", maxWidth: 460, fontSize: "clamp(15px, 1.9vw, 19px)", lineHeight: 1.7, color: "#F5EEDC", textShadow: "0 1px 12px rgba(11,32,48,0.85)" }}>
           We bring play-based, game-led learning into Nepal's primary classrooms, and research how it can shape policy.
         </p>
-        <div className="hero-up" style={{ animationDelay: "0.45s", display: "flex", flexWrap: "wrap", alignItems: "center", gap: 16 }}>
+        <div className="hero-up" style={{ animationDelay: "0.45s", display: "flex", flexWrap: "wrap", alignItems: "center", gap: 12 }}>
           <GoldBtn to="/projects">Check out our projects <ArrowRight size={16} /></GoldBtn>
           <TopLink to="/vision"
-            style={{ display: "inline-flex", alignItems: "center", minHeight: 48, padding: "0 24px", borderRadius: 100, border: "2px solid rgba(245,238,220,0.7)", color: "#F5EEDC", fontWeight: 700, fontSize: 15, textDecoration: "none" }}>
+            style={{ display: "inline-flex", alignItems: "center", minHeight: 46, padding: "0 24px", borderRadius: 100, border: "2px solid #DDA853", background: "#183B4E", color: "#F5EEDC", fontWeight: 700, fontSize: 15, textDecoration: "none", boxShadow: "0 6px 18px rgba(24,59,78,0.35)" }}>
             Our vision
           </TopLink>
         </div>
@@ -187,7 +358,7 @@ const Hero = () => (
   </section>
 )
 
-/* ───────── "Spot the pattern" play break ───────── */
+
 const Shape = ({ k, size = 44 }) => (
   <svg width={size} height={size} viewBox="0 0 48 48" aria-hidden="true" style={{ display: "block", flexShrink: 0 }}>
     {k === "c" && <circle cx="24" cy="24" r="20" fill={PLAY_COLORS.c} />}
@@ -219,16 +390,16 @@ const PatternPlay = () => {
   const verdict = score === LEVELS.length ? "Pattern master!" : score >= 3 ? "Sharp eyes!" : "Every plot twist teaches something."
 
   return (
-    <section style={{ position: "relative", padding: "clamp(40px, 8vw, 80px) clamp(20px, 4vw, 40px)", background: "#F5EEDC", overflow: "hidden" }}>
+    <section style={{ position: "relative", padding: "clamp(32px, 8vw, 80px) clamp(16px, 4vw, 40px)", background: "#F5EEDC", overflow: "hidden" }}>
       <div aria-hidden="true" style={{ position: "absolute", inset: 0, backgroundImage: `url(${texture})`, backgroundSize: "cover", opacity: 0.06, pointerEvents: "none" }} />
       <div style={{ position: "relative", zIndex: 1, maxWidth: 1060, margin: "0 auto" }}>
         <Eyebrow label="Try a play break" />
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "clamp(28px, 5vw, 56px)", alignItems: "center" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "clamp(24px, 5vw, 56px)", alignItems: "center" }}>
           <div>
-            <h2 style={{ margin: "0 0 16px", fontWeight: 900, fontSize: "clamp(36px, 5vw, 58px)", color: "#183B4E", lineHeight: 1, textTransform: "uppercase" }}>
+            <h2 style={{ margin: "0 0 14px", fontWeight: 900, fontSize: "clamp(30px, 5vw, 58px)", color: "#183B4E", lineHeight: 1, textTransform: "uppercase" }}>
               Spot the<br />pattern
             </h2>
-            <p style={{ margin: "0 0 22px", maxWidth: 420, fontSize: "clamp(15px, 1.8vw, 17px)", lineHeight: 1.7, color: "rgba(24,59,78,0.85)" }}>
+            <p style={{ margin: "0 0 20px", maxWidth: 420, fontSize: "clamp(14px, 1.8vw, 17px)", lineHeight: 1.7, color: "rgba(24,59,78,0.85)" }}>
               Five quick levels, no pressure. A wrong answer is just a plot twist, and the rule is always revealed. This is the kind of play we bring into classrooms.
             </p>
             <div style={{ display: "flex", alignItems: "center", gap: 8 }} aria-label={`Level ${Math.min(lvl + 1, LEVELS.length)} of ${LEVELS.length}, score ${score}`}>
@@ -238,8 +409,8 @@ const PatternPlay = () => {
                 return (
                   <span key={n} aria-hidden="true"
                     style={{
-                      width: 28, height: 28, borderRadius: "50%", boxSizing: "border-box", display: "flex", alignItems: "center", justifyContent: "center",
-                      fontSize: 14, fontWeight: 900,
+                      width: 26, height: 26, borderRadius: "50%", boxSizing: "border-box", display: "flex", alignItems: "center", justifyContent: "center",
+                      fontSize: 13, fontWeight: 900,
                       border: `2px solid ${has ? (r ? "#183B4E" : "#C0584E") : n === lvl && !done ? "#DDA853" : "rgba(24,59,78,0.3)"}`,
                       background: has && r ? "#DDA853" : "transparent",
                       color: has ? (r ? "#183B4E" : "#C0584E") : "transparent",
@@ -251,21 +422,21 @@ const PatternPlay = () => {
             </div>
           </div>
 
-          <div aria-live="polite" style={{ background: "#183B4E", borderRadius: 26, border: "2px solid #DDA853", padding: "clamp(20px, 4vw, 32px)", boxShadow: "0 14px 40px rgba(24,59,78,0.2)" }}>
+          <div aria-live="polite" style={{ background: "#183B4E", borderRadius: 24, border: "2px solid #DDA853", padding: "clamp(16px, 4vw, 32px)", boxShadow: "0 14px 40px rgba(24,59,78,0.2)" }}>
             {!done ? (
               <>
-                <p style={{ margin: "0 0 14px", fontSize: 13, fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase", color: "#DDA853" }}>
+                <p style={{ margin: "0 0 12px", fontSize: 12, fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase", color: "#DDA853" }}>
                   Level {lvl + 1} · What comes next?
                 </p>
                 <div role="img" aria-label={`The pattern so far: ${level.seq.map(k => PLAY_NAMES[k]).join(", ")}, then a missing shape`}
-                  style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 10, padding: "16px 14px", borderRadius: 18, background: "rgba(245,238,220,0.06)", marginBottom: 18 }}>
-                  {level.seq.map((k, n) => <Shape key={n} k={k} />)}
-                  <div style={{ width: 52, height: 52, borderRadius: 12, boxSizing: "border-box", display: "flex", alignItems: "center", justifyContent: "center", border: `2px dashed ${revealed ? "transparent" : "#DDA853"}`, color: "#DDA853", fontWeight: 900, fontSize: 24 }}>
-                    {revealed ? <Shape k={level.answer} /> : "?"}
+                  style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 8, padding: "14px 12px", borderRadius: 18, background: "rgba(245,238,220,0.06)", marginBottom: 16 }}>
+                  {level.seq.map((k, n) => <Shape key={n} k={k} size={38} />)}
+                  <div style={{ width: 46, height: 46, borderRadius: 12, boxSizing: "border-box", display: "flex", alignItems: "center", justifyContent: "center", border: `2px dashed ${revealed ? "transparent" : "#DDA853"}`, color: "#DDA853", fontWeight: 900, fontSize: 22 }}>
+                    {revealed ? <Shape k={level.answer} size={38} /> : "?"}
                   </div>
                 </div>
 
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10 }}>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 8 }}>
                   {level.options.map(k => {
                     const isRight = k === level.answer
                     const isPicked = k === picked
@@ -273,25 +444,25 @@ const PatternPlay = () => {
                       <button key={k} type="button" onClick={() => pick(k)} disabled={revealed}
                         aria-label={`${PLAY_NAMES[k]}${revealed ? (isRight ? ", correct answer" : isPicked ? ", your choice" : "") : ""}`}
                         style={{
-                          minHeight: 64, padding: 8, borderRadius: 16, display: "flex", alignItems: "center", justifyContent: "center",
+                          minHeight: 58, padding: 6, borderRadius: 16, display: "flex", alignItems: "center", justifyContent: "center",
                           cursor: revealed ? "default" : "pointer", fontFamily: "inherit",
                           border: `2px solid ${revealed && isRight ? "#DDA853" : revealed && isPicked ? "#E8837A" : "rgba(245,238,220,0.28)"}`,
                           background: revealed && isRight ? "rgba(221,168,83,0.22)" : "rgba(245,238,220,0.07)",
                           opacity: revealed && !isRight && !isPicked ? 0.45 : 1,
                           transition: "all 0.18s ease",
                         }}>
-                        <Shape k={k} size={40} />
+                        <Shape k={k} size={36} />
                       </button>
                     )
                   })}
                 </div>
 
                 {revealed && (
-                  <div style={{ marginTop: 18 }}>
-                    <p style={{ margin: "0 0 4px", fontWeight: 900, fontSize: 17, color: right ? "#DDA853" : "#F5EEDC" }}>
+                  <div style={{ marginTop: 16 }}>
+                    <p style={{ margin: "0 0 4px", fontWeight: 900, fontSize: 16, color: right ? "#DDA853" : "#F5EEDC" }}>
                       {right ? "Nice spotting!" : "A plot twist!"}
                     </p>
-                    <p style={{ margin: "0 0 14px", fontSize: 15, lineHeight: 1.6, color: "rgba(245,238,220,0.86)" }}>{level.rule}</p>
+                    <p style={{ margin: "0 0 12px", fontSize: 14, lineHeight: 1.6, color: "rgba(245,238,220,0.86)" }}>{level.rule}</p>
                     <button type="button" onClick={next}
                       style={{ minHeight: 44, padding: "10px 22px", borderRadius: 100, border: "none", background: "#DDA853", color: "#183B4E", fontWeight: 800, fontSize: 14, cursor: "pointer", fontFamily: "inherit" }}>
                       {lvl === LEVELS.length - 1 ? "See my score" : "Next level"}
@@ -300,17 +471,17 @@ const PatternPlay = () => {
                 )}
               </>
             ) : (
-              <div style={{ padding: "clamp(12px, 3vw, 24px)", textAlign: "center" }}>
-                <p style={{ margin: "0 0 6px", fontSize: 13, fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase", color: "#DDA853" }}>You spotted</p>
-                <p style={{ margin: "0 0 8px", fontWeight: 900, fontSize: "clamp(48px, 8vw, 80px)", lineHeight: 1, color: "#F5EEDC" }}>{score} / {LEVELS.length}</p>
-                <p style={{ margin: "0 0 24px", fontSize: 18, fontWeight: 700, color: "#DDA853" }}>{verdict}</p>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: 12, justifyContent: "center" }}>
+              <div style={{ padding: "clamp(8px, 3vw, 24px)", textAlign: "center" }}>
+                <p style={{ margin: "0 0 6px", fontSize: 12, fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase", color: "#DDA853" }}>You spotted</p>
+                <p style={{ margin: "0 0 8px", fontWeight: 900, fontSize: "clamp(40px, 8vw, 80px)", lineHeight: 1, color: "#F5EEDC" }}>{score} / {LEVELS.length}</p>
+                <p style={{ margin: "0 0 20px", fontSize: 17, fontWeight: 700, color: "#DDA853" }}>{verdict}</p>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 10, justifyContent: "center" }}>
                   <button type="button" onClick={again}
-                    style={{ display: "inline-flex", alignItems: "center", gap: 8, minHeight: 48, padding: "12px 24px", borderRadius: 100, border: "2px solid rgba(245,238,220,0.6)", background: "transparent", color: "#F5EEDC", fontWeight: 700, fontSize: 15, cursor: "pointer", fontFamily: "inherit" }}>
+                    style={{ display: "inline-flex", alignItems: "center", gap: 8, minHeight: 46, padding: "10px 22px", borderRadius: 100, border: "2px solid rgba(245,238,220,0.6)", background: "transparent", color: "#F5EEDC", fontWeight: 700, fontSize: 14, cursor: "pointer", fontFamily: "inherit" }}>
                     <RefreshCw size={15} /> Play again
                   </button>
                   <TopLink to="/projects"
-                    style={{ display: "inline-flex", alignItems: "center", gap: 8, minHeight: 48, padding: "0 24px", borderRadius: 100, background: "#F5EEDC", color: "#183B4E", fontWeight: 700, fontSize: 15, textDecoration: "none" }}>
+                    style={{ display: "inline-flex", alignItems: "center", gap: 8, minHeight: 46, padding: "0 22px", borderRadius: 100, background: "#F5EEDC", color: "#183B4E", fontWeight: 700, fontSize: 14, textDecoration: "none" }}>
                     See our projects <ArrowRight size={14} />
                   </TopLink>
                 </div>
@@ -407,25 +578,25 @@ const Coaster = () => {
       </svg>
 
       {!reduce && (
-        <div style={{ textAlign: "center", margin: "8px 0 36px" }}>
+        <div style={{ textAlign: "center", margin: "8px 0 28px" }}>
           <button type="button" onClick={start}
-            style={{ display: "inline-flex", alignItems: "center", gap: 8, minHeight: 48, padding: "12px 26px", borderRadius: 100, border: "none", background: "#183B4E", color: "#DDA853", fontWeight: 700, fontSize: 15, cursor: "pointer", fontFamily: "inherit" }}>
+            style={{ display: "inline-flex", alignItems: "center", gap: 8, minHeight: 46, padding: "10px 24px", borderRadius: 100, border: "none", background: "#183B4E", color: "#DDA853", fontWeight: 700, fontSize: 15, cursor: "pointer", fontFamily: "inherit" }}>
             <RefreshCw size={15} /> {ride ? "Ride again" : "Send the cart"}
           </button>
           {ride === 0 && (
-            <p style={{ margin: "14px 0 0", fontSize: 15, color: "rgba(24,59,78,0.8)" }}>Ride the track to see how we got here.</p>
+            <p style={{ margin: "12px 0 0", fontSize: 14, color: "rgba(24,59,78,0.8)" }}>Ride the track to see how we got here.</p>
           )}
         </div>
       )}
 
-      <ol style={{ listStyle: "none", margin: 0, padding: 0, display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(190px, 1fr))", gap: 24 }}>
+      <ol style={{ listStyle: "none", margin: 0, padding: 0, display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(190px, 1fr))", gap: 20 }}>
         {TIMELINE.map((m, i) => i < visible && (
           <li key={m.when} className="coaster-item" style={{ display: "flex", gap: 12, alignItems: "flex-start", animation: "itemIn 0.4s ease-out" }}>
-            <span aria-hidden="true" style={{ flexShrink: 0, width: 30, height: 30, borderRadius: "50%", background: "#DDA853", color: "#183B4E", fontWeight: 900, fontSize: 14, display: "flex", alignItems: "center", justifyContent: "center" }}>{i + 1}</span>
+            <span aria-hidden="true" style={{ flexShrink: 0, width: 28, height: 28, borderRadius: "50%", background: "#DDA853", color: "#183B4E", fontWeight: 900, fontSize: 14, display: "flex", alignItems: "center", justifyContent: "center" }}>{i + 1}</span>
             <div>
               <p style={{ margin: "0 0 4px", fontSize: 14, fontWeight: 900, color: "#27548A" }}>{m.when}</p>
-              <h3 style={{ margin: "0 0 6px", fontSize: 17, fontWeight: 900, lineHeight: 1.3, color: "#183B4E" }}>{m.title}</h3>
-              <p style={{ margin: 0, fontSize: 15, lineHeight: 1.6, color: "rgba(24,59,78,0.82)" }}>{m.text}</p>
+              <h3 style={{ margin: "0 0 6px", fontSize: 16, fontWeight: 900, lineHeight: 1.3, color: "#183B4E" }}>{m.title}</h3>
+              <p style={{ margin: 0, fontSize: 14, lineHeight: 1.6, color: "rgba(24,59,78,0.82)" }}>{m.text}</p>
             </div>
           </li>
         ))}
@@ -435,73 +606,54 @@ const Coaster = () => {
 }
 
 const Home = () => {
-  const tilts = [-2, 1.5, -1, 2, -1.5, 1]
   return (
     <main style={{ width: "100%", background: "#F5EEDC" }}>
       <Hero />
 
       {/* STATS */}
-      <div style={{ background: "#0F2537", padding: "24px 16px", borderTop: "1px solid rgba(221,168,83,0.25)" }}>
+      <div style={{ background: "#0F2537", padding: "20px 12px", borderTop: "1px solid rgba(221,168,83,0.25)" }}>
         <div style={{ maxWidth: 860, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr 1fr", textAlign: "center" }}>
           {[
             { num: "300+", label: "Students Reached" },
             { num: "8+",   label: "Innovative Projects" },
             { num: "2025", label: "Founded" },
           ].map(({ num, label }, i) => (
-            <div key={label} style={{ padding: "0 clamp(8px, 3vw, 40px)", borderRight: i < 2 ? "1px solid rgba(255,255,255,0.15)" : "none" }}>
-              <div style={{ fontSize: "clamp(24px, 4vw, 36px)", fontWeight: 900, color: "#DDA853" }}>{num}</div>
-              <div style={{ fontSize: "clamp(12px, 2vw, 15px)", fontWeight: 500, marginTop: 2, color: "rgba(255,255,255,0.78)" }}>{label}</div>
+            <div key={label} style={{ padding: "0 clamp(6px, 3vw, 40px)", borderRight: i < 2 ? "1px solid rgba(255,255,255,0.15)" : "none" }}>
+              <div style={{ fontSize: "clamp(20px, 4vw, 36px)", fontWeight: 900, color: "#DDA853" }}>{num}</div>
+              <div style={{ fontSize: "clamp(11px, 2vw, 15px)", fontWeight: 500, marginTop: 2, color: "rgba(255,255,255,0.78)" }}>{label}</div>
             </div>
           ))}
         </div>
       </div>
 
-      
-
-      
-
       {/* MOMENTS */}
-      <section style={{ padding: "clamp(40px, 8vw, 80px) clamp(20px, 4vw, 40px)", background: "#EDE6D0" }}>
-        <div style={{ maxWidth: 1060, margin: "0 auto" }}>
-          <Eyebrow label="On the classroom wall" />
-          <h2 style={{ margin: "0 0 clamp(8px, 2vw, 16px)", fontWeight: 900, fontSize: "clamp(36px, 5vw, 58px)", color: "#183B4E", lineHeight: 1, textTransform: "uppercase" }}>
-            Moments
-          </h2>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "clamp(20px, 4vw, 36px)" }}>
-            {GALLERY.map((p, i) => (
-              <Hung key={i} src={p.src} alt={p.alt} caption={p.caption} tilt={tilts[i % tilts.length]} drop={[0, 18, 6, 24, 10, 2][i % 6]} />
-            ))}
-          </div>
-        </div>
-      </section>
+      <Moments />
 
       {/* OUR JOURNEY */}
-      <section style={{ position: "relative", padding: "clamp(40px, 8vw, 80px) clamp(20px, 4vw, 40px)", background: "#F5EEDC", overflow: "hidden" }}>
+      <section style={{ position: "relative", padding: "clamp(32px, 8vw, 80px) clamp(16px, 4vw, 40px)", background: "#F5EEDC", overflow: "hidden" }}>
         <div aria-hidden="true" style={{ position: "absolute", inset: 0, backgroundImage: `url(${texture})`, backgroundSize: "cover", opacity: 0.06, pointerEvents: "none" }} />
         <div style={{ position: "relative", zIndex: 1, maxWidth: 1060, margin: "0 auto" }}>
           <Eyebrow label="How we got here" />
-          <h2 style={{ margin: "0 0 clamp(20px, 4vw, 32px)", fontWeight: 900, fontSize: "clamp(36px, 5vw, 58px)", color: "#183B4E", lineHeight: 1, textTransform: "uppercase" }}>
+          <h2 style={{ margin: "0 0 clamp(16px, 4vw, 32px)", fontWeight: 900, fontSize: "clamp(30px, 5vw, 58px)", color: "#183B4E", lineHeight: 1, textTransform: "uppercase" }}>
             Our Journey
           </h2>
           <Coaster />
         </div>
       </section>
 
-     
-
       {/* WHAT WE DO */}
-      <section style={{ position: "relative", padding: "clamp(40px, 8vw, 80px) clamp(20px, 4vw, 40px)", background: "#183B4E", overflow: "hidden" }}>
+      <section style={{ position: "relative", padding: "clamp(32px, 8vw, 80px) clamp(16px, 4vw, 40px)", background: "#183B4E", overflow: "hidden" }}>
         <div style={{ position: "absolute", inset: 0, backgroundImage: `url(${Shapes})`, backgroundSize: "cover", opacity: 0.05, pointerEvents: "none" }} />
         <div style={{ position: "absolute", top: -60, left: -60, width: 300, height: 300, borderRadius: "50%", background: "#DDA853", opacity: 0.12, filter: "blur(80px)", pointerEvents: "none" }} />
 
         <div style={{ position: "relative", zIndex: 1, maxWidth: 1060, margin: "0 auto" }}>
           <Eyebrow label="Our Mission" dark />
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "clamp(32px, 6vw, 80px)", alignItems: "start" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "clamp(28px, 6vw, 80px)", alignItems: "start" }}>
             <div>
-              <h2 style={{ margin: "0 0 20px", fontWeight: 900, fontSize: "clamp(36px, 5vw, 58px)", color: "#F5EEDC", lineHeight: 1, textTransform: "uppercase" }}>
+              <h2 style={{ margin: "0 0 18px", fontWeight: 900, fontSize: "clamp(30px, 5vw, 58px)", color: "#F5EEDC", lineHeight: 1, textTransform: "uppercase" }}>
                 What<br />We Do
               </h2>
-              <p style={{ margin: "0 0 28px", fontSize: "clamp(15px, 1.8vw, 17px)", lineHeight: 1.8, color: "rgba(245,238,220,0.85)" }}>
+              <p style={{ margin: "0 0 24px", fontSize: "clamp(14px, 1.8vw, 17px)", lineHeight: 1.75, color: "rgba(245,238,220,0.85)" }}>
                 We bridge the gap between policymakers and educators, working toward the integration
                 of play-based pedagogy into Nepal's elementary schools through primary and secondary
                 research, and direct work with children.
@@ -509,25 +661,25 @@ const Home = () => {
               <p style={{ margin: "0 0 10px", fontSize: 12, fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "rgba(245,238,220,0.70)" }}>
                 Research scope
               </p>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 32 }}>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 28 }}>
                 {["Pedagogy", "Policy"].map(tag => (
-                  <span key={tag} style={{ padding: "7px 18px", borderRadius: 100, fontSize: 14, fontWeight: 700, background: "rgba(245,238,220,0.10)", color: "#F5EEDC", border: "1.5px solid rgba(245,238,220,0.22)" }}>
+                  <span key={tag} style={{ padding: "6px 16px", borderRadius: 100, fontSize: 14, fontWeight: 700, background: "rgba(245,238,220,0.10)", color: "#F5EEDC", border: "1.5px solid rgba(245,238,220,0.22)" }}>
                     {tag}
                   </span>
                 ))}
               </div>
               <GoldBtn to="/vision">Read our full vision <ArrowRight size={16} /></GoldBtn>
             </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 16, paddingTop: 4 }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 14, paddingTop: 4 }}>
               {[
                 { tag: "Pedagogy", body: "Evaluating the cognitive impact of play-based learning at primary schools in Nepal and the assessment methods used by teachers across the world." },
                 { tag: "Policy",   body: "Examining the alignment between national education directives and street-level practice, through policy transmission and the lived realities of educators and students." },
               ].map(({ tag, body }) => (
-                <div key={tag} style={{ borderRadius: 20, padding: "clamp(20px, 4%, 28px)", background: "rgba(245,238,220,0.08)", border: "1px solid rgba(245,238,220,0.14)" }}>
-                  <div style={{ display: "inline-flex", alignItems: "center", padding: "5px 14px", borderRadius: 100, fontSize: 12, fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.12em", background: "#DDA853", color: "#183B4E", marginBottom: 12 }}>
+                <div key={tag} style={{ borderRadius: 20, padding: "clamp(16px, 4%, 28px)", background: "rgba(245,238,220,0.08)", border: "1px solid rgba(245,238,220,0.14)" }}>
+                  <div style={{ display: "inline-flex", alignItems: "center", padding: "5px 14px", borderRadius: 100, fontSize: 12, fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.12em", background: "#DDA853", color: "#183B4E", marginBottom: 10 }}>
                     {tag}
                   </div>
-                  <p style={{ margin: 0, fontSize: 15, lineHeight: 1.75, color: "rgba(245,238,220,0.86)" }}>{body}</p>
+                  <p style={{ margin: 0, fontSize: 14, lineHeight: 1.7, color: "rgba(245,238,220,0.86)" }}>{body}</p>
                 </div>
               ))}
             </div>
@@ -539,45 +691,45 @@ const Home = () => {
       <div style={{ background: "#EDE6D0" }}><PatternPlay /></div>
 
       {/* IRD */}
-      <section style={{ position: "relative", padding: "clamp(40px, 8vw, 80px) clamp(20px, 4vw, 40px)", background: "#EDE5D0", overflow: "hidden" }}>
+      <section style={{ position: "relative", padding: "clamp(32px, 8vw, 80px) clamp(16px, 4vw, 40px)", background: "#EDE5D0", overflow: "hidden" }}>
         <div style={{ position: "relative", zIndex: 1, maxWidth: 1060, margin: "0 auto" }}>
           <Eyebrow label="Our Parent Organisation" />
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "clamp(32px, 6vw, 60px)", alignItems: "center" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "clamp(28px, 6vw, 60px)", alignItems: "center" }}>
             <div>
-              <h2 style={{ margin: "0 0 20px", fontWeight: 900, fontSize: "clamp(28px, 4vw, 46px)", color: "#183B4E", lineHeight: 1.1 }}>
+              <h2 style={{ margin: "0 0 18px", fontWeight: 900, fontSize: "clamp(26px, 4vw, 46px)", color: "#183B4E", lineHeight: 1.1 }}>
                 Institute for<br />Rural Development
               </h2>
-              <svg style={{ display: "block", marginBottom: 24 }} width="100" height="10" viewBox="0 0 100 10" fill="none" aria-hidden="true">
+              <svg style={{ display: "block", marginBottom: 20 }} width="100" height="10" viewBox="0 0 100 10" fill="none" aria-hidden="true">
                 <path d="M2 7 Q13 2 25 7 Q37 12 49 7 Q61 2 73 7 Q85 12 98 7" stroke="#DDA853" strokeWidth="2.5" strokeLinecap="round" fill="none" />
               </svg>
-              <p style={{ margin: "0 0 16px", fontSize: "clamp(15px, 1.8vw, 17px)", lineHeight: 1.8, color: "rgba(24,59,78,0.88)" }}>
+              <p style={{ margin: "0 0 14px", fontSize: "clamp(14px, 1.8vw, 17px)", lineHeight: 1.75, color: "rgba(24,59,78,0.88)" }}>
                 IRD is empowering and guiding local leadership and communities to build the foundation
                 for sustainable rural development, rooted in Nepal's ethos.
               </p>
-              <p style={{ margin: "0 0 32px", fontSize: "clamp(15px, 1.8vw, 17px)", lineHeight: 1.8, color: "rgba(24,59,78,0.78)" }}>
+              <p style={{ margin: "0 0 28px", fontSize: "clamp(14px, 1.8vw, 17px)", lineHeight: 1.75, color: "rgba(24,59,78,0.78)" }}>
                 Shape Balapan is an IRD initiative, bringing that same commitment to grassroots change
                 into Nepal's primary classrooms, one curious child at a time.
               </p>
               <a href="https://ird.com.np/" target="_blank" rel="noopener noreferrer"
-                style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "13px 26px", borderRadius: 100, background: "#27548A", color: "#F5EEDC", fontWeight: 700, fontSize: 15, textDecoration: "none", transition: "all 0.2s" }}
+                style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "12px 24px", borderRadius: 100, background: "#27548A", color: "#F5EEDC", fontWeight: 700, fontSize: 15, textDecoration: "none", transition: "all 0.2s" }}
                 onMouseEnter={e => { e.currentTarget.style.background = "#183B4E"; e.currentTarget.style.transform = "translateY(-2px)" }}
                 onMouseLeave={e => { e.currentTarget.style.background = "#27548A"; e.currentTarget.style.transform = "" }}>
                 Visit IRD <ArrowRight size={14} />
               </a>
             </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
               {[
                 { title: "Sustainable Development", body: "Building systems and capacities that communities can own and grow long after any programme ends." },
                 { title: "Local Leadership",         body: "Rooting every initiative in the knowledge, agency, and lived experience of Nepal's local communities." },
                 { title: "Nepal's Ethos",            body: "Drawing on cultural values and contextual wisdom as the bedrock, not the backdrop, of development work." },
               ].map(({ title, body }) => (
-                <div key={title} style={{ borderRadius: 20, padding: "clamp(16px, 4%, 22px)", display: "flex", gap: 16, alignItems: "flex-start", background: "#F5EEDC", border: "1px solid rgba(24,59,78,0.14)" }}>
-                  <div style={{ flexShrink: 0, width: 42, height: 42, borderRadius: "50%", background: "#DDA853", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <div key={title} style={{ borderRadius: 20, padding: "clamp(14px, 4%, 22px)", display: "flex", gap: 14, alignItems: "flex-start", background: "#F5EEDC", border: "1px solid rgba(24,59,78,0.14)" }}>
+                  <div style={{ flexShrink: 0, width: 38, height: 38, borderRadius: "50%", background: "#DDA853", display: "flex", alignItems: "center", justifyContent: "center" }}>
                     <Leaf size={16} color="#183B4E" />
                   </div>
                   <div>
-                    <p style={{ margin: "0 0 4px", fontWeight: 900, fontSize: 16, color: "#27548A" }}>{title}</p>
-                    <p style={{ margin: 0, fontSize: 15, lineHeight: 1.7, color: "rgba(24,59,78,0.82)" }}>{body}</p>
+                    <p style={{ margin: "0 0 4px", fontWeight: 900, fontSize: 15, color: "#27548A" }}>{title}</p>
+                    <p style={{ margin: 0, fontSize: 14, lineHeight: 1.65, color: "rgba(24,59,78,0.82)" }}>{body}</p>
                   </div>
                 </div>
               ))}
@@ -587,14 +739,14 @@ const Home = () => {
       </section>
 
       {/* OUR VALUES */}
-      <section style={{ position: "relative", padding: "clamp(40px, 8vw, 80px) clamp(20px, 4vw, 40px)", background: "#183B4E", overflow: "hidden" }}>
+      <section style={{ position: "relative", padding: "clamp(32px, 8vw, 80px) clamp(16px, 4vw, 40px)", background: "#183B4E", overflow: "hidden" }}>
         <div style={{ position: "absolute", inset: 0, backgroundImage: `url(${Shapes})`, backgroundSize: "cover", opacity: 0.05, pointerEvents: "none" }} />
         <div style={{ position: "absolute", bottom: -80, left: -80, width: 300, height: 300, borderRadius: "50%", background: "#27548A", opacity: 0.45, filter: "blur(80px)", pointerEvents: "none" }} />
 
         <div style={{ position: "relative", zIndex: 1, maxWidth: 1060, margin: "0 auto" }}>
           <Eyebrow label="What We Stand For" dark />
-          <div style={{ display: "flex", flexWrap: "wrap", alignItems: "flex-end", justifyContent: "space-between", gap: 16, marginBottom: "clamp(28px, 5vw, 48px)" }}>
-            <h2 style={{ margin: 0, fontWeight: 900, fontSize: "clamp(36px, 5vw, 58px)", color: "#F5EEDC", lineHeight: 1, textTransform: "uppercase" }}>
+          <div style={{ display: "flex", flexWrap: "wrap", alignItems: "flex-end", justifyContent: "space-between", gap: 14, marginBottom: "clamp(22px, 5vw, 48px)" }}>
+            <h2 style={{ margin: 0, fontWeight: 900, fontSize: "clamp(30px, 5vw, 58px)", color: "#F5EEDC", lineHeight: 1, textTransform: "uppercase" }}>
               Our<br />Values
             </h2>
             <TopLink to="/vision"
@@ -604,19 +756,19 @@ const Home = () => {
               See all five values <ArrowRight size={14} />
             </TopLink>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: 18 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: 14 }}>
             {[
               { Icon: Shield, title: "Emotional Safety",         blurb: "Children learn best in classrooms where they feel emotionally safe.", highlight: false },
               { Icon: Users,  title: "Collaborative Inquiry",    blurb: "We enter schools as learners first, honoring educators' lived experience.", highlight: true },
               { Icon: Search, title: "Curiosity over Criticism", blurb: "Inquiry, not judgment, guides how we approach policy and practice.", highlight: false },
             ].map(({ Icon, title, blurb, highlight }) => (
-              <div key={title} style={{ borderRadius: 20, padding: "clamp(20px, 4%, 28px)", display: "flex", flexDirection: "column", gap: 14, background: highlight ? "rgba(245,238,220,0.12)" : "rgba(245,238,220,0.06)", border: "1px solid rgba(245,238,220,0.14)" }}>
-                <div style={{ width: 48, height: 48, borderRadius: "50%", background: "#DDA853", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+              <div key={title} style={{ borderRadius: 20, padding: "clamp(16px, 4%, 28px)", display: "flex", flexDirection: "column", gap: 12, background: highlight ? "rgba(245,238,220,0.12)" : "rgba(245,238,220,0.06)", border: "1px solid rgba(245,238,220,0.14)" }}>
+                <div style={{ width: 44, height: 44, borderRadius: "50%", background: "#DDA853", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                   <Icon size={18} color="#183B4E" strokeWidth={2.2} />
                 </div>
                 <div>
                   <h3 style={{ margin: "0 0 6px", fontWeight: 900, fontSize: "clamp(16px, 1.8vw, 18px)", color: "#DDA853", lineHeight: 1.3 }}>{title}</h3>
-                  <p style={{ margin: 0, fontSize: 15, lineHeight: 1.7, color: "rgba(245,238,220,0.82)" }}>{blurb}</p>
+                  <p style={{ margin: 0, fontSize: 14, lineHeight: 1.65, color: "rgba(245,238,220,0.82)" }}>{blurb}</p>
                 </div>
               </div>
             ))}
@@ -625,15 +777,15 @@ const Home = () => {
       </section>
 
       {/* CTA */}
-      <section style={{ position: "relative", padding: "clamp(56px, 9vw, 96px) 20px", textAlign: "center", background: "#F5EEDC", overflow: "hidden" }}>
+      <section style={{ position: "relative", padding: "clamp(44px, 9vw, 96px) 20px", textAlign: "center", background: "#F5EEDC", overflow: "hidden" }}>
         <div style={{ position: "absolute", inset: 0, backgroundImage: `url(${texture})`, backgroundSize: "cover", opacity: 0.05, pointerEvents: "none" }} />
         <div style={{ position: "relative", zIndex: 1, display: "inline-block" }}>
           <Mascot slot={MASCOTS.cta} style={{ top: -70, right: -48 }} />
-          <p style={{ margin: "0 0 24px", fontWeight: 900, fontSize: "clamp(22px, 3vw, 34px)", color: "#183B4E" }}>
+          <p style={{ margin: "0 0 20px", fontWeight: 900, fontSize: "clamp(20px, 3vw, 34px)", color: "#183B4E" }}>
             Meet the innovative minds!
           </p>
           <TopLink to="/team"
-            style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "16px 32px", borderRadius: 100, background: "#DDA853", color: "#183B4E", fontWeight: 700, fontSize: 16, textDecoration: "none", boxShadow: "0 6px 22px rgba(221,168,83,0.32)", transition: "all 0.2s" }}
+            style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "14px 28px", borderRadius: 100, background: "#DDA853", color: "#183B4E", fontWeight: 700, fontSize: 15, textDecoration: "none", boxShadow: "0 6px 22px rgba(221,168,83,0.32)", transition: "all 0.2s" }}
             onMouseEnter={e => { e.currentTarget.style.background = "#e8c070"; e.currentTarget.style.transform = "translateY(-2px)" }}
             onMouseLeave={e => { e.currentTarget.style.background = "#DDA853"; e.currentTarget.style.transform = "" }}>
             Check out the Team <ArrowRight size={16} />

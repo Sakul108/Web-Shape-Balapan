@@ -465,15 +465,13 @@ const Projects = () => {
           backgroundImage: `url(${heroImg})`,
           backgroundSize: "cover", backgroundPosition: "center",
         }} />
-        <div style={{
-          position: "absolute", inset: 0,
-          background: "linear-gradient(105deg, rgba(15,37,55,0.93) 0%, rgba(15,37,55,0.72) 50%, rgba(15,37,55,0.25) 100%)",
-        }} />
+        {/* Dark gradient overlay removed so the photo shows at full brightness.
+            A soft text shadow on the hero copy keeps it readable. */}
         <div className="relative z-10 max-w-5xl mx-auto w-full"
           style={{ padding: "clamp(48px, 10vw, 88px) clamp(20px, 4vw, 40px)" }}>
           <Eyebrow label="Shape Balapan · IRD" light />
           <h1 className="font-black tracking-tight leading-[0.90] mb-6"
-            style={{ color: "#F5EEDC", fontSize: "clamp(48px, 9vw, 100px)" }}>
+            style={{ color: "#F5EEDC", fontSize: "clamp(48px, 9vw, 100px)", textShadow: "0 2px 18px rgba(11,32,48,0.65)" }}>
             Our<br /><span style={{ color: "#DDA853" }}>Projects</span>
           </h1>
           <svg style={{ display: "block", margin: "0 0 28px" }} width="120" height="11" viewBox="0 0 120 11" fill="none">
@@ -481,7 +479,7 @@ const Projects = () => {
               stroke="#DDA853" strokeWidth="3" strokeLinecap="round" fill="none" />
           </svg>
           <p className="leading-relaxed max-w-xl"
-            style={{ color: "rgba(245,238,220,0.80)", fontSize: "clamp(15px, 1.8vw, 18px)" }}>
+            style={{ color: "#F5EEDC", fontSize: "clamp(15px, 1.8vw, 18px)", textShadow: "0 1px 12px rgba(11,32,48,0.85)" }}>
             Every initiative at Shape Balapan is a small experiment in what school can feel like —
             joyful, curious, and grounded in the lives of Nepal's children.
           </p>

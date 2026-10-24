@@ -525,16 +525,16 @@ const Team = () => (
     {/* HERO — same min-height as Vision hero */}
     <section style={{ position: "relative", overflow: "hidden", height: HERO_HEIGHT, display: "flex", alignItems: "center", borderBottom: "4px solid #DDA853" }}>
       <div style={{ position: "absolute", inset: 0, backgroundImage: `url(${heroImg})`, backgroundSize: "cover", backgroundPosition: HERO_FOCUS }} />
-      <div style={{ position: "absolute", inset: 0, background: "linear-gradient(105deg, rgba(15,37,55,0.93) 0%, rgba(15,37,55,0.72) 50%, rgba(15,37,55,0.25) 100%)" }} />
+      
       <div style={{ position: "relative", zIndex: 1, maxWidth: 1060, margin: "0 auto", width: "100%", padding: "clamp(32px, 6vw, 56px) clamp(20px, 4vw, 40px)" }}>
         <Eyebrow label="Shape Balapan" dark />
-        <h1 style={{ margin: "0 0 24px", fontWeight: 900, fontSize: "clamp(48px, 9vw, 100px)", lineHeight: 0.95, letterSpacing: "-0.02em", color: "#F5EEDC" }}>
+        <h1 style={{ margin: "0 0 24px", fontWeight: 900, fontSize: "clamp(48px, 9vw, 100px)", lineHeight: 0.95, letterSpacing: "-0.02em", color: "#F5EEDC", textShadow: "0 2px 18px rgba(11,32,48,0.65)" }}>
           Meet<br /><span style={{ color: "#DDA853" }}>Our Team</span>
         </h1>
         <svg style={{ display: "block", margin: "0 0 28px" }} width="120" height="11" viewBox="0 0 120 11" fill="none">
           <path d="M2 8 Q15 3 30 8 Q45 13 60 8 Q75 3 90 8 Q105 13 118 8" stroke="#DDA853" strokeWidth="3" strokeLinecap="round" fill="none" />
         </svg>
-        <p style={{ color: "rgba(245,238,220,0.85)", fontSize: "clamp(15px, 1.8vw, 18px)", lineHeight: 1.8, maxWidth: 460, margin: 0 }}>
+        <p style={{ color: "#F5EEDC", fontSize: "clamp(15px, 1.8vw, 18px)", lineHeight: 1.8, maxWidth: 460, margin: 0, textShadow: "0 1px 12px rgba(11,32,48,0.85)" }}>
           Researchers, educators, and passionate students united by one belief — every child in Nepal
           deserves a classroom where curiosity is celebrated.
         </p>
