@@ -111,7 +111,8 @@ const GoldBtn = ({ to, children }) => (
 const Mascot = ({ slot, style = {} }) =>
   slot ? <img src={slot.src} alt={slot.alt || ""} style={{ position: "absolute", width: slot.width || 110, height: "auto", ...style }} /> : null
 
-
+/* A photo hung on the wall. The card is a real button so it works with
+   mouse, touch and keyboard. Tilt/hover styles live in <Moments />. */
 const Hung = ({ src, alt, caption, tilt = 0, drop = 0, index, onOpen }) => (
   <figure
     className="hung"
@@ -135,7 +136,7 @@ const Hung = ({ src, alt, caption, tilt = 0, drop = 0, index, onOpen }) => (
   </figure>
 )
 
-/* MOMENTS (interactive gallery + lightbox)*/
+/* ───────── MOMENTS (interactive gallery + lightbox) ───────── */
 const TILTS = [-2, 1.5, -1, 2, -1.5, 1]
 const DROPS = [0, 18, 6, 24, 10, 2]
 
@@ -171,7 +172,7 @@ const Moments = () => {
     }
   }, [isOpen, closeBox, go])
 
-  
+  // preload neighbours so next/previous feels instant
   useEffect(() => {
     if (!isOpen) return
     ;[1, -1].forEach(d => {
@@ -299,9 +300,9 @@ const Moments = () => {
   )
 }
 
-
+/* ───────── HERO ───────── */
 const Hero = () => (
-  <section className="home-hero" style={{ position: "relative", overflow: "hidden", minHeight: HERO_HEIGHT, display: "flex", alignItems: "center", background: "#0F2537", borderBottom: "4px solid #DDA853" }}>
+  <section className="home-hero" style={{ position: "relative", overflow: "hidden", background: "#0F2537", borderBottom: "4px solid #DDA853" }}>
     <style>{`
       @keyframes heroZoom { from { transform: scale(1.04) } to { transform: scale(1.14) } }
       @keyframes heroUp   { from { opacity: 0; transform: translateY(26px) } to { opacity: 1; transform: translateY(0) } }
@@ -311,20 +312,46 @@ const Hero = () => (
       .hero-up  { animation: heroUp 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
       .hero-bob { animation: heroBob 5s ease-in-out infinite; }
       .hero-spin{ animation: heroSpin 40s linear infinite; }
-      @media (max-width: 760px) { .hero-float { display: none !important; } }
+
+      /* Laptop: text sits on the left over plain navy, the photo fills the right
+         side and fades softly into the navy, so faces never sit under the text. */
+      .home-hero { min-height: ${HERO_HEIGHT}; display: flex; align-items: center; }
+      .hero-photo {
+        position: absolute; top: 0; right: 0; bottom: 0; width: 62%; overflow: hidden;
+        -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 38%);
+                mask-image: linear-gradient(to right, transparent 0%, #000 38%);
+      }
+
+      /* Phone: photo on top, text underneath on navy, with a soft fade between them. */
+      @media (max-width: 760px) {
+        .hero-float { display: none !important; }
+        .home-hero { min-height: 0; flex-direction: column; align-items: stretch; }
+        .hero-photo {
+          position: relative; top: auto; right: auto; bottom: auto;
+          width: 100%; height: clamp(240px, 64vw, 340px);
+          -webkit-mask-image: linear-gradient(to bottom, #000 60%, transparent 100%);
+                  mask-image: linear-gradient(to bottom, #000 60%, transparent 100%);
+        }
+        .hero-content { padding-top: 0 !important; padding-bottom: 72px !important; margin-top: -28px !important; }
+      }
       @media (prefers-reduced-motion: reduce) {
         .hero-bg, .hero-up, .hero-bob, .hero-spin { animation: none !important; }
       }
     `}</style>
 
     
-    <div className="hero-bg" aria-hidden="true" style={{ position: "absolute", inset: 0, backgroundImage: `url(${img})`, backgroundSize: "cover", backgroundPosition: HERO_FOCUS }} />
-    
+    <div className="hero-photo" aria-hidden="true">
+      <div className="hero-bg" style={{ position: "absolute", inset: 0, backgroundImage: `url(${img})`, backgroundSize: "cover", backgroundPosition: HERO_FOCUS }} />
+    </div>
+    {/* Dark overlay and blurred colour blobs removed so the photo shows at full brightness.
+        A soft text shadow on the hero copy keeps it readable. */}
+
+    {/* floating doodles */}
     <svg className="hero-float hero-bob" aria-hidden="true" width="34" height="34" viewBox="0 0 24 24" style={{ position: "absolute", top: 54, left: "46%", "--r": "0deg", opacity: 0.7 }}><path d="M12 1L14.5 9.5 23 12 14.5 14.5 12 23 9.5 14.5 1 12 9.5 9.5Z" fill="none" stroke="#F5EEDC" strokeWidth="1.5" strokeLinejoin="round" /></svg>
     <svg className="hero-float hero-bob" aria-hidden="true" width="26" height="26" viewBox="0 0 24 24" style={{ position: "absolute", bottom: 120, left: "4%", "--r": "0deg", opacity: 0.55, animationDelay: "1.2s" }}><path d="M12 1L14.5 9.5 23 12 14.5 14.5 12 23 9.5 14.5 1 12 9.5 9.5Z" fill="none" stroke="#DDA853" strokeWidth="1.7" strokeLinejoin="round" /></svg>
     <svg className="hero-float hero-spin" aria-hidden="true" width="110" height="110" viewBox="0 0 100 100" style={{ position: "absolute", top: 40, right: "4%", opacity: 0.35 }}><circle cx="50" cy="50" r="44" fill="none" stroke="#DDA853" strokeWidth="2" strokeDasharray="3 9" strokeLinecap="round" /></svg>
 
-    <div style={{ position: "relative", zIndex: 2, maxWidth: 1060, margin: "0 auto", width: "100%", padding: "clamp(36px, 8vw, 80px) clamp(18px, 4vw, 40px) clamp(72px, 12vw, 130px)", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "clamp(28px, 6vw, 64px)", alignItems: "center" }}>
+    <div className="hero-content" style={{ position: "relative", zIndex: 2, maxWidth: 1060, margin: "0 auto", width: "100%", padding: "clamp(36px, 8vw, 80px) clamp(18px, 4vw, 40px) clamp(72px, 12vw, 130px)", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "clamp(28px, 6vw, 64px)", alignItems: "center" }}>
       <div>
         <div className="hero-up" style={{ animationDelay: "0.05s" }}><Eyebrow label="Game-Based Learning · Nepal" dark /></div>
         <h1 className="hero-up" style={{ animationDelay: "0.15s", margin: "0 0 18px", fontWeight: 900, fontSize: "clamp(42px, 10vw, 112px)", lineHeight: 0.95, letterSpacing: "-0.02em", color: "#F5EEDC", textShadow: "0 2px 18px rgba(11,32,48,0.65)" }}>
@@ -358,7 +385,7 @@ const Hero = () => (
   </section>
 )
 
-
+/* ───────── "Spot the pattern" play break ───────── */
 const Shape = ({ k, size = 44 }) => (
   <svg width={size} height={size} viewBox="0 0 48 48" aria-hidden="true" style={{ display: "block", flexShrink: 0 }}>
     {k === "c" && <circle cx="24" cy="24" r="20" fill={PLAY_COLORS.c} />}
